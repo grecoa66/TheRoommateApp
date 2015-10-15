@@ -1,5 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        if(VenmoLibrary.isVenmoInstalled(this)){
+            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", "Roommate App Test", "7327889740", ".01", "test", "charge");
+            startActivityForResult(venmoIntent, 2952);
+
+        }
     }
 
 
@@ -38,5 +44,33 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch(requestCode) {
+            case 2952: {
+                if(resultCode == RESULT_OK) {
+                    String signedrequest = data.getStringExtra("signedrequest");
+                    if(signedrequest != null) {
+                        VenmoLibrary.VenmoResponse response = (new VenmoLibrary()).validateVenmoPaymentResponse(signedrequest, "n7XawqshzyCMUfbhfugjWZW4DGDYjGpE");
+                        if(response.getSuccess().equals("1")) {
+                            //Payment successful.  Use data from response object to display a success message
+                            String note = response.getNote();
+                            String amount = response.getAmount();
+                        }
+                    }
+                    else {
+                        String error_message = data.getStringExtra("error_message");
+                        //An error ocurred.  Make sure to display the error_message to the user
+                    }
+                }
+                else if(resultCode == RESULT_CANCELED) {
+                    //The user cancelled the payment
+                }
+                break;
+            }
+        }
     }
 }

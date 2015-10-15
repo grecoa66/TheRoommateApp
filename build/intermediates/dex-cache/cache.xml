@@ -23,6 +23,13 @@
         <dex dex="D:\StudioProjects\TheRommateApp\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-93577cbcc77b6cbf990f6e5b06a5255fe3bfa29a.jar" />
     </item>
     <item
+        jar="D:\StudioProjects\TheRommateApp\app\libs\json_simple-1.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5e303a03d04e6788dddfa3655272580ae0fc13bb">
+        <dex dex="D:\StudioProjects\TheRommateApp\app\build\intermediates\pre-dexed\debug\json_simple-1.1-80216dfb83043423a34e4c62fb2c112a7e688027.jar" />
+    </item>
+    <item
         jar="D:\StudioProjects\TheRommateApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"

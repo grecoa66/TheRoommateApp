@@ -12,16 +12,17 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 // Since this is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+
     public DemoCollectionPagerAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
     }
+
 
     @Override
     public android.support.v4.app.Fragment getItem(int i) {
         android.support.v4.app.Fragment  fragment = new DemoObjectFragment();
         Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        args.putInt(DemoObjectFragment.ARG_OBJECT, i + 1);
+        args.putInt("whichTab", i);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,6 +34,16 @@ public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "OBJECT " + (position + 1);
+
+        switch (position) {
+            case 0://all current
+                return "Current";
+            case 1: //Me
+                return "Me";
+            case 2: //past
+                return "Past";
+            default:
+                return "cheese";
+        }
     }
 }

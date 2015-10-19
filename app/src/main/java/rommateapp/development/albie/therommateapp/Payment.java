@@ -1,3 +1,5 @@
+import rommateapp.development.albie.therommateapp.User;
+
 /**
  * A bill will be made up of a collection of bills.
  * Each bill will have one user who must pay, and one user it

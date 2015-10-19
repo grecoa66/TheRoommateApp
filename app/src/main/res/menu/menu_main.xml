@@ -2,13 +2,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+  <!--  <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_compose"
+-->
+    <item android:id="@+id/grocery_icon"
         android:icon="@drawable/cart_24dp"
-        android:title="cart!" app:showAsAction="ifRoom" />
-    <item android:id="@+id/action_compose2"
-        android:icon="@drawable/cart_24dp"
-        android:title="cart!" app:showAsAction="ifRoom"
+        android:title="Shopping List" app:showAsAction="always" />
+
+    <item android:id="@+id/chores_icon"
+        android:icon="@drawable/ic_format_list_numbered_black_24dp"
+        android:title="Chores List" app:showAsAction="always"
+        />
+
+
+    <item android:id="@+id/maint_icon"
+        android:icon="@drawable/ic_content_cut_black_24dp"
+        android:title="House Maintenance" app:showAsAction="always"
+        />
+
+
+    <item android:id="@+id/bills_icon"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="Bills" app:showAsAction="always"
+        />
+
+
+    <item android:id="@+id/settings_icon"
+        android:icon="@drawable/ic_build_black_24dp"
+        android:title="Settings" app:showAsAction="always"
         />
 </menu>

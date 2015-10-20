@@ -1,3 +1,4 @@
+package rommateapp.development.albie.therommateapp;
 /**
  * A bill will be made up of a collection of bills.
  * Each bill will have one user who must pay, and one user it
@@ -22,6 +23,70 @@ public class Payment {
                    double total, double amountPaid, User makingPayment,
                    User recievingPayment, boolean isComplete){
 
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(double amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public User getMakingPayment() {
+        return makingPayment;
+    }
+
+    public void setMakingPayment(User makingPayment) {
+        this.makingPayment = makingPayment;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
+
+    public User getRecievingPayment() {
+        return recievingPayment;
+    }
+
+    public void setRecievingPayment(User recievingPayment) {
+        this.recievingPayment = recievingPayment;
     }
 
 }

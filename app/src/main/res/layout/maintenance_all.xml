@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/tvTitle"
-        android:text="This will contain stuff for all things past and present."
+        android:text="This will contain maintenance tasks for everyone past and present."
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center" />

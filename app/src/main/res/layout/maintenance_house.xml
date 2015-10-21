@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text2"
-        android:text="This will contain my list of chores"
+        android:id="@+id/text1"
+        android:text="This will contain maintenace tasks for Everyone currently in the group."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

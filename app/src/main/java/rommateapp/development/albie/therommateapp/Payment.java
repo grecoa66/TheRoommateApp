@@ -5,5 +5,5 @@ package rommateapp.development.albie.therommateapp;
  */
 public class Payment {
 
-    
+
 }

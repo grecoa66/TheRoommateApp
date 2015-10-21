@@ -12,19 +12,17 @@ import com.astuetz.PagerSlidingTabStrip;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class ChoreActivity extends AppCompatActivity {
+public class GroceryActivity extends AppCompatActivity {
 
     private FragmentManager fm;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chores_main);
+        setContentView(R.layout.grocery_main);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new ChoresPagerAdapter(getSupportFragmentManager()));
-
-        // Give the PagerSlidingTabStrip the ViewPager
+        viewPager.setAdapter(new GroceryPagerAdapter(getSupportFragmentManager()));
         PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        // Attach the view pager to the tab strip
         tabsStrip.setViewPager(viewPager);
     }
 

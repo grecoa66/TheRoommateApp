@@ -1,7 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -28,15 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.chores_icon) {
-            Intent myIntent = new Intent(this, ChoreActivity.class);
-            myIntent.putExtra("key", 4); //Optional parameters
-            myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
-            this.startActivity(myIntent);
-            return true;
-        }
-
+        Utility.openNewActivity(id, this);
         return super.onOptionsItemSelected(item);
     }
 

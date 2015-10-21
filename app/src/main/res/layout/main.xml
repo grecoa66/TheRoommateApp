@@ -1,5 +1,17 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
-    android:name="rommateapp.development.albie.therommateapp.MainActivityFragment"
-    tools:layout="@layout/fragment_main" android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_frag"
+    tools:context=".MainActivityFragment">
+
+
+
+    <Button
+        android:layout_marginTop="120dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Venmo Test"
+        android:onClick="testVenmo" />
+
+</RelativeLayout>

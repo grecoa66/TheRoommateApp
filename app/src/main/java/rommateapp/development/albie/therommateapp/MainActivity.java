@@ -1,7 +1,7 @@
 package rommateapp.development.albie.therommateapp;
 
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,35 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
-
 
 public class MainActivity extends AppCompatActivity {
-
-    // data fields needed
-    //User thisUser
-    //Group group
-    //
-    private int currentSection = 0;
-    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
-    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-// Initialize the ViewPager and set an adapter
-        //   ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        //  pager.setAdapter(new DemoCollectionPagerAdapter(getSupportFragmentManager()));
-
-        // Bind the tabs to the ViewPager
-        // PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        //  tabs.setViewPager(pager);
     }
 
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -46,22 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.settings_icon) {
-            Toast toast = Toast.makeText(this, "settings!", Toast.LENGTH_SHORT);
-            toast.show();
-            setContentView(R.layout.chores);
-            ViewPager pager = (ViewPager) findViewById(R.id.pager);
-            pager.setTag(1, "test");
-            pager.setAdapter(new DemoCollectionPagerAdapter(getSupportFragmentManager()));
-            // Bind the tabs to the ViewPager
-            PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-            tabs.setViewPager(pager);
+            Intent myIntent = new Intent(this, ChoreActivity.class);
+            myIntent.putExtra("key", 4); //Optional parameters
+            this.startActivity(myIntent);
             return true;
         }
 
@@ -76,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

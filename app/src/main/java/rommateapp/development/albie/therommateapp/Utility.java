@@ -32,13 +32,13 @@ public class Utility {
                 maintIntent.setFlags(maintIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(maintIntent);
                 break;
-          /*   case R.id.bills_icon:
-                Intent myIntent = new Intent(callingActivity, ChoreActivity.class);
-                myIntent.putExtra("key", 4); //Optional parameters
-                myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
-                callingActivity.startActivity(myIntent);
+             case R.id.bills_icon:
+                Intent billsIntent = new Intent(callingActivity, BillsActivity.class);
+                 billsIntent.putExtra("key", 4); //Optional parameters
+                 billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(billsIntent);
                 break;
-            case R.id.settings_icon:
+          /*  case R.id.settings_icon:
                 Intent myIntent = new Intent(callingActivity, ChoreActivity.class);
                 myIntent.putExtra("key", 4); //Optional parameters
                 myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack

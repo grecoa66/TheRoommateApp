@@ -25,17 +25,22 @@
         <activity
             android:theme="@style/Theme.AppCompat.Light"
             android:name=".ChoreActivity"
-            android:label="@string/app_name" >
+            android:label="Chores" >
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light"
             android:name=".GroceryActivity"
-            android:label="@string/app_name" >
+            android:label="Groceries" >
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light"
             android:name=".MaintenanceActivity"
-            android:label="@string/app_name" >
+            android:label="Maintenance" >
+        </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".BillsActivity"
+            android:label="Bills" >
         </activity>
     </application>
 

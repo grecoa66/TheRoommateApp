@@ -29,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.settings_icon) {
+        if (id == R.id.chores_icon) {
             Intent myIntent = new Intent(this, ChoreActivity.class);
             myIntent.putExtra("key", 4); //Optional parameters
+            myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
             this.startActivity(myIntent);
             return true;
         }

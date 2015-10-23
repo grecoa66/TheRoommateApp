@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/text1"
-        android:text="This is the chores Fragment"
+        android:text="This will contain maintenace tasks for Everyone currently in the group."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

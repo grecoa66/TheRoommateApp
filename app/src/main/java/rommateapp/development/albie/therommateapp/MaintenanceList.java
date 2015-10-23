@@ -3,37 +3,34 @@ package rommateapp.development.albie.therommateapp;
 import java.util.ArrayList;
 
 /**
- * Created by alexgreco on 10/21/15.
+ * The MaintenanceList is a collection of MaintenanceItems.
+ * MaintenanceItem objects can be add to this object.
+ * Every Group can have only one MaintenanceList.
+ * Every MaintenanceList has a unique Id.
+ *
+ * Created by Alex Greco on 10/21/15.
  */
 public class MaintenanceList {
     public String maintenanceListId;
     public ArrayList<MaintenanceItem> maintenanceList;
-    public boolean isComplete;
 
-    public MaintenanceList(String maintenanceListId, ArrayList<MaintenanceItem> maintenanceList, boolean isComplete) {
+    public MaintenanceList(String maintenanceListId, ArrayList<MaintenanceItem> maintenanceList) {
         this.maintenanceListId = maintenanceListId;
         this.maintenanceList = maintenanceList;
-        this.isComplete = isComplete;
     }
 
+    //returns the array of maintenanceItem objects
     public ArrayList<MaintenanceItem> getMaintenanceList() {
         return maintenanceList;
     }
-
+    //set the maintenace list
     public void setMaintenanceList(ArrayList<MaintenanceItem> maintenanceList) {
         this.maintenanceList = maintenanceList;
     }
 
+    //add a new maintenanceItem
     public void addMaintenaceItem(MaintenanceItem maintenanceItem){
         maintenanceList.add(maintenanceItem);
-    }
-
-    public boolean isComplete() {
-        return isComplete;
-    }
-
-    public void setIsComplete(boolean isComplete) {
-        this.isComplete = isComplete;
     }
 
     public String getMaintenanceListId() {
@@ -42,5 +39,10 @@ public class MaintenanceList {
 
     public void setMaintenanceListId(String maintenanceListId) {
         this.maintenanceListId = maintenanceListId;
+    }
+
+    //are all maintenaceItems done?
+    public boolean isComplete() {
+        return maintenanceList.isEmpty();
     }
 }

@@ -3,17 +3,20 @@ package rommateapp.development.albie.therommateapp;
 import java.util.ArrayList;
 
 /**
+ * The ChoreList is a collection of Chore objects
+ * Chore objects can be added to this list.
+ * Every Chorelsit has a unique Id.
+ * Every group can only have one groceryList.
+ *
  * Created by alexgreco on 10/20/15.
  */
 public class ChoreList {
     public String choreListId;
-    public ArrayList<Chore> chores;
-    public boolean isEmpty;
+    public ArrayList<Chore> choresList;
 
-    public ChoreList(String choreListId, ArrayList<Chore> chores, boolean isEmpty) {
+    public ChoreList(String choreListId, ArrayList<Chore> choresList) {
         this.choreListId = choreListId;
-        this.chores = chores;
-        this.isEmpty = isEmpty;
+        this.choresList = choresList;
     }
 
     public String getChoreListId() {
@@ -25,22 +28,19 @@ public class ChoreList {
     }
 
     public ArrayList<Chore> getChores() {
-        return chores;
+        return choresList;
     }
 
-    public void setChores(ArrayList<Chore> chores) {
-        this.chores = chores;
+    public void setChores(ArrayList<Chore> choresList) {
+        this.choresList = choresList;
     }
 
     public void addChore(Chore chore){
-        chores.add(chore);
+        choresList.add(chore);
     }
 
     public boolean isEmpty() {
-        return isEmpty;
+        return choresList.isEmpty();
     }
 
-    public void setIsEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
-    }
 }

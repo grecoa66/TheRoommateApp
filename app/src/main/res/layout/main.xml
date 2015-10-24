@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Venmo Test"
-        android:onClick="testVenmo" />
+        android:onClick="testVenmo"
+        android:id="@+id/button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test SQLITE"
+        android:id="@+id/sqlite_btn"
+        android:onClick="testSqlite"
+        />
 
 </RelativeLayout>

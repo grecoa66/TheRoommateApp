@@ -42,6 +42,12 @@
             android:name=".BillsActivity"
             android:label="Bills" >
         </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".DbTestActivity"
+            android:label="DbTest">
+
+        </activity>
     </application>
 
 </manifest>

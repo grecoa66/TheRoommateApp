@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void testSqlite(View view){
+        Intent dbIntent = new Intent(this, DbTestActivity.class);
+        startActivity(dbIntent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

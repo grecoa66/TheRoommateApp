@@ -7,14 +7,14 @@ package rommateapp.development.albie.therommateapp;
 public class Chore {
 
 
-    public String choreId = null;
+    public int choreId ;
     public String title = "";
     public String desc = "";
     public User requestUser;
     public User assignedUser;
     public boolean isComplete = false;
 
-    public Chore(String choreId, String title, String desc, User requestUser, User assignedUser, boolean isComplete){
+    public Chore(int choreId, String title, String desc, User requestUser, User assignedUser, boolean isComplete){
         this.choreId = choreId;
         this.title = title;
         this.desc = desc;
@@ -23,11 +23,11 @@ public class Chore {
         this.isComplete = isComplete;
     }
 
-    public String getChoreId() {
+    public int getChoreId() {
         return choreId;
     }
 
-    public void setChoreId(String choreId) {
+    public void setChoreId(int choreId) {
         this.choreId = choreId;
     }
     public String getTitle() {

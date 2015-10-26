@@ -6,13 +6,13 @@ package rommateapp.development.albie.therommateapp;
  * Created by alexgreco on 10/19/15.
  */
 public class MaintenanceItem {
-    public String MaintenanceItemId = null;
+    public int MaintenanceItemId;
     public String desc;
     public User causingUser;
     public User purchaseUser;
     public boolean isComplete = false;
 
-    public MaintenanceItem(String MaintenanceItemId, String desc,
+    public MaintenanceItem(int MaintenanceItemId, String desc,
                            User causingUser, User purchaseUser, boolean isComplete){
         this.MaintenanceItemId = MaintenanceItemId;
         this.desc = desc;
@@ -22,11 +22,11 @@ public class MaintenanceItem {
 
     }
 
-    public String getMaintenanceItemId() {
+    public int getMaintenanceItemId() {
         return MaintenanceItemId;
     }
 
-    public void setMaintenanceItemId(String maintenanceItemId) {
+    public void setMaintenanceItemId(int maintenanceItemId) {
         MaintenanceItemId = maintenanceItemId;
     }
 

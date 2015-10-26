@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by alexgreco on 10/16/15.
  */
 public class Grocery {
-    public String groceryId = null;
+    public int groceryId;
     public String itemName;
     public int quantity;
     public Date dateRequested;
@@ -17,7 +17,7 @@ public class Grocery {
     public User requestUser;
     public User purchaseUser;//who purchased the item(s)
 
-    public Grocery(String groceryId, String itemName, int quantity,
+    public Grocery(int groceryId, String itemName, int quantity,
                    Date dateRequested, Date datePurchased, boolean isPurchased,
                    Double costPerItem, User requestUser,User purchaseUser ){
         this.groceryId = groceryId;
@@ -31,11 +31,11 @@ public class Grocery {
         this.purchaseUser = purchaseUser;
     }
 
-    public String getGroceryId() {
+    public int getGroceryId() {
         return groceryId;
     }
 
-    public void setGroceryId(String groceryId) {
+    public void setGroceryId(int groceryId) {
         this.groceryId = groceryId;
     }
 

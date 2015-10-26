@@ -10,14 +10,14 @@ import java.util.ArrayList;
  * Created by alexgreco on 10/19/15.
  */
 public class Bill {
-    public String billId;
+    public int billId;
     public String desc;
     public double totalAmount;
     public ArrayList<User> userToPay;
     public ArrayList<Payment> payments;
     public double totalPaid;
 
-    public Bill(String desc, String billId, double totalAmount,
+    public Bill(String desc, int billId, double totalAmount,
                 ArrayList<User> userToPay, ArrayList<Payment> payments,
                 double totalPaid, boolean isComplete)
     {
@@ -81,11 +81,10 @@ public class Bill {
         this.desc = desc;
     }
 
-    public String getBillId() {
+    public int getBillId() {
         return billId;
     }
-
-    public void setBillId(String billId) {
+    public void setBillId(int billId) {
         this.billId = billId;
     }
 

@@ -11,10 +11,10 @@ import java.util.ArrayList;
  * Created by Alex Greco on 10/21/15.
  */
 public class MaintenanceList {
-    public String maintenanceListId;
+    public int maintenanceListId;
     public ArrayList<MaintenanceItem> maintenanceList;
 
-    public MaintenanceList(String maintenanceListId, ArrayList<MaintenanceItem> maintenanceList) {
+    public MaintenanceList(int maintenanceListId, ArrayList<MaintenanceItem> maintenanceList) {
         this.maintenanceListId = maintenanceListId;
         this.maintenanceList = maintenanceList;
     }
@@ -33,11 +33,11 @@ public class MaintenanceList {
         maintenanceList.add(maintenanceItem);
     }
 
-    public String getMaintenanceListId() {
+    public int getMaintenanceListId() {
         return maintenanceListId;
     }
 
-    public void setMaintenanceListId(String maintenanceListId) {
+    public void setMaintenanceListId(int maintenanceListId) {
         this.maintenanceListId = maintenanceListId;
     }
 

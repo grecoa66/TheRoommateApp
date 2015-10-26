@@ -10,21 +10,21 @@ import java.util.ArrayList;
  * Created by alexgreco on 10/21/15.
  */
 public class BillList {
-    public String BillListId;
+    public int BillListId;
     public ArrayList<Bill> billList;
     public boolean isEmpty;
 
-    public BillList(String billListId, boolean isEmpty, ArrayList<Bill> billList) {
+    public BillList(int billListId, boolean isEmpty, ArrayList<Bill> billList) {
         BillListId = billListId;
         this.isEmpty = isEmpty;
         this.billList = billList;
     }
 
-    public String getBillListId() {
+    public int getBillListId() {
         return BillListId;
     }
 
-    public void setBillListId(String billListId) {
+    public void setBillListId(int billListId) {
         BillListId = billListId;
     }
 

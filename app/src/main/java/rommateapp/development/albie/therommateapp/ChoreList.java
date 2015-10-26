@@ -11,19 +11,19 @@ import java.util.ArrayList;
  * Created by alexgreco on 10/20/15.
  */
 public class ChoreList {
-    public String choreListId;
+    public int choreListId;
     public ArrayList<Chore> choresList;
 
-    public ChoreList(String choreListId, ArrayList<Chore> choresList) {
+    public ChoreList(int choreListId, ArrayList<Chore> choresList) {
         this.choreListId = choreListId;
         this.choresList = choresList;
     }
 
-    public String getChoreListId() {
+    public int getChoreListId() {
         return choreListId;
     }
 
-    public void setChoreListId(String choreListId) {
+    public void setChoreListId(int choreListId) {
         this.choreListId = choreListId;
     }
 

@@ -43,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
         ChoreRowAdapter adapter = new ChoreRowAdapter(this, values);
         ListView lv = (ListView) findViewById(R.id.list);
         lv.setAdapter(adapter);
+
+
+        //This is where we can create the modal for edit / delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+                view.setSelected(true);
+            }
+        });
     }
 
 

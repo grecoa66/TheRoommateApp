@@ -31,14 +31,14 @@ public class MaintenanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_main);
         mContext = this;
-        
-        mainteList.add(new MaintenanceItem(01, "Broken Door", "albie", "albie", false));
-        mainteList.add(new MaintenanceItem(02, "scuffed paint in living room", "greco", "matt", false));
-        mainteList.add(new MaintenanceItem(03, "leak in sink", "matt", "greco", false));
-        mainteList.add(new MaintenanceItem(04, "Burnt out bulb", "greco", "greco", false));
-        mainteList.add(new MaintenanceItem(05, "Broken Window", "matt", "matt", false));
-        mainteList.add(new MaintenanceItem(06, "Broken toilet seat", "ablie", "greco", false));
-        mainteList.add(new MaintenanceItem(07, "New spare Key", "matt", "matt", false));
+
+        mainteList.add(new MaintenanceItem(1, "Broken Door", "albie", "albie", false));
+        mainteList.add(new MaintenanceItem(2, "scuffed paint in living room", "greco", "matt", false));
+        mainteList.add(new MaintenanceItem(3, "leak in sink", "matt", "greco", false));
+        mainteList.add(new MaintenanceItem(4, "Burnt out bulb", "greco", "greco", false));
+        mainteList.add(new MaintenanceItem(5, "Broken Window", "matt", "matt", false));
+        mainteList.add(new MaintenanceItem(6, "Broken toilet seat", "ablie", "greco", false));
+        mainteList.add(new MaintenanceItem(7, "New spare Key", "matt", "matt", false));
 
 
         ListView lv = (ListView) findViewById(R.id.list_mainte);

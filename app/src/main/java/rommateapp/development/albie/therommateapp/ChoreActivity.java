@@ -42,14 +42,45 @@ public class ChoreActivity extends AppCompatActivity {
         User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
         User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
         User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
-/*
-        chores.add(new Chore(0, "Sweep", "kitchen", albie, greco, true ));
-        chores.add(new Chore(0, "Garbage", "kitchen", matt, greco, false ));
-        chores.add(new Chore(0, "Mop", "living room", matt, albie, false ));
-        chores.add(new Chore(0, "Dishes", "sink is full", greco, matt, true ));
-        chores.add(new Chore(0, "Walk Dog", "sparky needs to go", albie, greco, false ));
-        chores.add(new Chore(0, "Laundry", "it stinks", greco, matt, false ));
-*/
+
+        chores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
+        chores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
+        chores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
+        chores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
+
+
+
+        ListView lv = (ListView) findViewById(R.id.list_chores);
+
+        ChoreRowAdapter adapter;
+
+        ArrayList<Chore> justMe = new ArrayList<>();
+        for(int i=0;i<chores.size();i++){
+            Chore c = chores.get(i);
+            justMe.add(c);
+
+        }
+
+        String[] values = new String[justMe.size()];
+        for(int i=0;i<justMe.size();i++){values[i]="";}
+        adapter = new ChoreRowAdapter(mContext, justMe, values);
+
+        lv.setAdapter(adapter);
+
+        //This is where we can create the modal for edit  delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
+                view.setSelected(true);
+            }
+        });
+
+
+
+
 
         HTTP_Connector httpcon= new HTTP_Connector(this);
         HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
@@ -64,7 +95,12 @@ public class ChoreActivity extends AppCompatActivity {
         }
     //}
 
-    public void setAdapters(ArrayList<Chore> chores){
+    public void changeAdapater(View view){
+
+    }
+
+
+   /* public void setAdapters(ArrayList<Chore> chores){
 
         ListView lv;
         ChoreRowAdapter adapter;
@@ -102,8 +138,6 @@ public class ChoreActivity extends AppCompatActivity {
        //// adapter3 = new ChoreRowNoPicture(mContext, chores, values);
 
 
-
-        lv = (ListView) findViewById(R.id.list);
         lv.setAdapter(adapter);
 
         //This is where we can create the modal for edit  delete
@@ -117,7 +151,7 @@ public class ChoreActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
 
 
 

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -35,7 +36,8 @@ public class ChoreActivity extends AppCompatActivity {
     private ArrayList<Chore> currentChores;
     private ChoreRowAdapter adapter;
     private ListView list;
-
+    private Chore choreToDelete;
+    private AlertDialog alertDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +184,7 @@ public class ChoreActivity extends AppCompatActivity {
 
         Chore c = currentChores.get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.chore_add, null);
+        View promptsView = li.inflate(R.layout.chore_edit, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -197,10 +199,16 @@ public class ChoreActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) promptsView
                 .findViewById(R.id.PeopleSpinner);
 
+        name.setText(c.getTitle());
+        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
+        spinner.setSelection(spinnerPosition);
+        desc.setText(c.getDesc());
+        choreToDelete = c;
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Add",
+                .setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
@@ -215,8 +223,7 @@ public class ChoreActivity extends AppCompatActivity {
                                 adapter = new ChoreRowAdapter(mContext, currentChores, values);
 
                                 list.setAdapter(adapter);
-                                Toast.makeText(mContext, "I should edit here "+ name.getText().toString()+", "+desc.getText().toString()+", "+spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                            }
+                              }
                         })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
@@ -226,7 +233,7 @@ public class ChoreActivity extends AppCompatActivity {
                         });
 
         // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog= alertDialogBuilder.create();
 
         // show it
         alertDialog.show();
@@ -240,13 +247,20 @@ public class ChoreActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
-                Toast.makeText(mContext, "you changed me " + position, Toast.LENGTH_SHORT).show();
                 showModal(position);
                 view.setSelected(true);
             }
         });
 
     }
+    public void deleteChore(View view) {
 
+        currentChores.remove(choreToDelete); String[] values = new String[currentChores.size()];
+        for(int i=0;i<currentChores.size();i++){values[i]="";}
+        adapter = new ChoreRowAdapter(mContext, currentChores, values);
+        list.setAdapter(adapter);
+        Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
+        alertDialog.cancel();
+    }
 }
 

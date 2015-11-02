@@ -4,20 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="in chore activity"/>
+        android:text="Add Chore"
+        android:clickable="true"
+        android:onClick="addChore"/>
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list_chores"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="changeList"
-        android:clickable="true"
-        android:onClick="changeAdapter"/>
 
 </LinearLayout>

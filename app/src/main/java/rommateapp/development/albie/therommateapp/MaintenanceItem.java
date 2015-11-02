@@ -8,12 +8,12 @@ package rommateapp.development.albie.therommateapp;
 public class MaintenanceItem {
     public int MaintenanceItemId;
     public String desc;
-    public User causingUser;
-    public User purchaseUser;
+    public String causingUser;
+    public String purchaseUser;
     public boolean isComplete = false;
 
     public MaintenanceItem(int MaintenanceItemId, String desc,
-                           User causingUser, User purchaseUser, boolean isComplete){
+                           String causingUser, String purchaseUser, boolean isComplete){
         this.MaintenanceItemId = MaintenanceItemId;
         this.desc = desc;
         this.causingUser = causingUser;
@@ -38,19 +38,19 @@ public class MaintenanceItem {
         this.desc = desc;
     }
 
-    public User getCausingUser() {
+    public String getCausingUser() {
         return causingUser;
     }
 
-    public void setCausingUser(User causingUser) {
+    public void setCausingUser(String causingUser) {
         this.causingUser = causingUser;
     }
 
-    public User getPurchaseUser() {
+    public String getPurchaseUser() {
         return purchaseUser;
     }
 
-    public void setPurchaseUser(User purchaseUser) {
+    public void setPurchaseUser(String purchaseUser) {
         this.purchaseUser = purchaseUser;
     }
 

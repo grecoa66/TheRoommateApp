@@ -8,6 +8,23 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="in maintenance"/>
+        android:text="in maintenance activity"/>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_mainte"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="My List"
+        android:clickable="true"
+        android:onClick="meAdapter"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Group List"
+        android:clickable="true"
+        android:onClick="groupAdapter"/>
 
 </LinearLayout>

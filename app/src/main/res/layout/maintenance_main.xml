@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+<Button
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Add Maintenance Item"
+    android:clickable="true"
+    android:onClick="addItem"/>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

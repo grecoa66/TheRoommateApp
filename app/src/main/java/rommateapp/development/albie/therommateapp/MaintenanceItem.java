@@ -12,9 +12,8 @@ public class MaintenanceItem {
     public String purchaseUser;
     public boolean isComplete = false;
 
-    public MaintenanceItem(int MaintenanceItemId, String desc,
+    public MaintenanceItem( String desc,
                            String causingUser, String purchaseUser, boolean isComplete){
-        this.MaintenanceItemId = MaintenanceItemId;
         this.desc = desc;
         this.causingUser = causingUser;
         this.purchaseUser = purchaseUser;

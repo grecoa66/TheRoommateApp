@@ -40,6 +40,10 @@ public class BillList {
         billList.add(bill);
     }
 
+    public Boolean removeBill(Bill bill){
+        return billList.remove(bill);
+    }
+
     public boolean isEmpty() {
         return billList.isEmpty();
     }

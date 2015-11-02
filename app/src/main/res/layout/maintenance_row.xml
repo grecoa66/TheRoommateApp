@@ -58,6 +58,7 @@
             android:contentDescription="TODO"
             android:layout_gravity="center_vertical|right"
             android:clickable="true"
+            android:onClick="removeItem"
             android:src="@drawable/ic_check_box_black_24dp" />
 
     </LinearLayout>

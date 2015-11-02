@@ -17,7 +17,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.util.ArrayList;
 
 /**
- * Created by Albert on 10/21/2015.
+ * Created by Alex G on 10/21/2015.
  */
 public class MaintenanceActivity extends AppCompatActivity {
 
@@ -31,8 +31,7 @@ public class MaintenanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_main);
         mContext = this;
-
-      //  ArrayList<MaintenanceItem> mainteList = new ArrayList<MaintenanceItem>();
+        
         mainteList.add(new MaintenanceItem(01, "Broken Door", "albie", "albie", false));
         mainteList.add(new MaintenanceItem(02, "scuffed paint in living room", "greco", "matt", false));
         mainteList.add(new MaintenanceItem(03, "leak in sink", "matt", "greco", false));
@@ -83,15 +82,9 @@ public class MaintenanceActivity extends AppCompatActivity {
 
     public void groupAdapter(View view){
 
-        //ArrayList<MaintenanceItem> mainteList = new ArrayList<MaintenanceItem>();
-
-
-
         ListView lv = (ListView) findViewById(R.id.list_mainte);
 
         MaintenaceRowAdapter adapter;
-
-
 
         for(int i = 0; i < mainteList.size() ; i++){
             MaintenanceItem mItem = mainteList.get(i);

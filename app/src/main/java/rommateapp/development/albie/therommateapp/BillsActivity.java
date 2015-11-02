@@ -18,10 +18,6 @@ public class BillsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bills_main);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new BillsPagerAdapter(getSupportFragmentManager()));
-        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabsStrip.setViewPager(viewPager);
     }
 
 

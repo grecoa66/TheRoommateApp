@@ -18,10 +18,6 @@ public class MaintenanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_main);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MaintenancePagerAdapter(getSupportFragmentManager()));
-        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabsStrip.setViewPager(viewPager);
     }
 
 

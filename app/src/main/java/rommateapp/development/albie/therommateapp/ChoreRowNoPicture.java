@@ -38,8 +38,8 @@ public class ChoreRowNoPicture extends ArrayAdapter<String> {
         // Change the icon for Windows and iPhone
         Chore c = chores.get(position);
 
-        choreAssignedToTv.setText("To: "+c.getAssignedUser().getfName());
-        choreAssignedByTv.setText("From: "+ c.getRequestUser().getfName());
+        choreAssignedToTv.setText("To: "+c.getAssignedUser());
+        choreAssignedByTv.setText("From: "+ c.getRequestUser());
         choreNameTv.setText(c.getTitle());
         choreDescTv.setText(c.getDesc());
         imageView.setVisibility(View.INVISIBLE);

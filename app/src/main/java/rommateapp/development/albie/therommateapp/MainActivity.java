@@ -2,6 +2,7 @@ package rommateapp.development.albie.therommateapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -37,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+
+
+        HTTP_Connector httpcon= new HTTP_Connector(this);
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
+        getchores.execute("1");
+
+        if(getchores.getStatus() == AsyncTask.Status.FINISHED){
+
+            Toast.makeText(this,"callback",Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
 
@@ -63,10 +76,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void testSqlite(View view){
-        Intent dbIntent = new Intent(this, DbTestActivity.class);
-        startActivity(dbIntent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

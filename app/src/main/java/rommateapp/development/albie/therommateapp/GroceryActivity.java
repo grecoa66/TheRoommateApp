@@ -20,10 +20,6 @@ public class GroceryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grocery_main);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new GroceryPagerAdapter(getSupportFragmentManager()));
-        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabsStrip.setViewPager(viewPager);
     }
 
 

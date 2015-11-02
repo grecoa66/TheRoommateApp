@@ -10,21 +10,23 @@ public class Chore {
     public int choreId ;
     public String title = "";
     public String desc = "";
-    public User requestUser;
-    public User assignedUser;
+    public String requestUser;
+    public String assignedUser;
+    public int groupid;
     public boolean isComplete = false;
 
-    public Chore(int choreId, String title, String desc, User requestUser, User assignedUser, boolean isComplete){
-        this.choreId = choreId;
+    public Chore( String title, String desc, String requestUser, String assignedUser, boolean isComplete, int groupid){
+
         this.title = title;
         this.desc = desc;
         this.requestUser = requestUser;
         this.assignedUser = assignedUser;
         this.isComplete = isComplete;
+        this.groupid = groupid;
     }
 
     public int getChoreId() {
-        return choreId;
+        return this.choreId;
     }
 
     public void setChoreId(int choreId) {
@@ -45,20 +47,21 @@ public class Chore {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+    public void setId(int id){ this.choreId = id; }
 
-    public User getRequestUser() {
+    public String getRequestUser() {
         return requestUser;
     }
 
-    public void setRequestUser(User requestUser) {
+    public void setRequestUser(String requestUser) {
         this.requestUser = requestUser;
     }
 
-    public User getAssignedUser() {
+    public String getAssignedUser() {
         return assignedUser;
     }
 
-    public void setAssignedUser(User assignedUser) {
+    public void setAssignedUser(String assignedUser) {
         this.assignedUser = assignedUser;
     }
 

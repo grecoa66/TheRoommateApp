@@ -1,6 +1,7 @@
 package rommateapp.development.albie.therommateapp;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,6 +16,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        HTTP_Connector httpcon = new HTTP_Connector(this);
+
+/**
+ * example of getUser function
+ */
+       /* HTTP_Connector.getUser gu = httpcon.new getUser();
+        gu.execute("cieslakm0@students.rowan.edu", "pass");
+        if(gu.getStatus() == AsyncTask.Status.FINISHED){
+            gu.createUserObject();
+        }
+        */
+/**
+ * example of getChoreList function
+ */
+        /*
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
+        getchores.execute("1");
+        if(getchores.getStatus() == AsyncTask.Status.FINISHED) {
+            getchores.createChoreListObject();
+        }
+        */
+        /**
+         * example of addChore function
+         */
+        /*
+        HTTP_Connector.addChore adder = httpcon.new addChore();
+        Chore test_chore = new Chore("cleanbathroom", "Clean the bathroom", "Matt", "testuser", false, 1);
+        adder.execute(test_chore);
+        */
+/**
+ * example of getChoreList function
+ */
+        /*
+        HTTP_Connector.editChore edit = httpcon.new editChore();
+        Chore test_chore = new Chore("clean kitchen edit", "Clean the bathroom edit", "Matt", "testuser", false, 1);
+        test_chore.setChoreId(1);
+        edit.execute(test_chore);
+        */
     }
 
 

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
 
 
-
+/*
         HTTP_Connector httpcon= new HTTP_Connector(this);
         HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
         getchores.execute("1");
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this,"callback",Toast.LENGTH_SHORT).show();
         }
-
+*/
 
     }
 

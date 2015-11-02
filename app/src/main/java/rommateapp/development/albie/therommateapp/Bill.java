@@ -13,49 +13,32 @@ public class Bill {
     public int billId;
     public String desc;
     public double totalAmount;
-    public ArrayList<User> userToPay;
-    public ArrayList<Payment> payments;
+    public User userToPay;
+    public User userToBill;
     public double totalPaid;
 
-    public Bill(String desc, int billId, double totalAmount,
-                ArrayList<User> userToPay, ArrayList<Payment> payments,
+    public Bill(String desc, int billId, double totalAmount, User userToBill,
+               User userToPay,
                 double totalPaid, boolean isComplete)
     {
         this.desc = desc;
         this.billId = billId;
         this.totalAmount = totalAmount;
         this.userToPay = userToPay;
-        this.payments = payments;
+        this.userToBill = userToBill;
         this.totalPaid = totalPaid;
         this.isComplete = isComplete;
     }
 
-    //arraylist of the user that are going to split this bill
-    public ArrayList<User> getUserToPay() {
+    public User getUserToPay() {
         return userToPay;
     }
 
-    public void setUserToPay(ArrayList<User> userToPay) {
+    public void setUserToPay(User userToPay) {
         this.userToPay = userToPay;
     }
 
-    public void addUser(User user){
-        userToPay.add(user);
-    }
 
-    //array list of the payments that this bill is split into
-    public ArrayList<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(ArrayList<Payment> payments) {
-        this.payments = payments;
-    }
-
-    //add a new payment to the list
-    public void addPayment(Payment payment){
-        payments.add(payment);
-    }
 
     public boolean isComplete() {
         return isComplete;

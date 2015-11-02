@@ -1,6 +1,8 @@
 package rommateapp.development.albie.therommateapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +15,22 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ChoreRowAdapter extends BaseAdapter {
+public class BillRowAdapter extends BaseAdapter {
     private final Context context;
-    private ArrayList<Chore> chores;
-    public ChoreRowAdapter( Context context, ArrayList<Chore> chores) {
+    private ArrayList<Bill> bills;
+    public BillRowAdapter( Context context, ArrayList<Bill> bills) {
         this.context = context;
-        this.chores = chores;
+        this.bills = bills;
     }
 
     @Override
     public int getCount() {
-        return chores.size();
+        return bills.size();
     }
 
     @Override
     public Object getItem(int pos) {
-        return chores.get(pos);
+        return bills.get(pos);
     }
 
     @Override
@@ -41,23 +43,21 @@ public class ChoreRowAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.chore_row, parent, false);
+        View rowView = inflater.inflate(R.layout.bill_row, parent, false);
 
-        TextView choreNameTv = (TextView) rowView.findViewById(R.id.choreName);
-        TextView choreDescTv = (TextView) rowView.findViewById(R.id.choreDesc);
-        TextView choreAssignedToTv = (TextView) rowView.findViewById(R.id.assignedTo);
-        TextView choreAssignedByTv = (TextView) rowView.findViewById(R.id.assignedBy);
+        TextView choreNameTv = (TextView) rowView.findViewById(R.id.billName);
+        TextView choreAssignedToTv = (TextView) rowView.findViewById(R.id.payTo);
+        TextView choreDescTv = (TextView) rowView.findViewById(R.id.amount);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
 
         // Change the icon for Windows and iPhone
-        Chore c = chores.get(position);
+        Bill b = bills.get(position);
 
-        choreAssignedToTv.setText("To: "+c.getAssignedUser());
-        choreAssignedByTv.setText("From: "+ c.getRequestUser());
-        choreNameTv.setText(c.getTitle());
-        choreDescTv.setText(c.getDesc());
+        choreAssignedToTv.setText("To: "+b.getUserToPay().getfName());
+        choreNameTv.setText(b.getDesc());
+        choreDescTv.setText("$"+b.getTotalAmount());
 
         final int pos = position;
 
@@ -66,15 +66,15 @@ public class ChoreRowAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Chore c = chores.get(position);
-                chores.remove(c);
-                notifyDataSetChanged();
-                Toast.makeText(v.getContext(),
-                        "chore + "+c.getTitle()+" complete!",
-                        Toast.LENGTH_LONG).show();
+               // Bill b = bills.get(position);
+                BillsActivity act = (BillsActivity) context;
+                act.doVenmo();
+
             }
         });
 
         return rowView;
     }
+
+
 } 

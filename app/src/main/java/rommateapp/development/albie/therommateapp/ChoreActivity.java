@@ -45,14 +45,14 @@ public class ChoreActivity extends AppCompatActivity {
         mContext = this;
 
         allChores = new ArrayList<>();
-        User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
-        User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
+        User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942");
+        User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942");
         User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
 
-        allChores.add(new Chore("Sweep", "kitchen", "greco", "albie",true, 1));
-        allChores.add(new Chore("Mop", "bathroom", "matt", "albie",true, 1));
-        allChores.add(new Chore("walk dog", "sparky needs to go", "greco", "matt",true, 1));
-        allChores.add(new Chore("garbage", "Its garbage day", "matt", "greco",true, 1));
+        allChores.add(new Chore("Sweep", "kitchen", "Greco", "Albie",true, 1));
+        allChores.add(new Chore("Mop", "bathroom", "matt", "Albie",true, 1));
+        allChores.add(new Chore("walk dog", "sparky needs to go", "Greco", "Matt",true, 1));
+        allChores.add(new Chore("garbage", "Its garbage day", "Matt", "Greco",true, 1));
 
 
 
@@ -68,9 +68,10 @@ public class ChoreActivity extends AppCompatActivity {
 
         }
 
-        String[] values = new String[currentChores.size()];
-        for(int i=0;i<currentChores.size();i++){values[i]="";}
-        adapter = new ChoreRowAdapter(mContext, currentChores, values);
+        currentChores = allChores;
+        String[] values = new String[allChores.size()];
+        for(int i=0;i<allChores.size();i++){values[i]="";}
+        adapter = new ChoreRowAdapter(mContext, allChores);
 
         list.setAdapter(adapter);
         setListener(list);
@@ -108,7 +109,7 @@ public class ChoreActivity extends AppCompatActivity {
 
         String[] values = new String[currentChores.size()];
         for(int i=0;i<currentChores.size();i++){values[i]="";}
-        adapter = new ChoreRowAdapter(mContext, currentChores, values);
+        adapter = new ChoreRowAdapter(mContext, currentChores);
 
         list.setAdapter(adapter);
     }
@@ -156,11 +157,11 @@ public class ChoreActivity extends AppCompatActivity {
                                 // get user input and set it to result
                                 // edit text
                                 //result.setText(userInput.getText());
-                                currentChores.add(new Chore(name.getText().toString(), desc.getText().toString(), spinner.getSelectedItem().toString(), "albie",true, 1));//current user, not albie
+                                currentChores.add(new Chore(name.getText().toString(), desc.getText().toString(), "albie", spinner.getSelectedItem().toString(),true, 1));//current user, not albie
                                 ListView lv = (ListView) findViewById(R.id.list_chores);
                                 String[] values = new String[currentChores.size()];
                                 for(int i=0;i<currentChores.size();i++){values[i]="";}
-                                adapter = new ChoreRowAdapter(mContext, currentChores, values);
+                                adapter = new ChoreRowAdapter(mContext, currentChores);
                                 list.setAdapter(adapter);
                                 setListener(list);
                                 Toast.makeText(mContext, name.getText().toString()+", "+desc.getText().toString()+", "+spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
@@ -220,10 +221,10 @@ public class ChoreActivity extends AppCompatActivity {
                                 c.setAssignedUser(spinner.getSelectedItem().toString());
                                 String[] values = new String[currentChores.size()];
                                 for(int i=0;i<currentChores.size();i++){values[i]="";}
-                                adapter = new ChoreRowAdapter(mContext, currentChores, values);
+                                adapter = new ChoreRowAdapter(mContext, currentChores);
 
                                 list.setAdapter(adapter);
-                              }
+                            }
                         })
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
@@ -257,7 +258,7 @@ public class ChoreActivity extends AppCompatActivity {
 
         currentChores.remove(choreToDelete); String[] values = new String[currentChores.size()];
         for(int i=0;i<currentChores.size();i++){values[i]="";}
-        adapter = new ChoreRowAdapter(mContext, currentChores, values);
+        adapter = new ChoreRowAdapter(mContext, currentChores);
         list.setAdapter(adapter);
         Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
         alertDialog.cancel();

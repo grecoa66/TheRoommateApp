@@ -17,25 +17,25 @@ public class Utility {
             case R.id.grocery_icon:
                 Intent groceryIntent = new Intent(callingActivity, GroceryActivity.class);
                 groceryIntent.putExtra("key", 4); //Optional parameters
-                groceryIntent.setFlags(groceryIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                //groceryIntent.setFlags(groceryIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(groceryIntent);
                 break;
             case R.id.chores_icon:
                 Intent choresIntent = new Intent(callingActivity, ChoreActivity.class);
                 choresIntent.putExtra("key", 4); //Optional parameters
-                choresIntent.setFlags(choresIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+               // choresIntent.setFlags(choresIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(choresIntent);
                 break;
            case R.id.maint_icon:
                 Intent maintIntent = new Intent(callingActivity, MaintenanceActivity.class);
                 maintIntent.putExtra("key", 4); //Optional parameters
-                maintIntent.setFlags(maintIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+               // maintIntent.setFlags(maintIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(maintIntent);
                 break;
              case R.id.bills_icon:
                 Intent billsIntent = new Intent(callingActivity, BillsActivity.class);
                  billsIntent.putExtra("key", 4); //Optional parameters
-                 billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                // billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(billsIntent);
                 break;
           /*  case R.id.settings_icon:

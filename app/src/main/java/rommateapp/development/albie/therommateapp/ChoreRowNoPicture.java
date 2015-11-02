@@ -12,10 +12,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ChoreRowAdapter extends ArrayAdapter<String> {
+public class ChoreRowNoPicture extends ArrayAdapter<String> {
     private final Context context;
     private ArrayList<Chore> chores;
-    public ChoreRowAdapter(Context context, ArrayList<Chore> chores, String [] values) {
+    public ChoreRowNoPicture(Context context, ArrayList<Chore> chores, String [] values) {
         super(context, R.layout.chore_row, values);
         this.context = context;
         this.chores = chores;
@@ -42,19 +42,11 @@ public class ChoreRowAdapter extends ArrayAdapter<String> {
         choreAssignedByTv.setText("From: "+ c.getRequestUser().getfName());
         choreNameTv.setText(c.getTitle());
         choreDescTv.setText(c.getDesc());
+        imageView.setVisibility(View.INVISIBLE);
 
         final int pos = position;
 
-
-        //we can create the function we want to attach to the  image here
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),
-                        "item + "+pos,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+        imageView.setVisibility(View.INVISIBLE);
 
         return rowView;
     }

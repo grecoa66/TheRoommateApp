@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by Albert on 10/15/2015.
  */
@@ -21,18 +23,12 @@ public class ChoresFragment extends Fragment {
 
     private Activity mContext;
     private int mPage;
-    private ListView lv;
-    private ListView lv2;
-    private ListView lv3;
-    private ChoreRowAdapter adapter;
 
     public static ChoresFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         ChoresFragment fragment = new ChoresFragment();
         fragment.setArguments(args);
-
-
 
         return fragment;
     }
@@ -43,17 +39,67 @@ public class ChoresFragment extends Fragment {
         mContext = getActivity();
         mPage = getArguments().getInt(ARG_PAGE);
         //list view things
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2" };
-        adapter = new ChoreRowAdapter(getActivity(), values);
+        //test data
+        ArrayList<Chore> chores = new ArrayList<Chore>();
+        User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
+        User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
+        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
+
+        chores.add(new Chore(0, "Sweep", "kitchen", albie, greco, true ));
+        chores.add(new Chore(0, "Garbage", "kitchen", matt, greco, false ));
+        chores.add(new Chore(0, "Mop", "living room", matt, albie, false ));
+        chores.add(new Chore(0, "Dishes", "sink is full", greco, matt, true ));
+        chores.add(new Chore(0, "Walk Dog", "sparky needs to go", albie, greco, false ));
+        chores.add(new Chore(0, "Laundry", "it stinks", greco, matt, false ));
+
+        ListView lv;
+        ListView lv2;
+        ListView lv3;
+        ChoreRowAdapter adapter;
+        ChoreRowNoPicture adapter2;
+        ChoreRowNoPicture adapter3;
+
+        ArrayList<Chore> justMe = new ArrayList<>();
+        for(int i=0;i<chores.size();i++){
+            Chore c = chores.get(i);
+            if(c.getAssignedUser().getlName().equals("rynkie") && c.isComplete()==false)
+            {
+                justMe.add(c);
+            }
+        }
+
+        String[] values = new String[justMe.size()];
+        for(int i=0;i<justMe.size();i++){values[i]="";}
+        adapter = new ChoreRowAdapter(getActivity(), justMe, values);
+
+
+
+        ArrayList<Chore> house = new ArrayList<Chore>();
+        for(int i=0;i<chores.size();i++){
+            Chore c = chores.get(i);
+            if(c.isComplete()==false)
+            {
+                house.add(c);
+            }
+        }
+
+        values = new String[house.size()];
+        for(int i=0;i<house.size();i++){values[i]="";}
+        adapter2 = new ChoreRowNoPicture(getActivity(), house, values);
+
+        values = new String[chores.size()];
+        for(int i=0;i<chores.size();i++){values[i]="";}
+        adapter3 = new ChoreRowNoPicture(getActivity(), chores, values);
+
+
 
         lv = (ListView) getActivity().findViewById(R.id.list);
         lv2 = (ListView) getActivity().findViewById(R.id.listHouse);
         lv3 = (ListView) getActivity().findViewById(R.id.listAll);
         lv.setAdapter(adapter);
-        lv2.setAdapter(adapter);
-        lv3.setAdapter(adapter);
+        lv2.setAdapter(adapter2);
+        lv3.setAdapter(adapter3);
+
         //This is where we can create the modal for edit  delete
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

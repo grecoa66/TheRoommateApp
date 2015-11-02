@@ -40,6 +40,10 @@ public class GroceryList {
         groceryList.add(grocery);
     }
 
+    public void removeGrocery(Grocery grocery){
+        groceryList.remove(grocery);
+    }
+
     public boolean isEmpty() {
         return groceryList.isEmpty();
     }

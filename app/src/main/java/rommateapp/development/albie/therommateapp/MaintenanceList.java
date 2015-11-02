@@ -33,6 +33,9 @@ public class MaintenanceList {
         maintenanceList.add(maintenanceItem);
     }
 
+    public Boolean removeMaintenacceItem(MaintenanceItem item){
+        return maintenanceList.remove(item);
+    }
     public int getMaintenanceListId() {
         return maintenanceListId;
     }

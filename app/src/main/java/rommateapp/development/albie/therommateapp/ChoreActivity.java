@@ -271,7 +271,8 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
     }
     public void deleteChore(View view) {
 
-        currentChores.remove(choreToDelete); String[] values = new String[currentChores.size()];
+        currentChores.remove(choreToDelete);
+        String[] values = new String[currentChores.size()];
         for(int i=0;i<currentChores.size();i++){values[i]="";}
         adapter = new ChoreRowAdapter(mContext, currentChores);
         list.setAdapter(adapter);

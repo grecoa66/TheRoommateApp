@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,13 +13,28 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MaintenaceRowAdapter extends ArrayAdapter<String> {
+public class MaintenaceRowAdapter extends BaseAdapter {
     private final Context context;
     private ArrayList<MaintenanceItem> mainteList;
-    public MaintenaceRowAdapter(Context context, ArrayList<MaintenanceItem> mainteList, String [] values) {
-        super(context, R.layout.maintenance_row, values);
+    public MaintenaceRowAdapter(Context context, ArrayList<MaintenanceItem> mainteList) {
         this.context = context;
         this.mainteList = mainteList;
+    }
+
+    @Override
+    public int getCount() {
+        return mainteList.size();
+    }
+
+    @Override
+    public Object getItem(int pos) {
+        return mainteList.get(pos);
+    }
+
+    @Override
+    public long getItemId(int pos) {
+        return 0l;
+        //just return 0 if your list items do not have an Id variable.
     }
 
     @Override
@@ -47,9 +63,14 @@ public class MaintenaceRowAdapter extends ArrayAdapter<String> {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MaintenanceItem mItem = mainteList.get(pos);
+                mainteList.remove(mItem);
+                mItem.setIsComplete(true);
+                notifyDataSetChanged();
                 Toast.makeText(v.getContext(),
-                        "item + "+pos,
+                        "item "+mItem.getDesc() + " was completed.",
                         Toast.LENGTH_LONG).show();
+
             }
         });
 

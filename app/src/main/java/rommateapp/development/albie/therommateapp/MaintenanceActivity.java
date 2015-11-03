@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -30,16 +31,20 @@ public class MaintenanceActivity extends AppCompatActivity {
     private Context mContext;
 
     private ArrayList<MaintenanceItem> mainteList = new ArrayList<MaintenanceItem>();
+    private ArrayList<MaintenanceItem> completedList = new ArrayList<MaintenanceItem>();
     private ArrayList<MaintenanceItem> justMe = new ArrayList<>();
     private ArrayList<MaintenanceItem> group = new ArrayList<>();
+    private ListView lv;
+    private AlertDialog alertDialog;
+    private MaintenanceItem itemToDelete;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_main);
         mContext = this;
 
-        mainteList.add(new MaintenanceItem( "Broken Door", "albie", "albie", false));
-        mainteList.add(new MaintenanceItem( "scuffed paint in living room", "greco", "matt", false));
+        mainteList.add(new MaintenanceItem( "Broken Door", "Albie", "Albie", false));
+        mainteList.add(new MaintenanceItem( "scuffed paint in living room", "Greco", "matt", false));
         mainteList.add(new MaintenanceItem( "leak in sink", "matt", "greco", false));
         mainteList.add(new MaintenanceItem( "Burnt out bulb", "greco", "greco", false));
         mainteList.add(new MaintenanceItem( "Broken Window", "matt", "matt", false));
@@ -47,30 +52,28 @@ public class MaintenanceActivity extends AppCompatActivity {
         mainteList.add(new MaintenanceItem( "New spare Key", "matt", "matt", false));
 
 
-        ListView lv = (ListView) findViewById(R.id.list_mainte);
+        lv = (ListView) findViewById(R.id.list_mainte);
         meAdapter(lv);
 
 
     }//end on create
 
     public void meAdapter(View view){
-
-        ListView lv = (ListView) findViewById(R.id.list_mainte);
+        mainteList = cleanMaintList();
 
         MaintenaceRowAdapter adapter;
-
-
+        //start with a fresh copy
+        //solves bug of removing someone
+        justMe = new ArrayList<MaintenanceItem>();
 
         for(int i = 0; i < mainteList.size() ; i++){
             MaintenanceItem mItem = mainteList.get(i);
-            if(mItem.getCausingUser() == "albie" && !justMe.contains(mItem)) {
+            if(mItem.getCausingUser().equalsIgnoreCase("Albie") && !justMe.contains(mItem) && !mItem.isComplete()) {
                 justMe.add(mItem);
             }
         }
 
-        String[] values = new String[justMe.size()];
-        for(int i = 0; i < justMe.size() ; i++){values[i]="";}
-        adapter = new MaintenaceRowAdapter(mContext, justMe, values);
+        adapter = new MaintenaceRowAdapter(mContext, justMe);
 
         lv.setAdapter(adapter);
 
@@ -80,28 +83,29 @@ public class MaintenanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
-                Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
+                showModal(position);
                 view.setSelected(true);
             }
         });
     }
 
     public void groupAdapter(View view){
-
-        ListView lv = (ListView) findViewById(R.id.list_mainte);
+        mainteList = cleanMaintList();
 
         MaintenaceRowAdapter adapter;
 
+        //start with a fresh copy
+        group = new ArrayList<MaintenanceItem>();
+
         for(int i = 0; i < mainteList.size() ; i++){
             MaintenanceItem mItem = mainteList.get(i);
-            if(!group.contains(mItem)) {
+            if(!group.contains(mItem) && !mItem.isComplete()) {
                 group.add(mItem);
             }
         }
 
-        String[] values = new String[group.size()];
-        for(int i = 0; i < group.size() ; i++){values[i]="";}
-        adapter = new MaintenaceRowAdapter(mContext, group, values);
+        adapter = new MaintenaceRowAdapter(mContext, group);
 
         lv.setAdapter(adapter);
 
@@ -112,13 +116,33 @@ public class MaintenanceActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
                 Toast.makeText(mContext, "you changed me " + position, Toast.LENGTH_SHORT).show();
+                showModal(position);
                 view.setSelected(true);
             }
         });
 
     }
 
+    public void completedAdapter(View view){
+
+        cleanMaintList();
+
+        MaintenaceRowAdapter adapter;
+
+        for(int i = 0; i < completedList.size(); i++){
+            MaintenanceItem mItem = completedList.get(i);
+            if(!completedList.contains(mItem)) {
+                completedList.add(mItem);
+            }
+        }
+        adapter = new MaintenaceRowAdapter(mContext, completedList);
+
+        lv.setAdapter(adapter);
+    }
+
     public void addItem(View view) {
+
+        mainteList = cleanMaintList();
 
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.maintenance_add, null);
@@ -138,19 +162,16 @@ public class MaintenanceActivity extends AppCompatActivity {
                 .setPositiveButton("Add",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            group.add(new MaintenanceItem(
-                                editDesc.getText().toString(),
-                                spinner.getSelectedItem().toString(),
-                                spinner2.getSelectedItem().toString(),
-                                false));
+                            mainteList.add(new MaintenanceItem(
+                                    editDesc.getText().toString(),
+                                    spinner.getSelectedItem().toString(),
+                                    spinner2.getSelectedItem().toString(),
+                                    false));
                             ListView lv = (ListView) findViewById(R.id.list_mainte);
-                            String[] values = new String[group.size()];
-                            for (int i = 0; i < group.size(); i++) {
-                                values[i] = "";
-                            }
-                            MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, group, values);
+                            MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, mainteList);
                             lv.setAdapter(adapter);
                         //setListener(list);
+                            meAdapter(lv);
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -165,10 +186,82 @@ public class MaintenanceActivity extends AppCompatActivity {
         // show it
         alertDialog.show();
 
+
+
+    }
+
+    public void showModal(final int pos){
+
+        mainteList = cleanMaintList();
+
+        //get current Mainte item you want to edit
+        MaintenanceItem mItem = mainteList.get(pos);
+        LayoutInflater li = LayoutInflater.from(mContext);
+        //inflate the mainte edit layout
+        View promptsView = li.inflate(R.layout.maintenace_edit, null);
+        //make the mainte edit a alert box
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText editDesc = (EditText) promptsView.findViewById(R.id.mainteDesc);
+        final Spinner spinner = (Spinner) promptsView.findViewById(R.id.PeopleSpinner);
+        final Spinner spinner2 = (Spinner) promptsView.findViewById(R.id.PeopleSpinnerTwo);
+
+        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = myAdap.getPosition(mItem.getCausingUser());
+        spinner.setSelection(spinnerPosition);
+        ArrayAdapter myAdap2 = (ArrayAdapter) spinner2.getAdapter();
+        int spinnerPosition2 = myAdap2.getPosition(mItem.getPurchaseUser());
+        editDesc.setText(mItem.getDesc());
+        itemToDelete = mItem;
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //get the Mainte item and set all its attributes to new ones
+                                MaintenanceItem thisItem = mainteList.get(pos);
+                                thisItem.setDesc(editDesc.getText().toString());
+                                thisItem.setCausingUser(spinner.getSelectedItem().toString());
+                                thisItem.setPurchaseUser(spinner2.getSelectedItem().toString());
+                                //get the mainte list
+                                ListView lv = (ListView) findViewById(R.id.list_mainte);
+                                //create new adapter
+                                MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, mainteList);
+                                //set an adapter to the new listview
+                                lv.setAdapter(adapter);
+                                meAdapter(lv);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
     }
 
     public void removeMainteItem(View view){
-        
+        //remove item
+        mainteList.remove(itemToDelete);
+        //update adapter
+        MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, mainteList);
+        //set new adapter
+        lv.setAdapter(adapter);
+        Toast.makeText(mContext, "Maintenance Item Deleted", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+        //close dialog box
+        alertDialog.cancel();
     }
 
     @Override
@@ -184,5 +277,21 @@ public class MaintenanceActivity extends AppCompatActivity {
         int id = item.getItemId();
         Utility.openNewActivity(id, this);
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+    this is to solve a bug where when mItems were
+    complete, they still appeared on the current lists.
+    This just transfers finshed tasks to a new arraylist
+     */
+    public ArrayList<MaintenanceItem> cleanMaintList(){
+        for(int i = 0; i <mainteList.size(); i ++){
+            MaintenanceItem mItem = mainteList.get(i);
+            if(mItem.isComplete()){
+                completedList.add(mItem);
+                mainteList.remove(mItem);
+            }
+        }
+        return mainteList;
     }
 }

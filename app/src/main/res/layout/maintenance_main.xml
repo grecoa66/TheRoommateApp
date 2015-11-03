@@ -3,6 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="My List"
+        android:clickable="true"
+        android:onClick="meAdapter"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Group List"
+        android:clickable="true"
+        android:onClick="groupAdapter"/>
 
 <Button
     android:layout_width="fill_parent"
@@ -22,14 +34,9 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="My List"
+        android:text="List of Completed Items"
         android:clickable="true"
-        android:onClick="meAdapter"/>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Group List"
-        android:clickable="true"
-        android:onClick="groupAdapter"/>
+        android:onClick="completedAdapter"/>
+
 
 </LinearLayout>

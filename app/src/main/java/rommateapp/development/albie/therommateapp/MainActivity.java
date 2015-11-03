@@ -31,26 +31,32 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
+    private ArrayList<Chore> chores;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
 
-/*
+        String  o;
         HTTP_Connector httpcon= new HTTP_Connector(this);
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
+
         getchores.execute("1");
 
-        if(getchores.getStatus() == AsyncTask.Status.FINISHED){
 
-            Toast.makeText(this,"callback",Toast.LENGTH_SHORT).show();
-        }
-*/
 
     }
+
+    public void processFinish(ArrayList<Chore> response){
+
+        chores = response;
+
+        Toast.makeText(this,"we have chores: "+ chores.toString(),Toast.LENGTH_SHORT).show();
+    }
+
 
 
 

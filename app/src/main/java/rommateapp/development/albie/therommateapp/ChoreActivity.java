@@ -185,7 +185,7 @@ public class ChoreActivity extends AppCompatActivity {
 
         Chore c = currentChores.get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.chore_edit, null);
+        View promptsView = li.inflate(R.layout.bill_edit, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);

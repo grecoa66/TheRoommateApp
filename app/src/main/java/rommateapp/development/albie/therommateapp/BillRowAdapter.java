@@ -66,9 +66,9 @@ public class BillRowAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Bill b = bills.get(position);
+               Bill b = bills.get(position);
                 BillsActivity act = (BillsActivity) context;
-                act.doVenmo();
+                act.openPaymentDialog(b);
 
             }
         });

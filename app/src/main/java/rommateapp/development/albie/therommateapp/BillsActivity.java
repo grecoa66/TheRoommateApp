@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -114,7 +115,7 @@ public class BillsActivity extends AppCompatActivity {
 
         Bill b = currentBills.get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.chore_edit, null);
+        View promptsView = li.inflate(R.layout.bill_edit, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -149,10 +150,44 @@ public class BillsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public void openPaymentDialog(final Bill b){
 
-    public void doVenmo(){
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.bill_pay, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        Button venmoButton = (Button) promptsView.findViewById(R.id.venmoButton);
+        venmoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doVenmo(b);
+            }
+        });
+
+
+        alertDialogBuilder.setView(promptsView);
+        billToDelete = b;
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        alertDialog= alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    public void doVenmo(Bill b){
         if (VenmoLibrary.isVenmoInstalled(mContext)) {
-            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", "Roommate App Test", "7327889740", ".01", "test", "charge");
+            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", b.getDesc(), b.getUserToPay().getPhoneNumber(), ".01", b.getDesc()+" --Thanks Roomie!", "charge");
             startActivityForResult(venmoIntent, 2952);
 
         }
@@ -184,5 +219,14 @@ public class BillsActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    public void deleteBill(View view) {
+
+        currentBills.remove(billToDelete);
+        adapter = new BillRowAdapter(mContext, currentBills);
+        list.setAdapter(adapter);
+        Toast.makeText(mContext, "Bill Dismissed", Toast.LENGTH_SHORT).show();
+        alertDialog.cancel();
     }
 }

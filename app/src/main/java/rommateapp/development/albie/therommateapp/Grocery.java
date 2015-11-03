@@ -14,19 +14,15 @@ public class Grocery {
     public boolean isPurchased = false;
     public double costPerItem;
     public double totalCost;
-    public User requestUser;
-    public User purchaseUser;//who purchased the item(s)
+    public String requestUser;
+    public String purchaseUser;//who purchased the item(s)
 
-    public Grocery(int groceryId, String itemName, int quantity,
-                   Date dateRequested, Date datePurchased, boolean isPurchased,
-                   Double costPerItem, User requestUser,User purchaseUser ){
-        this.groceryId = groceryId;
+    public Grocery(String itemName, int quantity,
+                   Date dateRequested, String requestUser, boolean isPurchased ){
         this.itemName = itemName;
         this.quantity = quantity;
         this.dateRequested = dateRequested;
-        this.datePurchased = datePurchased;
         this.isPurchased = isPurchased;
-        this.costPerItem = costPerItem;
         this.requestUser = requestUser;
         this.purchaseUser = purchaseUser;
     }
@@ -91,19 +87,19 @@ public class Grocery {
         return costPer * quantity;
     }
 
-    public User getRequestUser() {
+    public String getRequestUser() {
         return requestUser;
     }
 
-    public void setRequestUser(User requestUser) {
+    public void setRequestUser(String requestUser) {
         this.requestUser = requestUser;
     }
 
-    public User getPurchaseUser() {
+    public String getPurchaseUser() {
         return purchaseUser;
     }
 
-    public void setPurchaseUser(User purchaseUser) {
+    public void setPurchaseUser(String purchaseUser) {
         this.purchaseUser = purchaseUser;
     }
 

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -32,6 +33,9 @@ public class GroceryActivity extends AppCompatActivity {
     private ArrayList<Grocery> allGroc = new ArrayList<>();
     private ArrayList<Grocery> currentGroc = new ArrayList<>();
     private ListView lv;
+    private GroceryRowAdapter adapter;
+    private Grocery grocToDelete;
+    private AlertDialog alertDialog;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class GroceryActivity extends AppCompatActivity {
         Date date = new Date(System.currentTimeMillis());
 
         allGroc.add(new Grocery("Milk", 1, date, "Greco", false));
-        allGroc.add(new Grocery("Carton of Eggs", 1, date, "Albie", false));
+        allGroc.add(new Grocery("Carton of Eggs", 1, date, "Albie", true));
         allGroc.add(new Grocery("Oranges", 6, date, "Greco", false));
         allGroc.add(new Grocery("Taco Kit", 1, date, "Matt", false));
 
@@ -51,30 +55,19 @@ public class GroceryActivity extends AppCompatActivity {
         currentAdapter(lv);
     }
 
+    //This is the adapter that gets shown
+    //this activity will only have one adapter because
+    //the whole house shares the entire grocery list
     public void currentAdapter(View view) {
 
-        for (int i = 0; i < allGroc.size(); i++) {
-            Grocery grocery = allGroc.get(i);
-            if (!currentGroc.contains(grocery) && !grocery.isPurchased()) {
-                currentGroc.add(grocery);
-            }
-        }
+        currentGroc = buildCurrentList(allGroc);
 
-        GroceryRowAdapter adapter;
         adapter = new GroceryRowAdapter(mContext, currentGroc);
+
         lv.setAdapter(adapter);
 
         //This is where we can create the modal for edit  delete
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Start the CAB using the ActionMode.Callback defined above
-                //Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-                //showModal(position);
-                view.setSelected(true);
-            }
-        });
+       setListener(lv);
     }
 
     public void addGrocery(View view) {
@@ -116,7 +109,7 @@ public class GroceryActivity extends AppCompatActivity {
                             }
                         });
         // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog = alertDialogBuilder.create();
 
         // show it
         alertDialog.show();
@@ -124,7 +117,7 @@ public class GroceryActivity extends AppCompatActivity {
 
     public void showModal(final int pos) {
         //get the grocery that was pressed
-        final Grocery grocery = allGroc.get(pos);
+        final Grocery grocery = currentGroc.get(pos);
 
         LayoutInflater li = LayoutInflater.from(mContext);
 
@@ -143,6 +136,7 @@ public class GroceryActivity extends AppCompatActivity {
         ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
         final int spinnerPosition = myAdap.getPosition(grocery.getRequestUser());
         spinner.setSelection(spinnerPosition);
+        grocToDelete = grocery;
 
         alertDialogBuilder
                 .setCancelable(false)
@@ -166,13 +160,39 @@ public class GroceryActivity extends AppCompatActivity {
                             }
                         });
         // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog = alertDialogBuilder.create();
 
         // show it
         alertDialog.show();
     }
 
-    public void removeGrocery
+    public void removeGrocery(View view){
+        allGroc.remove(grocToDelete);
+        currentGroc = buildCurrentList(allGroc);
+        adapter = new GroceryRowAdapter(mContext, currentGroc);
+        lv.setAdapter(adapter);
+
+        Toast.makeText(mContext, "Grocery Deleted", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+        //close dialog box
+        alertDialog.cancel();
+    }
+
+    public void setListener(ListView lv){
+
+        //This is where we can create the modal for edit  delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                showModal(position);
+                view.setSelected(true);
+            }
+        });
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,5 +207,18 @@ public class GroceryActivity extends AppCompatActivity {
         int id = item.getItemId();
         Utility.openNewActivity(id, this);
         return super.onOptionsItemSelected(item);
+    }
+
+    //fixes bug where  adapter was being sent bad data
+    public ArrayList<Grocery> buildCurrentList(ArrayList<Grocery> allGroc){
+        currentGroc = new ArrayList<Grocery>();
+
+        for (int i = 0; i < allGroc.size(); i++) {
+            Grocery grocery = allGroc.get(i);
+            if (!currentGroc.contains(grocery) && !grocery.isPurchased()) {
+                currentGroc.add(grocery);
+            }
+        }
+        return currentGroc;
     }
 }

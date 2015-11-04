@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -16,27 +17,16 @@
         android:clickable="true"
         android:onClick="groupAdapter"/>
 
-<Button
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="Add Maintenance Item"
-    android:clickable="true"
-    android:onClick="addItem"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="in maintenance activity"/>
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/list_mainte"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="List of Completed Items"
+        android:text="Add Maintenance Item"
         android:clickable="true"
-        android:onClick="completedAdapter"/>
+        android:onClick="addItem"/>
 
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_mainte"
+        android:layout_width="fill_parent"
+        android:layout_height="400dp" />
 
 </LinearLayout>

@@ -31,7 +31,6 @@ public class MaintenanceActivity extends AppCompatActivity {
     private Context mContext;
 
     private ArrayList<MaintenanceItem> mainteList = new ArrayList<MaintenanceItem>();
-    private ArrayList<MaintenanceItem> completedList = new ArrayList<MaintenanceItem>();
     private ArrayList<MaintenanceItem> justMe = new ArrayList<>();
     private ArrayList<MaintenanceItem> group = new ArrayList<>();
     private ListView lv;
@@ -123,22 +122,6 @@ public class MaintenanceActivity extends AppCompatActivity {
 
     }
 
-    public void completedAdapter(View view) {
-
-        cleanMaintList();
-
-        MaintenaceRowAdapter adapter;
-
-        for (int i = 0; i < completedList.size(); i++) {
-            MaintenanceItem mItem = completedList.get(i);
-            if (!completedList.contains(mItem)) {
-                completedList.add(mItem);
-            }
-        }
-        adapter = new MaintenaceRowAdapter(mContext, completedList);
-
-        lv.setAdapter(adapter);
-    }
 
     public void addItem(View view) {
 
@@ -288,7 +271,6 @@ public class MaintenanceActivity extends AppCompatActivity {
         for (int i = 0; i < mainteList.size(); i++) {
             MaintenanceItem mItem = mainteList.get(i);
             if (mItem.isComplete()) {
-                completedList.add(mItem);
                 mainteList.remove(mItem);
             }
         }

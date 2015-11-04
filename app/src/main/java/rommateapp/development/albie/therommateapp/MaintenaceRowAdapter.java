@@ -14,8 +14,10 @@ import java.util.ArrayList;
 
 
 public class MaintenaceRowAdapter extends BaseAdapter {
+
     private final Context context;
     private ArrayList<MaintenanceItem> mainteList;
+
     public MaintenaceRowAdapter(Context context, ArrayList<MaintenanceItem> mainteList) {
         this.context = context;
         this.mainteList = mainteList;

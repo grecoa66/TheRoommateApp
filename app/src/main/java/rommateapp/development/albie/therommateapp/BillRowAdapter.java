@@ -48,6 +48,7 @@ public class BillRowAdapter extends BaseAdapter {
         TextView choreNameTv = (TextView) rowView.findViewById(R.id.billName);
         TextView choreAssignedToTv = (TextView) rowView.findViewById(R.id.payTo);
         TextView choreDescTv = (TextView) rowView.findViewById(R.id.amount);
+        TextView billTo = (TextView) rowView.findViewById(R.id.userToBill);
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
@@ -55,9 +56,10 @@ public class BillRowAdapter extends BaseAdapter {
         // Change the icon for Windows and iPhone
         Bill b = bills.get(position);
 
-        choreAssignedToTv.setText("To: "+b.getUserToPay().getfName());
+        choreAssignedToTv.setText("Pay: "+b.getUserToPay().getfName());
         choreNameTv.setText(b.getDesc());
         choreDescTv.setText("$"+b.getTotalAmount());
+        billTo.setText("User Billed: "+b.getUserToBill().getfName());
 
         final int pos = position;
 

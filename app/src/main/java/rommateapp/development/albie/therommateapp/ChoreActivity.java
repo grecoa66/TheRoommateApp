@@ -94,17 +94,38 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
 
         currentChores= (ArrayList<Chore>) getIntent().getSerializableExtra("chores");
 
-        if(currentChores ==null){
-            HTTP_Connector httpcon= new HTTP_Connector(this);
+        if(currentChores ==null) {
+            currentChores = new ArrayList<>();
+            HTTP_Connector httpcon = new HTTP_Connector(this);
             HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
             getchores.execute("1");
-        }else{
+        }
+      else{
             adapter = new ChoreRowAdapter(mContext, currentChores);
             list.setAdapter(adapter);
             setListener(list);
         }
+        setMyList(list);
     }
     //}
+
+    public void setMyList(View view){
+        ArrayList<Chore> myList = new ArrayList<>();
+
+        for(int i=0; i< currentChores.size();i++){
+            if( currentChores.get(i).getAssignedUser().equals("Albie")){
+                myList.add(currentChores.get(i));
+            }
+        }
+        adapter = new ChoreRowAdapter(mContext, myList);
+        list.setAdapter(adapter);
+        setListener(list);
+    }
+    public void setAllList(View view){
+        adapter = new ChoreRowAdapter(mContext, currentChores);
+        list.setAdapter(adapter);
+        setListener(list);
+    }
 
     public void processFinish(ArrayList<Chore> response){
 
@@ -113,13 +134,14 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
         list.setAdapter(adapter);
         setListener(list);
         Toast.makeText(this,"we have chores: "+ currentChores.toString(),Toast.LENGTH_SHORT).show();
-    }
+
+ }
     public void changeAdapter(View view){
 
         currentChores = new ArrayList<>();
         User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
         User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
+        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942" );
 
         currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
         currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
@@ -128,8 +150,6 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
 
 
 
-        String[] values = new String[currentChores.size()];
-        for(int i=0;i<currentChores.size();i++){values[i]="";}
         adapter = new ChoreRowAdapter(mContext, currentChores);
 
         list.setAdapter(adapter);

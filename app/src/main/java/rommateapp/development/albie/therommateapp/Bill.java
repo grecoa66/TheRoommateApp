@@ -37,7 +37,13 @@ public class Bill {
     public void setUserToPay(User userToPay) {
         this.userToPay = userToPay;
     }
+    public User getUserToBill() {
+        return userToBill;
+    }
 
+    public void setUserToBill(User billableUser) {
+        this.userToBill = billableUser;
+    }
 
 
     public boolean isComplete() {

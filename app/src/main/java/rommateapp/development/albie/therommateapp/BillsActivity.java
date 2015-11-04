@@ -73,17 +73,39 @@ public class BillsActivity extends AppCompatActivity {
         }
 */
         currentBills = allBills;
-        String[] values = new String[allBills.size()];
-        for(int i=0;i<allBills.size();i++){values[i]="";}
         adapter = new BillRowAdapter(mContext, allBills);
 
         list.setAdapter(adapter);
         setListener(list);
 
+        setMyList(list);
 
 
     }
 
+
+    public void setMyList(View view){
+        if(currentBills==null){
+            return;
+        }
+        ArrayList<Bill> myList = new ArrayList<>();
+        for(int i=0; i< currentBills.size();i++){
+            if( currentBills.get(i).getUserToBill().getfName().equals("Albie")){
+                myList.add(currentBills.get(i));
+            }
+        }
+        adapter = new BillRowAdapter(mContext, myList);
+        list.setAdapter(adapter);
+        setListener(list);
+    }
+    public void setAllList(View view){
+        if(currentBills==null){
+            return;
+        }
+        adapter = new BillRowAdapter(mContext, currentBills);
+        list.setAdapter(adapter);
+        setListener(list);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -246,7 +268,7 @@ public class BillsActivity extends AppCompatActivity {
                 mContext);
 
         String[] roomies = new String[users.size()];
-        final ArrayList seletedItems=new ArrayList();
+        final ArrayList<Integer> seletedItems=new ArrayList();
 
         for(int i  =0; i<users.size();i++){
             roomies[i]=users.get(i).getfName();
@@ -263,14 +285,14 @@ public class BillsActivity extends AppCompatActivity {
 
 
        // name.setText(b.getDesc());
-      //  desc.setText(b.getDesc());
-       // billToDelete = b;
-        // set dialog message
         alertDialogBuilder.setMultiChoiceItems(roomies, null,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int indexSelected,
                                         boolean isChecked) {
+      //  desc.setText(b.getDesc());
+       // billToDelete = b;
+        // set dialog message
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
                             seletedItems.add(indexSelected);
@@ -288,7 +310,8 @@ public class BillsActivity extends AppCompatActivity {
                        Toast.makeText(mContext, seletedItems.toString(), Toast.LENGTH_SHORT).show();
                         // for each roomie in selectedItems, we need to create a bill
                         for(int i=0;i<seletedItems.size();i++){
-                            Bill b = new Bill(name.getText().toString(), 0, Double.valueOf(amount.getText().toString())/seletedItems.size(), users.get(0), users.get(1), 0, false);
+                            Bill b = new Bill(name.getText().toString(), 0, Double.valueOf(amount.getText().toString())/seletedItems.size(),
+                                    users.get(seletedItems.get(i)), users.get(0), 0, false);
                             allBills.add(b);
                         }
                         adapter = new BillRowAdapter(mContext, allBills);

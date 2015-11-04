@@ -38,12 +38,12 @@ public class Utility {
                 // billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(billsIntent);
                 break;
-          /*  case R.id.settings_icon:
-                Intent myIntent = new Intent(callingActivity, ChoreActivity.class);
-                myIntent.putExtra("key", 4); //Optional parameters
-                myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
-                callingActivity.startActivity(myIntent);
-                break;*/
+           case R.id.settings_icon:
+                Intent houseIntent = new Intent(callingActivity, HouseActivity.class);
+                houseIntent.putExtra("key", 4); //Optional parameters
+                houseIntent.setFlags(houseIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(houseIntent);
+                break;
 
         }
     }
@@ -75,12 +75,12 @@ public class Utility {
                 // billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
                 callingActivity.startActivity(billsIntent);
                 break;
-          /*  case R.id.settings_icon:
-                Intent myIntent = new Intent(callingActivity, ChoreActivity.class);
-                myIntent.putExtra("key", 4); //Optional parameters
-                myIntent.setFlags(myIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
-                callingActivity.startActivity(myIntent);
-                break;*/
+           case R.id.settings_icon:
+                Intent houseIntent = new Intent(callingActivity, HouseActivity.class);
+               houseIntent.putExtra("key", 4); //Optional parameters
+               houseIntent.setFlags(houseIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(houseIntent);
+                break;
 
         }
 

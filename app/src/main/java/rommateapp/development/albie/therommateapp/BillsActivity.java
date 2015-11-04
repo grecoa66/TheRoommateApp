@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ public class BillsActivity extends AppCompatActivity {
     private ListView list;
     private Bill billToDelete;
     private AlertDialog alertDialog;
+    private ArrayList<User> users;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,10 @@ public class BillsActivity extends AppCompatActivity {
         User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942");
         User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942");
         User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
-
+        users = new ArrayList<>();
+        users.add(albie);
+        users.add(greco);
+        users.add(matt);
         allBills.add(new Bill("water", 0, 40, albie, greco,0, false ));
         allBills.add(new Bill("gas", 0, 35, matt, greco,0, false ));
         allBills.add(new Bill("rent", 0, 500, matt, albie,0, false ));
@@ -228,5 +234,80 @@ public class BillsActivity extends AppCompatActivity {
         list.setAdapter(adapter);
         Toast.makeText(mContext, "Bill Dismissed", Toast.LENGTH_SHORT).show();
         alertDialog.cancel();
+    }
+
+
+    public void addBill(View view) {
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.bill_add, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        String[] roomies = new String[users.size()];
+        final ArrayList seletedItems=new ArrayList();
+
+        for(int i  =0; i<users.size();i++){
+            roomies[i]=users.get(i).getfName();
+        }
+
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText name = (EditText) promptsView
+                .findViewById(R.id.billName);
+        final EditText amount = (EditText) promptsView
+                .findViewById(R.id.totalAmount);
+
+
+       // name.setText(b.getDesc());
+      //  desc.setText(b.getDesc());
+       // billToDelete = b;
+        // set dialog message
+        alertDialogBuilder.setMultiChoiceItems(roomies, null,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int indexSelected,
+                                        boolean isChecked) {
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            seletedItems.add(indexSelected);
+                        } else if (seletedItems.contains(indexSelected)) {
+                            // Else, if the item is already in the array, remove it
+                            seletedItems.remove(Integer.valueOf(indexSelected));
+                        }
+                    }
+                })
+                .setTitle("Roomies to Bill")
+                .setCancelable(false)
+                .setPositiveButton("Add",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                       Toast.makeText(mContext, seletedItems.toString(), Toast.LENGTH_SHORT).show();
+                        // for each roomie in selectedItems, we need to create a bill
+                        for(int i=0;i<seletedItems.size();i++){
+                            Bill b = new Bill(name.getText().toString(), 0, Double.valueOf(amount.getText().toString())/seletedItems.size(), users.get(0), users.get(1), 0, false);
+                            allBills.add(b);
+                        }
+                        adapter = new BillRowAdapter(mContext, allBills);
+                        list.setAdapter(adapter);
+                        setListener(list);
+
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        alertDialog= alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

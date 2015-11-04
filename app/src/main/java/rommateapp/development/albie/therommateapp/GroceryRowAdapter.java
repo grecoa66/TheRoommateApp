@@ -59,8 +59,7 @@ public class GroceryRowAdapter extends BaseAdapter{
         Grocery grocery = allGroc.get(position);
         grocName.setText(grocery.getItemName());
         grocAssignedBy.setText("From: " + grocery.getRequestUser());
-        grocQuant.setText(""+grocery.getQuantity());
-
+        grocQuant.setText( Integer.toString(grocery.getQuantity()));
         final int pos = position;
 
 

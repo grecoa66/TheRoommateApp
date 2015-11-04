@@ -1,10 +1,12 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
+
 /**
  * The Chore class will hold information for one chore.
  * Created by alexgreco on 10/16/15.
  */
-public class Chore {
+public class Chore implements Serializable {
 
 
     public int choreId ;

@@ -1,11 +1,12 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by alexgreco on 11/1/15.
  */
-public class UserList {
+public class UserList implements Serializable {
     public int userListId;
     public ArrayList<User> userList;
     public boolean isEmpty;

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class ChoreActivity extends AppCompatActivity {
+public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
 
     private Context mContext;
     private ArrayList<Chore> allChores;
@@ -44,6 +44,8 @@ public class ChoreActivity extends AppCompatActivity {
         setContentView(R.layout.chores_main);
         mContext = this;
 
+        list = (ListView) findViewById(R.id.list_chores);
+/*
         allChores = new ArrayList<>();
         User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942");
         User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942");
@@ -56,7 +58,6 @@ public class ChoreActivity extends AppCompatActivity {
 
 
 
-        list = (ListView) findViewById(R.id.list_chores);
 
 
         currentChores = new ArrayList<>();
@@ -76,7 +77,7 @@ public class ChoreActivity extends AppCompatActivity {
         list.setAdapter(adapter);
         setListener(list);
 
-
+*/
 
 
         ///////////////////////////////////////////////////
@@ -90,9 +91,23 @@ public class ChoreActivity extends AppCompatActivity {
             Toast.makeText(this,"callback",Toast.LENGTH_SHORT).show();
         }
 */
+
+
+        HTTP_Connector httpcon= new HTTP_Connector(this);
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
+
+        getchores.execute("1");
     }
     //}
 
+    public void processFinish(ArrayList<Chore> response){
+
+        currentChores = response;
+        adapter = new ChoreRowAdapter(mContext, currentChores);
+        list.setAdapter(adapter);
+        setListener(list);
+        Toast.makeText(this,"we have chores: "+ currentChores.toString(),Toast.LENGTH_SHORT).show();
+    }
     public void changeAdapter(View view){
 
         currentChores = new ArrayList<>();

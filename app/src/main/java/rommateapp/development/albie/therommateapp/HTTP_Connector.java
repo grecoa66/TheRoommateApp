@@ -31,7 +31,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
-public class HTTP_Connector extends Activity {
+public class HTTP_Connector extends Activity  {
 
     AlertDialog alertDialog;
     Context ctx;
@@ -179,8 +179,12 @@ public class HTTP_Connector extends Activity {
 
     class getChoreList extends AsyncTask<String, String, String> {
         int chore_list_id;
+        private AsyncResponse delegate;
         ArrayList<Chore> chores = new ArrayList<>();
 
+        public getChoreList(AsyncResponse resp){
+            delegate = resp;
+        }
         protected String doInBackground(String... params) {
             String response = "";
             try {
@@ -219,6 +223,7 @@ public class HTTP_Connector extends Activity {
             return response;
         }
 
+        @Override
         protected void onPostExecute(String result) {
             // Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
             try {
@@ -243,11 +248,12 @@ public class HTTP_Connector extends Activity {
                     chre.setId(c_id);
                     chores.add(chre);
                 }
-                Toast.makeText(ctx, chores.toString(), Toast.LENGTH_LONG).show();
+            //    Toast.makeText(ctx, chores.toString(), Toast.LENGTH_LONG).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            delegate.processFinish(chores);
             return;
         }
 
@@ -303,7 +309,7 @@ public class HTTP_Connector extends Activity {
 // and some more
             catch (IOException ex) {
 
-                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
             }
             return response;
         }

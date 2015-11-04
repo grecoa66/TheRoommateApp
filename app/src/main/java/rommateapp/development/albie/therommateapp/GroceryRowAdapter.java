@@ -49,17 +49,17 @@ public class GroceryRowAdapter extends BaseAdapter{
 
         View rowView = inflater.inflate(R.layout.grocery_row, parent, false);
 
-        TextView grocName = (TextView) rowView.findViewById(R.id.grocName);
+        TextView grocName       = (TextView) rowView.findViewById(R.id.grocName);
         TextView grocAssignedBy = (TextView) rowView.findViewById(R.id.assignedBy);
-        EditText grocQuant = (EditText) rowView.findViewById(R.id.grocQuant);
-        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.groc_checkBox);
+        TextView grocQuant      = (TextView) rowView.findViewById(R.id.grocQuant);
+        CheckBox checkBox       = (CheckBox) rowView.findViewById(R.id.groc_checkBox);
 
 
         // Change the icon for Windows and iPhone
         Grocery grocery = allGroc.get(position);
         grocName.setText(grocery.getItemName());
         grocAssignedBy.setText("From: " + grocery.getRequestUser());
-        grocQuant.setText( grocery.getQuantity());
+        grocQuant.setText(""+grocery.getQuantity());
 
         final int pos = position;
 

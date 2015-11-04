@@ -34,6 +34,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private ArrayList<Chore> chores;
+    private UserList userList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

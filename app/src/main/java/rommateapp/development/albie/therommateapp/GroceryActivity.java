@@ -12,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.Date;
+
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
@@ -26,9 +29,9 @@ import java.util.ArrayList;
 public class GroceryActivity extends AppCompatActivity {
 
     private Context mContext;
-    private ArrayList<Grocery> allGroc= new ArrayList<>();
+    private ArrayList<Grocery> allGroc = new ArrayList<>();
     private ArrayList<Grocery> currentGroc = new ArrayList<>();
-    private ListView lv ;
+    private ListView lv;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +51,11 @@ public class GroceryActivity extends AppCompatActivity {
         currentAdapter(lv);
     }
 
-    public void currentAdapter(View view){
+    public void currentAdapter(View view) {
 
-        for(int i = 0; i < allGroc.size() ; i++){
+        for (int i = 0; i < allGroc.size(); i++) {
             Grocery grocery = allGroc.get(i);
-            if(!currentGroc.contains(grocery) && !grocery.isPurchased()) {
+            if (!currentGroc.contains(grocery) && !grocery.isPurchased()) {
                 currentGroc.add(grocery);
             }
         }
@@ -74,7 +77,7 @@ public class GroceryActivity extends AppCompatActivity {
         });
     }
 
-    public void addGrocery(View view){
+    public void addGrocery(View view) {
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.grocery_add, null);
 
@@ -85,7 +88,7 @@ public class GroceryActivity extends AppCompatActivity {
         alertDialogBuilder.setView(promptsView);
 
         final EditText grocName = (EditText) promptsView.findViewById(R.id.grocNameAdd);
-        final EditText grocQuant= (EditText) promptsView.findViewById(R.id.grocQuantAdd);
+        final EditText grocQuant = (EditText) promptsView.findViewById(R.id.grocQuantAdd);
         final Date currentDate = new Date(System.currentTimeMillis());
 
 
@@ -119,9 +122,57 @@ public class GroceryActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void showModal(final int pos){
+    public void showModal(final int pos) {
+        //get the grocery that was pressed
+        final Grocery grocery = allGroc.get(pos);
 
+        LayoutInflater li = LayoutInflater.from(mContext);
+
+        View promptsView = li.inflate(R.layout.grocery_edit, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText editGrocName = (EditText) promptsView.findViewById(R.id.grocNameEdit);
+        final EditText editGrocQuant = (EditText) promptsView.findViewById(R.id.grocQuantEdit);
+        final Spinner spinner = (Spinner) promptsView.findViewById(R.id.PeopleSpinnerGrocery);
+
+        editGrocName.setText(grocery.getItemName());
+        editGrocQuant.setText("" + grocery.getQuantity());
+        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+        final int spinnerPosition = myAdap.getPosition(grocery.getRequestUser());
+        spinner.setSelection(spinnerPosition);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                editGrocName.getText().toString();
+                                Integer.parseInt(editGrocQuant.getText().toString());
+                                grocery.getDateRequested();
+                                grocery.setRequestUser(spinner.getSelectedItem().toString());
+                                ListView lv = (ListView) findViewById(R.id.list_grocery);
+                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                lv.setAdapter(adapter);
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
+
+    public void removeGrocery
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

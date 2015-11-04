@@ -1,14 +1,18 @@
 package rommateapp.development.albie.therommateapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.Date;
@@ -70,6 +74,54 @@ public class GroceryActivity extends AppCompatActivity {
         });
     }
 
+    public void addGrocery(View view){
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.grocery_add, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText grocName = (EditText) promptsView.findViewById(R.id.grocNameAdd);
+        final EditText grocQuant= (EditText) promptsView.findViewById(R.id.grocQuantAdd);
+        final Date currentDate = new Date(System.currentTimeMillis());
+
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Add",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                allGroc.add(new Grocery(
+                                        grocName.getText().toString(),
+                                        Integer.parseInt(grocQuant.getText().toString()),
+                                        currentDate,
+                                        "Albie", false));
+                                ListView lv = (ListView) findViewById(R.id.list_grocery);
+                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                lv.setAdapter(adapter);
+                                //setListener(list);
+                                currentAdapter(lv);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    public void showModal(final int pos){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

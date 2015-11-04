@@ -92,11 +92,17 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
         }
 */
 
+        currentChores= (ArrayList<Chore>) getIntent().getSerializableExtra("chores");
 
-        HTTP_Connector httpcon= new HTTP_Connector(this);
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
-
-        getchores.execute("1");
+        if(currentChores ==null){
+            HTTP_Connector httpcon= new HTTP_Connector(this);
+            HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
+            getchores.execute("1");
+        }else{
+            adapter = new ChoreRowAdapter(mContext, currentChores);
+            list.setAdapter(adapter);
+            setListener(list);
+        }
     }
     //}
 

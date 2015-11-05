@@ -10,7 +10,6 @@ import android.content.Context;
 
 import android.os.AsyncTask;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -46,7 +45,14 @@ public class HTTP_Connector extends Activity  {
         String lastname = "";
         String emailaddr = "";
         String phonenum = "";
+        int chore_list_id;
+        private userGroupResponse delegate;
+        private User user;
+        ArrayList<Chore> chores = new ArrayList<>();
 
+        public getUser(userGroupResponse resp){
+            delegate = resp;
+        }
         protected String doInBackground(String... params) {
             String response = "";
             try {
@@ -100,6 +106,8 @@ public class HTTP_Connector extends Activity  {
             lastname = lname;
             emailaddr = email;
             phonenum = phone;
+            user = new User(Integer.parseInt(useid) ,firstname, lastname, emailaddr, phonenum);
+            delegate.userFinish(user);
         }
 
         protected void onPreExecute(String result) {
@@ -179,10 +187,10 @@ public class HTTP_Connector extends Activity  {
 
     class getChoreList extends AsyncTask<String, String, String> {
         int chore_list_id;
-        private AsyncResponse delegate;
+        private choreListResponse delegate;
         ArrayList<Chore> chores = new ArrayList<>();
 
-        public getChoreList(AsyncResponse resp){
+        public getChoreList(choreListResponse resp){
             delegate = resp;
         }
         protected String doInBackground(String... params) {
@@ -253,7 +261,7 @@ public class HTTP_Connector extends Activity  {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            delegate.processFinish(chores);
+            delegate.choresListFinish(chores);
             return;
         }
 

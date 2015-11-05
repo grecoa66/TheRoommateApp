@@ -4,38 +4,24 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+public class MainActivity extends AppCompatActivity implements choreListResponse {
 
     private ArrayList<Chore> chores;
     private ArrayList<User> userList;
@@ -74,11 +60,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         maintLv.setAdapter(adapter);
         groceryLv.setAdapter(adapter);
 
-
+Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
+        Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
 
     }
 
-    public void processFinish(ArrayList<Chore> response){
+    public void choresListFinish(ArrayList<Chore> response){
 
 
         choreList = response;

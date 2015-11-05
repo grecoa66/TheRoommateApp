@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
+public class ChoreActivity extends AppCompatActivity implements choreListResponse {
 
     private Context mContext;
     private ArrayList<Chore> allChores;
@@ -29,6 +29,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
     private ListView list;
     private Chore choreToDelete;
     private AlertDialog alertDialog;
+    private  HTTP_Connector httpcon;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +85,9 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
 */
 
         currentChores= (ArrayList<Chore>) getIntent().getSerializableExtra("chores");
-
+        httpcon = new HTTP_Connector(this);
         if(currentChores ==null) {
             currentChores = new ArrayList<>();
-            HTTP_Connector httpcon = new HTTP_Connector(this);
             HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
             getchores.execute("1");
         }
@@ -124,13 +124,13 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
         setListener(list);
     }
 
-    public void processFinish(ArrayList<Chore> response){
+    public void choresListFinish(ArrayList<Chore> response){
 
         currentChores = response;
         adapter = new ChoreRowAdapter(mContext, currentChores);
         list.setAdapter(adapter);
         setListener(list);
-        Toast.makeText(this,"we have chores: "+ currentChores.toString(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"we have chores: "+ currentChores.toString(),Toast.LENGTH_SHORT).show();
 
  }
     public void changeAdapter(View view){
@@ -195,7 +195,8 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
                                 // get user input and set it to result
                                 // edit text
                                 //result.setText(userInput.getText());
-                                currentChores.add(new Chore(name.getText().toString(), desc.getText().toString(), "albie", spinner.getSelectedItem().toString(),true, 1));//current user, not albie
+                                Chore c = new Chore(name.getText().toString(), desc.getText().toString(), "albie", spinner.getSelectedItem().toString(),true, 1);
+                                currentChores.add(c);//current user, not albie
                                 ListView lv = (ListView) findViewById(R.id.list_chores);
                                 String[] values = new String[currentChores.size()];
                                 for(int i=0;i<currentChores.size();i++){values[i]="";}
@@ -203,6 +204,8 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
                                 list.setAdapter(adapter);
                                 setListener(list);
                                 Toast.makeText(mContext, name.getText().toString()+", "+desc.getText().toString()+", "+spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                                HTTP_Connector.addChore dbAddChore = httpcon.new addChore();
+                                dbAddChore.execute(c);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -223,7 +226,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
 
         Chore c = currentChores.get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.bill_edit, null);
+        View promptsView = li.inflate(R.layout.chore_edit, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -257,11 +260,10 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
                                 c.setDesc(desc.getText().toString());
                                 c.setTitle(name.getText().toString());
                                 c.setAssignedUser(spinner.getSelectedItem().toString());
-                                String[] values = new String[currentChores.size()];
-                                for(int i=0;i<currentChores.size();i++){values[i]="";}
                                 adapter = new ChoreRowAdapter(mContext, currentChores);
-
                                 list.setAdapter(adapter);
+                                HTTP_Connector.editChore dbEditChore = httpcon.new editChore();
+                                dbEditChore.execute(c);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -295,12 +297,13 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse{
     public void deleteChore(View view) {
 
         currentChores.remove(choreToDelete);
-        String[] values = new String[currentChores.size()];
-        for(int i=0;i<currentChores.size();i++){values[i]="";}
         adapter = new ChoreRowAdapter(mContext, currentChores);
         list.setAdapter(adapter);
         Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
         alertDialog.cancel();
+
+        HTTP_Connector.deleteChore dbDeleteChore = httpcon.new deleteChore();
+        dbDeleteChore.execute(choreToDelete.getChoreId());
     }
 }
 

@@ -35,9 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class HouseActivity extends AppCompatActivity {
+public class HouseActivity extends AppCompatActivity implements userGroupResponse{
 
     private Context mContext;
+    private User currUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class HouseActivity extends AppCompatActivity {
         setContentView(R.layout.house_main);
         mContext = this;
 
-
+        DataBaseHandler db = new DataBaseHandler(this);
+        db.getUser();
 
     }
 
@@ -63,6 +65,43 @@ public class HouseActivity extends AppCompatActivity {
     }
 
 
+    public void addUser(View view){
+
+    }
+
+    public void removeUser(View view){
+
+    }
+
+    public void editUser(View view){
+
+    }
+
+
+    public void editGroup(View view){
+
+    }
+
+
+    public void userFinish(User user){
+        currUser = user;
+        TextView firstName = (TextView) findViewById(R.id.userFirstName);
+        TextView lastName = (TextView) findViewById(R.id.userLastName);
+        TextView phone = (TextView) findViewById(R.id.userPhone);
+        TextView email = (TextView) findViewById(R.id.userEmail);
+
+        firstName.setText("First Name: "+ user.getfName());
+        lastName.setText("Last Name: "+ user.getlName());
+        phone.setText("Phone: "+ user.getPhoneNumber());
+        email.setText("email: "+ user.getEmailAddress());
+    }
+
+    public void userListFinish(ArrayList<User> output){
+
+    }
+    public void groupFinish(Group output){
+
+    }
 
 }
 

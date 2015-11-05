@@ -106,7 +106,7 @@ public class HTTP_Connector extends Activity  {
             lastname = lname;
             emailaddr = email;
             phonenum = phone;
-            user = new User(Integer.parseInt(useid) ,firstname, lastname, emailaddr, phonenum);
+            user = new User(Integer.parseInt(useid.trim()) ,firstname, lastname, emailaddr, phonenum);
             delegate.userFinish(user);
         }
 
@@ -115,7 +115,7 @@ public class HTTP_Connector extends Activity  {
         }
 
         public User createUserObject() {
-            int userId = Integer.valueOf(useid);
+            int userId = Integer.valueOf(useid.trim());
             User user = new User(userId, firstname, lastname, emailaddr, phonenum);
             return user;
         }

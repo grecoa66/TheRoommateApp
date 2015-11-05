@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add new User to Group"
-        android:padding="25dp"
+        android:padding="20dp"
         android:clickable="true"
         android:onClick="addUser"/>
 
@@ -17,7 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Remove User from Group"
-        android:padding="25dp"
+        android:padding="20dp"
         android:clickable="true"
         android:onClick="removeUser"/>
 
@@ -25,20 +25,61 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Group"
-        android:padding="25dp"
+        android:text="Edit Profile"
+        android:padding="20dp"
         android:clickable="true"
-        android:onClick="editGroup"/>
-
+        android:onClick="editUser"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:padding="25dp"
+        android:text="Edit Group"
+        android:padding="20dp"
         android:clickable="true"
-        android:onClick="editProfile"/>
+        android:onClick="editGroup"/>
+
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16dp"
+    android:text="User Info:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userFirstName"
+        android:text="First Name:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userLastName"
+        android:text="Last Name:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userPhone"
+        android:text="Phone Number:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/userEmail"
+        android:text="email:"/>
 
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:paddingTop="10dp"
+        android:text="Group Info:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupName"
+        android:text="Group NickName:"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupAddress"
+        android:text="Address:"/>
 
 </LinearLayout>

@@ -17,6 +17,12 @@
         android:layout_width="fill_parent"
         android:layout_height="400dp" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Out"
+        android:clickable="true"
+        android:onClick="checkOut"/>
 
 
 </LinearLayout>

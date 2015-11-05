@@ -68,14 +68,16 @@ public class GroceryRowAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Grocery grocery = allGroc.get(pos);
-
-//                notifyDataSetChanged();
-                Toast.makeText(v.getContext(),
-                        "item " + grocery.getItemName() + " was purchased.",
-                        Toast.LENGTH_LONG).show();
+                ((GroceryActivity) context).addGrocToPurchase(grocery);
+                notifyDataSetChanged();
+//                Toast.makeText(v.getContext(),
+//                        "item " + grocery.getItemName() + " was purchased.",
+//                        Toast.LENGTH_LONG).show();
 
             }
         });
+
+
 
         return rowView;
     }

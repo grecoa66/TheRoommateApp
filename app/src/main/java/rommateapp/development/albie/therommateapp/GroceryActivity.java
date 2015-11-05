@@ -32,6 +32,7 @@ public class GroceryActivity extends AppCompatActivity {
     private Context mContext;
     private ArrayList<Grocery> allGroc = new ArrayList<>();
     private ArrayList<Grocery> currentGroc = new ArrayList<>();
+    private ArrayList<Grocery> grocToPurchase = new ArrayList<>();
     private ListView lv;
     private GroceryRowAdapter adapter;
     private Grocery grocToDelete;
@@ -220,5 +221,30 @@ public class GroceryActivity extends AppCompatActivity {
             }
         }
         return currentGroc;
+    }
+
+    public void addGrocToPurchase(Grocery g){
+        grocToPurchase.add(g);
+        String test = grocToPurchase.get(0).toString();
+        Toast.makeText(mContext, test, Toast.LENGTH_SHORT).show();
+    }
+
+    //create a modal to ask for price
+    //after that go through the grocToPurchase array
+    //and set all of their setPurchased to true
+    public void checkOut(){
+        //get the grocery that was pressed
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+
+        View promptsView = li.inflate(R.layout.grocery_checkout, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText enterAmount = (EditText) promptsView.findViewById(R.id.enter_amount);
+        final EditText editGrocQuant = (EditText) promptsView.findViewById(R.id.grocQuantEdit);
+        final Spinner spinner = (Spinner) promptsView.findViewById(R.id.PeopleSpinnerGrocery);
     }
 }

@@ -38,10 +38,32 @@ public class GroceryActivity extends AppCompatActivity {
     private Grocery grocToDelete;
     private AlertDialog alertDialog;
 
+    private Group group;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grocery_main);
+
+
+        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733");
+        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044");
+        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401");
+        Bill bill1 = new Bill("sharp pants", 12.01, matt, greco, 0);
+        ArrayList<User> userArrList = new ArrayList<User>();
+        userArrList.add(albie);
+        userArrList.add(greco);
+        userArrList.add(matt);
+        UserList userList = new UserList(1, userArrList );
+        GroceryList g = new GroceryList(0, null);
+        ChoreList c = new ChoreList(0,null);
+        MaintenanceList m = new MaintenanceList(0, null);
+        ArrayList<Bill> bills = new ArrayList<>();
+        BillList b = new BillList(0,bills);
+        b.addBill(bill1);
+
+        group = new Group(123, userList, b, c, g, m  );
+
 
         mContext = this;
         Date date = new Date(System.currentTimeMillis());
@@ -144,14 +166,14 @@ public class GroceryActivity extends AppCompatActivity {
                 .setPositiveButton("Edit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                editGrocName.getText().toString();
-                                Integer.parseInt(editGrocQuant.getText().toString());
                                 grocery.getDateRequested();
                                 grocery.setRequestUser(spinner.getSelectedItem().toString());
+                                grocery.setItemName(editGrocName.getText().toString());
+                                grocery.setQuantity(Integer.parseInt(editGrocQuant.getText().toString()));
                                 ListView lv = (ListView) findViewById(R.id.list_grocery);
                                 GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
                                 lv.setAdapter(adapter);
-
+                                currentAdapter(lv);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -225,16 +247,16 @@ public class GroceryActivity extends AppCompatActivity {
 
     public void addGrocToPurchase(Grocery g){
         grocToPurchase.add(g);
-        String test = grocToPurchase.get(0).toString();
-        Toast.makeText(mContext, test, Toast.LENGTH_SHORT).show();
+        //String test = grocToPurchase.get(0).toString();
+        //Toast.makeText(mContext, test, Toast.LENGTH_SHORT).show();
     }
 
     //create a modal to ask for price
     //after that go through the grocToPurchase array
     //and set all of their setPurchased to true
-    public void checkOut(){
-        //get the grocery that was pressed
+    public void checkOut(View view){
 
+        //get the grocery that was pressed
         LayoutInflater li = LayoutInflater.from(mContext);
 
         View promptsView = li.inflate(R.layout.grocery_checkout, null);
@@ -244,7 +266,63 @@ public class GroceryActivity extends AppCompatActivity {
         alertDialogBuilder.setView(promptsView);
 
         final EditText enterAmount = (EditText) promptsView.findViewById(R.id.enter_amount);
-        final EditText editGrocQuant = (EditText) promptsView.findViewById(R.id.grocQuantEdit);
-        final Spinner spinner = (Spinner) promptsView.findViewById(R.id.PeopleSpinnerGrocery);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                if (!grocToPurchase.isEmpty()) {
+                                    double totalAmount = Double.parseDouble(enterAmount.getText().toString());
+
+                                    UserList uList = group.getUserList();
+                                    ArrayList arrL = uList.getUserList();
+                                    int userCount = arrL.size();
+
+                                    double amountPerPerson = (totalAmount / userCount);
+
+                                    BillList bl = group.getBillList();
+                                    ArrayList bArr = bl.getBillList();
+
+                                    //bill all users in group evenly
+                                    for (int i = 0; i < userCount; i++) {
+                                        User u = (User) arrL.get(i);
+                                        //TODO add the current user as the userToBill
+                                        Bill newBill = new Bill("grocery check out", amountPerPerson, u, u, 0);
+                                        bl.addBill(newBill);
+                                    }
+
+                                    //set is purchased to true for all things just purchased
+                                    for (int j = 0; j < grocToPurchase.size(); j++) {
+                                        Grocery g = grocToPurchase.get(j);
+                                        g.setIsPurchased(true);
+                                    }
+
+                                    ListView lv = (ListView) findViewById(R.id.list_grocery);
+                                    GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                    lv.setAdapter(adapter);
+
+                                    String billTest = bArr.toString();
+
+                                    Toast.makeText(mContext, billTest, Toast.LENGTH_SHORT).show();
+
+                                    //load a new current view to reflect changes
+                                    currentAdapter(lv);
+                                } else {
+                                    Toast.makeText(GroceryActivity.this, "You have purchased anything", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

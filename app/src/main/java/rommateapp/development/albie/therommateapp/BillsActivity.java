@@ -53,10 +53,10 @@ public class BillsActivity extends AppCompatActivity {
         users.add(albie);
         users.add(greco);
         users.add(matt);
-        allBills.add(new Bill("water", 0, 40, albie, greco,0, false ));
-        allBills.add(new Bill("gas", 0, 35, matt, greco,0, false ));
-        allBills.add(new Bill("rent", 0, 500, matt, albie,0, false ));
-        allBills.add(new Bill("dinner", 0, 20, greco, matt,0, false ));
+        allBills.add(new Bill("water", 40, albie, greco,0 ));
+        allBills.add(new Bill("gas",  35, matt, greco,0 ));
+        allBills.add(new Bill("rent", 500, matt, albie,0 ));
+        allBills.add(new Bill("dinner", 20, greco, matt,0 ));
 
 
 
@@ -310,8 +310,8 @@ public class BillsActivity extends AppCompatActivity {
                        Toast.makeText(mContext, seletedItems.toString(), Toast.LENGTH_SHORT).show();
                         // for each roomie in selectedItems, we need to create a bill
                         for(int i=0;i<seletedItems.size();i++){
-                            Bill b = new Bill(name.getText().toString(), 0, Double.valueOf(amount.getText().toString())/seletedItems.size(),
-                                    users.get(seletedItems.get(i)), users.get(0), 0, false);
+                            Bill b = new Bill(name.getText().toString(), Double.valueOf(amount.getText().toString())/seletedItems.size(),
+                                    users.get(seletedItems.get(i)), users.get(0), 0);
                             allBills.add(b);
                         }
                         adapter = new BillRowAdapter(mContext, allBills);

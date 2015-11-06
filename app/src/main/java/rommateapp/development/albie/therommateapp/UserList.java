@@ -11,10 +11,9 @@ public class UserList implements Serializable {
     public ArrayList<User> userList;
     public boolean isEmpty;
 
-    public UserList(int userListId, ArrayList<User> userList, boolean isEmpty) {
+    public UserList(int userListId, ArrayList<User> userList) {
         this.userListId = userListId;
         this.userList = userList;
-        this.isEmpty = isEmpty;
     }
 
     public int getUserListId() {
@@ -42,7 +41,7 @@ public class UserList implements Serializable {
     }
 
     public boolean isEmpty() {
-        return isEmpty;
+        return userList.isEmpty();
     }
 
     public void setIsEmpty(boolean isEmpty) {

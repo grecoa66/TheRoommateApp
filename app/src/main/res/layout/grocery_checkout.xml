@@ -13,10 +13,5 @@
         android:id="@+id/enter_amount"
         android:hint="Enter Amount Here"
         />
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Complete"
-        android:clickable="true"
-        android:onClick="completeCheckOut"/>
+
 </LinearLayout>

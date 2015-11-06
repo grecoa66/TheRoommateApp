@@ -16,18 +16,17 @@ public class Bill {
     public User userToPay;
     public User userToBill;
     public double totalPaid;
+    public boolean isComplete = false;
 
-    public Bill(String desc, int billId, double totalAmount, User userToBill,
+    public Bill(String desc, double totalAmount, User userToBill,
                User userToPay,
-                double totalPaid, boolean isComplete)
+                double totalPaid)
     {
         this.desc = desc;
-        this.billId = billId;
         this.totalAmount = totalAmount;
         this.userToPay = userToPay;
         this.userToBill = userToBill;
         this.totalPaid = totalPaid;
-        this.isComplete = isComplete;
     }
 
     public User getUserToPay() {
@@ -47,12 +46,14 @@ public class Bill {
 
 
     public boolean isComplete() {
+        if((totalAmount - totalPaid) == 0){
+            isComplete = true;
+        }else{
+            isComplete = false;
+        }
         return isComplete;
     }
 
-    public void setIsComplete(boolean isComplete) {
-        this.isComplete = isComplete;
-    }
 
     public double getTotalAmount() {
         return totalAmount;
@@ -73,11 +74,12 @@ public class Bill {
     public int getBillId() {
         return billId;
     }
+
     public void setBillId(int billId) {
         this.billId = billId;
     }
 
-    public boolean isComplete;
+
 
 
 }

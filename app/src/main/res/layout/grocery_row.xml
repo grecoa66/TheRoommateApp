@@ -61,7 +61,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purchased"
-            android:id="@+id/groc_checkBox" />
+            android:clickable="true"
+            android:id="@+id/groc_checkBox"
+            android:descendantFocusability="beforeDescendants"/>
     </LinearLayout>
 
 </LinearLayout>

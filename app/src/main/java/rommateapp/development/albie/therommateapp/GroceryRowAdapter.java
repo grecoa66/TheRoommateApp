@@ -20,6 +20,7 @@ public class GroceryRowAdapter extends BaseAdapter{
 
     private final Context context;
     private ArrayList<Grocery> allGroc;
+    private CheckBox checkBox;
 
     public GroceryRowAdapter(Context context, ArrayList<Grocery> allGroc) {
         this.context = context;
@@ -52,14 +53,14 @@ public class GroceryRowAdapter extends BaseAdapter{
         TextView grocName       = (TextView) rowView.findViewById(R.id.grocName);
         TextView grocAssignedBy = (TextView) rowView.findViewById(R.id.assignedBy);
         TextView grocQuant      = (TextView) rowView.findViewById(R.id.grocQuant);
-        CheckBox checkBox       = (CheckBox) rowView.findViewById(R.id.groc_checkBox);
+        final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.groc_checkBox);
 
 
         // Change the icon for Windows and iPhone
         Grocery grocery = allGroc.get(position);
         grocName.setText(grocery.getItemName());
         grocAssignedBy.setText("From: " + grocery.getRequestUser());
-        grocQuant.setText( Integer.toString(grocery.getQuantity()));
+        grocQuant.setText(Integer.toString(grocery.getQuantity()));
         final int pos = position;
 
 
@@ -70,15 +71,10 @@ public class GroceryRowAdapter extends BaseAdapter{
                 Grocery grocery = allGroc.get(pos);
                 ((GroceryActivity) context).addGrocToPurchase(grocery);
                 notifyDataSetChanged();
-//                Toast.makeText(v.getContext(),
-//                        "item " + grocery.getItemName() + " was purchased.",
-//                        Toast.LENGTH_LONG).show();
-
             }
         });
-
-
-
         return rowView;
     }
+
+
 }

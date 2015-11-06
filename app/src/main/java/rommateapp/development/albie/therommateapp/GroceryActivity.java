@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class GroceryActivity extends AppCompatActivity {
+public class GroceryActivity extends AppCompatActivity implements groceryListResponse{
 
     private Context mContext;
     private ArrayList<Grocery> allGroc = new ArrayList<>();
@@ -76,6 +76,15 @@ public class GroceryActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.list_grocery);
 
         currentAdapter(lv);
+    }
+
+    //piece for the data base response
+    @Override
+    public void groceryListFinish(ArrayList<Grocery> response) {
+        currentGroc = response;
+        adapter = new GroceryRowAdapter(mContext, currentGroc);
+        lv.setAdapter(adapter);
+        setListener(lv);
     }
 
     //This is the adapter that gets shown
@@ -324,5 +333,5 @@ public class GroceryActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
-    }
-}
+    }//end checkout
+}//end class

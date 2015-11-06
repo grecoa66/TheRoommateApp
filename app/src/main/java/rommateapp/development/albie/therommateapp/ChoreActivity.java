@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class ChoreActivity extends AppCompatActivity implements choreListResponse {
+public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     private Context mContext;
     private ArrayList<Chore> allChores;
@@ -99,6 +99,19 @@ public class ChoreActivity extends AppCompatActivity implements choreListRespons
         setMyList(list);
     }
     //}
+
+    public void processFinish(ArrayList<Chore> result){
+
+    }
+    public void processFinish(MaintenanceList result){
+
+    }
+    public void processFinish(GroceryList result){
+
+    }
+    public void processFinish(User resp){
+
+    }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);

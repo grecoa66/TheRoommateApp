@@ -15,7 +15,7 @@ public class GroceryList {
     public int groceryListId;
     public ArrayList<Grocery> groceryList;
 
-    public GroceryList(int groceryListId, ArrayList<Grocery> groceryList) {
+    public GroceryList(ArrayList<Grocery> groceryList) {
         this.groceryListId = groceryListId;
         this.groceryList = groceryList;
     }

@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements choreListResponse {
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private ArrayList<Chore> chores;
     private ArrayList<User> userList;
@@ -62,6 +62,25 @@ public class MainActivity extends AppCompatActivity implements choreListResponse
 
 Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
         Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+    public void processFinish(ArrayList<Chore> result){
+        choreList = result;
+
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+
+        choreLv.setAdapter(adapter);
+    }
+    public void processFinish(MaintenanceList result){
+
+    }
+    public void processFinish(GroceryList result){
+
+    }
+    public void processFinish(User resp){
 
     }
 

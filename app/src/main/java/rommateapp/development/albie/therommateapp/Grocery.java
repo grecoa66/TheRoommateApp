@@ -7,26 +7,50 @@ import java.util.Date;
  */
 public class Grocery {
     public int groceryId;
+    public int groupid;
     public String itemName;
     public int quantity;
-    public Date dateRequested;
-    public Date datePurchased;
+    public String dateRequested;
+    public String datePurchased;
     public boolean isPurchased = false;
     public double costPerItem;
     public double totalCost;
     public String requestUser;
     public String purchaseUser;//who purchased the item(s)
 
+
     public Grocery(String itemName, int quantity,
-                   Date dateRequested, String requestUser, boolean isPurchased ){
+                   String dateRequested, String requestUser, boolean isPurchased
+                   ){
         this.itemName = itemName;
         this.quantity = quantity;
         this.dateRequested = dateRequested;
         this.isPurchased = isPurchased;
         this.requestUser = requestUser;
+    }
+
+
+    public Grocery(int groceryId, String itemName, int quantity,
+                   String dateRequested, String datePurchased, boolean isPurchased,
+                   Double costPerItem, String requestUser,String purchaseUser ){
+        this.groceryId = groceryId;
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.dateRequested = dateRequested;
+        this.datePurchased = datePurchased;
+        this.isPurchased = isPurchased;
+        this.costPerItem = costPerItem;
+        this.requestUser = requestUser;
         this.purchaseUser = purchaseUser;
     }
 
+    public int getGroupId() {
+        return groupid;
+    }
+
+    public void setGroupId(int groupid) {
+        this.groupid = groupid;
+    }
     public int getGroceryId() {
         return groceryId;
     }
@@ -51,19 +75,19 @@ public class Grocery {
         this.quantity = quantity;
     }
 
-    public Date getDateRequested() {
+    public String getDateRequested() {
         return dateRequested;
     }
 
-    public void setDateRequested(Date dateRequested) {
+    public void setDateRequested(String dateRequested) {
         this.dateRequested = dateRequested;
     }
 
-    public Date getDatePurchased() {
+    public String getDatePurchased() {
         return datePurchased;
     }
 
-    public void setDatePurchased(Date datePurchased) {
+    public void setDatePurchased(String datePurchased) {
         this.datePurchased = datePurchased;
     }
 

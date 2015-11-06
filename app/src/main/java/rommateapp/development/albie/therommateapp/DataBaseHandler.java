@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * return choreList, addChore etc would all be done here. This should be the only class that implements
  * the response interfaces
  */
-public class DataBaseHandler implements userGroupResponse{
+public class DataBaseHandler implements AsyncResponse{
 
 
     private  HTTP_Connector httpcon;
@@ -27,11 +27,26 @@ public class DataBaseHandler implements userGroupResponse{
 
     }
     public void userFinish(User output){
-        userGroupResponse resp = (userGroupResponse) mContext;
-        resp.userFinish(output);
+        AsyncResponse resp = (AsyncResponse) mContext;
+        resp.processFinish(output);
 
     }
 
+    public void processFinish(ArrayList<Chore> result){
+
+    }
+    public void processFinish(MaintenanceList result){
+
+    }
+    public void processFinish(GroceryList result){
+
+    }
+    public void processFinish(User output){
+        AsyncResponse resp = (AsyncResponse) mContext;
+        resp.processFinish(output);
+
+
+    }
     public void getUser(){
         //hardcoded for albie user
         HTTP_Connector.getUser getUser = httpcon.new getUser(this);

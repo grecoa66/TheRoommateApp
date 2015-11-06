@@ -37,6 +37,7 @@ public class GroceryActivity extends AppCompatActivity {
     private GroceryRowAdapter adapter;
     private Grocery grocToDelete;
     private AlertDialog alertDialog;
+    private Date date;
 
     private Group group;
 
@@ -55,9 +56,9 @@ public class GroceryActivity extends AppCompatActivity {
         userArrList.add(greco);
         userArrList.add(matt);
         UserList userList = new UserList(1, userArrList );
-        GroceryList g = new GroceryList(0, null);
+        GroceryList g = new GroceryList(null);
         ChoreList c = new ChoreList(0,null);
-        MaintenanceList m = new MaintenanceList(0, null);
+        MaintenanceList m = new MaintenanceList(null);
         ArrayList<Bill> bills = new ArrayList<>();
         BillList b = new BillList(0,bills);
         b.addBill(bill1);
@@ -66,12 +67,12 @@ public class GroceryActivity extends AppCompatActivity {
 
 
         mContext = this;
-        Date date = new Date(System.currentTimeMillis());
+         date = new Date(System.currentTimeMillis());
 
-        allGroc.add(new Grocery("Milk", 1, date, "Greco", false));
-        allGroc.add(new Grocery("Carton of Eggs", 1, date, "Albie", true));
-        allGroc.add(new Grocery("Oranges", 6, date, "Greco", false));
-        allGroc.add(new Grocery("Taco Kit", 1, date, "Matt", false));
+        allGroc.add(new Grocery( "Milk", 1, date.toString(), "Greco", false));
+        allGroc.add(new Grocery( "Carton of Eggs", 1, date.toString(), "Albie", true));
+        allGroc.add(new Grocery("Oranges", 6, date.toString(), "Greco", false));
+        allGroc.add(new Grocery("Taco Kit", 1, date.toString(), "Matt", false));
 
         lv = (ListView) findViewById(R.id.list_grocery);
 
@@ -116,7 +117,7 @@ public class GroceryActivity extends AppCompatActivity {
                                 allGroc.add(new Grocery(
                                         grocName.getText().toString(),
                                         Integer.parseInt(grocQuant.getText().toString()),
-                                        currentDate,
+                                        currentDate.toString(),
                                         "Albie", false));
                                 ListView lv = (ListView) findViewById(R.id.list_grocery);
                                 GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);

@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class HouseActivity extends AppCompatActivity implements userGroupResponse{
+public class HouseActivity extends AppCompatActivity implements AsyncResponse{
 
     private Context mContext;
     private User currUser;
@@ -83,7 +83,7 @@ public class HouseActivity extends AppCompatActivity implements userGroupRespons
     }
 
 
-    public void userFinish(User user){
+    public void processFinish(User user){
         currUser = user;
         TextView firstName = (TextView) findViewById(R.id.userFirstName);
         TextView lastName = (TextView) findViewById(R.id.userLastName);
@@ -93,9 +93,18 @@ public class HouseActivity extends AppCompatActivity implements userGroupRespons
         firstName.setText("First Name: "+ user.getfName());
         lastName.setText("Last Name: "+ user.getlName());
         phone.setText("Phone: "+ user.getPhoneNumber());
-        email.setText("email: "+ user.getEmailAddress());
+        email.setText("email: " + user.getEmailAddress());
     }
 
+    public void processFinish(ArrayList<Chore> result){
+
+    }
+    public void processFinish(MaintenanceList result){
+
+    }
+    public void processFinish(GroceryList result){
+
+    }
     public void userListFinish(ArrayList<User> output){
 
     }

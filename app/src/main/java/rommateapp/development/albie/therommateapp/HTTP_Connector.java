@@ -90,7 +90,7 @@ public class HTTP_Connector extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+         //   Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
             String[] parts = result.split("-");
             String uid = parts[0]; //
             String fname = parts[1];

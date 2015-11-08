@@ -7,10 +7,12 @@ package rommateapp.development.albie.therommateapp;
 public class User {
 
     public int userId;
+    public int groupId;
     public String fName = "";
     public String lName = "";
     public String emailAddress = "";
     public String phoneNumber= "";
+
 
     public User(int userId, String fName, String lName, String emailAddress, String phoneNumber){
         this.userId = userId;
@@ -19,7 +21,13 @@ public class User {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
     }
-
+    public User(String fName, String lName, String emailAddress, String phoneNumber, int groupId){
+        this.fName = fName;
+        this.lName = lName;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
+        this.groupId = groupId;
+    }
 
     public int getUserId() {
         return userId;

@@ -26,25 +26,45 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private ArrayList<Chore> chores;
     private ArrayList<User> userList;
     private ArrayList<Chore> choreList;
-    private ArrayList<Grocery> groceryList;
-    private ArrayList<Bill> billList;
-    private ArrayList<MaintenanceItem> maintList;
+    private GroceryList groceryList;
+    private  BillList billList;
+    private MaintenanceList maintList;
+    private Group group;
     private  ListView groceryLv;
     private  ListView choreLv;
     private  ListView billsLv;
     private  ListView maintLv;
 
+    private  HTTP_Connector httpcon;
     private Context mContext;
+    private AsyncResponse async;
+    private AlertDialog alert;
+
+
+    //Chores Things
+    private Chore choreToDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         mContext = this;
-        HTTP_Connector httpcon= new HTTP_Connector(this);
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
+        async = this;
 
+        //executing each get call, ideally this should all be done in one call so we can fill a group object
+
+        httpcon = new HTTP_Connector(this);
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
         getchores.execute("1");
+
+        HTTP_Connector.getGroceryList getGrocer = httpcon.new getGroceryList(this);
+        getGrocer.execute("1");
+
+   //     HTTP_Connector.getMaintenanceList getMaint = httpcon.new getMaintenanceList(this);
+     //  getMaint.execute("1");
+
+
+
 
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
         choreLv= (ListView) findViewById(R.id.choresSnapShot);
@@ -60,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         maintLv.setAdapter(adapter);
         groceryLv.setAdapter(adapter);
 
-Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
+        Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
         Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
 
     }
@@ -69,32 +89,26 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
 
     public void processFinish(ArrayList<Chore> result){
         choreList = result;
-
         ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
-
         choreLv.setAdapter(adapter);
+        setListenerChores(choreLv);
     }
     public void processFinish(MaintenanceList result){
-
+        maintList = result;
+        MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, maintList.getMaintenanceList());
+        maintLv.setAdapter(adapter);
     }
     public void processFinish(GroceryList result){
-
+        groceryList = result;
+        GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, groceryList.getGroceryList());
+        groceryLv.setAdapter(adapter);
     }
     public void processFinish(User resp){
 
     }
 
-    public void choresListFinish(ArrayList<Chore> response){
 
-
-        choreList = response;
-        ChoreRowAdapter adapter = new ChoreRowAdapter(this, choreList);
-        choreLv.setAdapter(adapter);
-        setListener(choreLv);
-    }
-
-
-    public void setListener(ListView lv){
+    public void setListenerChores(ListView lv){
 
         //This is where we can create the modal for edit  delete
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,7 +116,7 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
-                showModal(position);
+                showModalChores(position);
                 view.setSelected(true);
             }
         });
@@ -122,14 +136,6 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void testVenmo(View view) {
-        if (VenmoLibrary.isVenmoInstalled(this)) {
-            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", "Roommate App Test", "7327889740", ".01", "test", "charge");
-            startActivityForResult(venmoIntent, 2952);
-
-        }
-    }
 
 
     @Override
@@ -161,11 +167,11 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
         }
     }
 
-    public void showModal(final int position){
+    public void showModalChores(final int position){
 
         Chore c = choreList.get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.bill_edit, null);
+        View promptsView = li.inflate(R.layout.chore_edit, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -181,6 +187,8 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
                 .findViewById(R.id.PeopleSpinner);
 
         name.setText(c.getTitle());
+
+        choreToDelete = choreList.get(position);
         ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
         int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
         spinner.setSelection(spinnerPosition);
@@ -199,9 +207,11 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
                                 c.setDesc(desc.getText().toString());
                                 c.setTitle(name.getText().toString());
                                 c.setAssignedUser(spinner.getSelectedItem().toString());
-                                String[] values = new String[choreList.size()];
-                                for(int i=0;i<choreList.size();i++){values[i]="";}
                                 ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+
+
+                                HTTP_Connector.editChore editChore = httpcon.new editChore();
+                                editChore.execute(c);
 
                                 choreLv.setAdapter(adapter);
                             }
@@ -214,10 +224,21 @@ Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver()
                         });
 
         // create alert dialog
-        AlertDialog alertDialog= alertDialogBuilder.create();
+        alert = alertDialogBuilder.create();
 
         // show it
-        alertDialog.show();
+        alert.show();
+    }
+        public void deleteChore(View view) {
+
+        choreList.remove(choreToDelete);
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+        choreLv.setAdapter(adapter);
+        Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
+        alert.cancel();
+
+        HTTP_Connector.deleteChore dbDeleteChore = httpcon.new deleteChore();
+        dbDeleteChore.execute(choreToDelete.getChoreId());
     }
 
 

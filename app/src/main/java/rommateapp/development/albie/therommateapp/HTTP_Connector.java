@@ -638,7 +638,7 @@ public class HTTP_Connector extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+         //   Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -683,7 +683,7 @@ public class HTTP_Connector extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+           // Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -732,7 +732,7 @@ public class HTTP_Connector extends Activity {
             }
             catch (IOException ex) {
 
-                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+               Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
             }
             return response;
         }

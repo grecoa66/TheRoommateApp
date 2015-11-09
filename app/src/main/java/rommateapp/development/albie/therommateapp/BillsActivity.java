@@ -39,6 +39,8 @@ public class BillsActivity extends AppCompatActivity {
     private Bill billToDelete;
     private AlertDialog alertDialog;
     private ArrayList<User> users;
+    private Group currGroup;
+    private User currUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,8 @@ public class BillsActivity extends AppCompatActivity {
         allBills.add(new Bill("rent", 500, matt, albie,0 ));
         allBills.add(new Bill("dinner", 20, greco, matt,0 ));
 
-
+        currGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
 
         list = (ListView) findViewById(R.id.list_bills);
 
@@ -118,7 +121,7 @@ public class BillsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 

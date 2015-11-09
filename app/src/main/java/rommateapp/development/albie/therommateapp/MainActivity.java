@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        group = new Group(currUser.groupId, userList, new BillList(4, new ArrayList<Bill>()), choreList, groceryList, maintList);
-        Utility.openNewActivity(id, this, choreList.getChores());
+        group = new Group(currUser.groupId, userList, new BillList(4, new ArrayList<Bill>()), choreList, groceryList, maintList);//BILLLIST SHOULD BE PULLED FROM DB
+        Utility.openNewActivity(id, this, group, currUser);
         return super.onOptionsItemSelected(item);
     }
 

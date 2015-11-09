@@ -32,6 +32,13 @@ public class User implements Serializable{
         this.groupId = groupId;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
     public int getUserId() {
         return userId;
     }

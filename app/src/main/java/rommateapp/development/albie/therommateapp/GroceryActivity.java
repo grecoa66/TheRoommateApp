@@ -38,6 +38,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     private Grocery grocToDelete;
     private AlertDialog alertDialog;
     private Date date;
+    private User currUser;
+    private Group currGroup;
 
     private Group group;
 
@@ -65,6 +67,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
 
         group = new Group(123, userList, b, c, g, m  );
 
+        currGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
 
         mContext = this;
          date = new Date(System.currentTimeMillis());
@@ -238,7 +242,7 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 

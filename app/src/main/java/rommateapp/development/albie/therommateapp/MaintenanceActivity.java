@@ -36,11 +36,17 @@ public class MaintenanceActivity extends AppCompatActivity {
     private ListView lv;
     private AlertDialog alertDialog;
     private MaintenanceItem itemToDelete;
+    private Group currGroup;
+    private User currUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maintenance_main);
         mContext = this;
+
+
+        currGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
 
         mainteList.add(new MaintenanceItem("Broken Door", "Albie", "Albie", false));
         mainteList.add(new MaintenanceItem("scuffed paint in living room", "Greco", "matt", false));
@@ -258,7 +264,7 @@ public class MaintenanceActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 

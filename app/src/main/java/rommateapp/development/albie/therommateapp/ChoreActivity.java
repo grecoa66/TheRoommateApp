@@ -102,6 +102,10 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     public void processFinish(ArrayList<Chore> result){
 
+        currentChores = result;
+        adapter = new ChoreRowAdapter(mContext, currentChores);
+        list.setAdapter(adapter);
+        setListener(list);
     }
     public void processFinish(MaintenanceList result){
 
@@ -137,15 +141,6 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         setListener(list);
     }
 
-    public void choresListFinish(ArrayList<Chore> response){
-
-        currentChores = response;
-        adapter = new ChoreRowAdapter(mContext, currentChores);
-        list.setAdapter(adapter);
-        setListener(list);
-        //Toast.makeText(this,"we have chores: "+ currentChores.toString(),Toast.LENGTH_SHORT).show();
-
- }
     public void changeAdapter(View view){
 
         currentChores = new ArrayList<>();

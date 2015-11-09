@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -240,7 +241,50 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         HTTP_Connector.deleteChore dbDeleteChore = httpcon.new deleteChore();
         dbDeleteChore.execute(choreToDelete.getChoreId());
     }
+    public void addAnnouncement(View view) {
 
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.announcement_add, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+
+
+        final TextView newMessage = (TextView) promptsView.findViewById(R.id.newAnnouncement);
+        final TextView tv = (TextView) findViewById(R.id.AnnouncementsMessage);
+
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                //result.setText(userInput.getText());
+                        //HTTP_Connector.editChore editChore = httpcon.new editChore();
+                              //  editChore.execute(c);
+
+
+                                tv.setText(newMessage.getText().toString());
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        alert = alertDialogBuilder.create();
+
+        // show it
+        alert.show();
+    }
 
 
 }

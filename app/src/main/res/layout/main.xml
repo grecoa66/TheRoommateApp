@@ -35,6 +35,7 @@
         android:id="@+id/AnnouncementsMessage"
         android:text="No announcements have been made yet."
         android:textSize="16dp"
+        android:paddingLeft="10dp"
         android:textColor="@color/red"
         android:gravity=""/>
     </LinearLayout>

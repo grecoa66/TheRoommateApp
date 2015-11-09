@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     private Context mContext;
-    private ArrayList<Chore> allChores;
     private ArrayList<Chore> currentChores;
     private ChoreRowAdapter adapter;
     private ListView list;
@@ -196,9 +195,19 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         final Spinner spinner = (Spinner) promptsView
                 .findViewById(R.id.PeopleSpinner);
 
+
+        //set adapter --
+        ArrayList<User> ul = myGroup.getUserList().getUserList();
+        String[] names = new String[ul.size()];
+        for(int i=0; i<ul.size();i++){
+            names[i] = ul.get(i).getfName();
+        }
+        ArrayAdapter<String> namesAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
+        namesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setAdapter(namesAdapter);
         name.setText(c.getTitle());
-        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
-        int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
+
+        int spinnerPosition = namesAdapter.getPosition(c.getAssignedUser());
         spinner.setSelection(spinnerPosition);
         desc.setText(c.getDesc());
         choreToDelete = c;

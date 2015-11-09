@@ -233,7 +233,7 @@ public class HTTP_Connector extends Activity {
                     String id = json_obj.get("id").toString();
                     String name = json_obj.get("name").toString();
                     String desc = json_obj.get("desc").toString();
-                    String assigned_to = json_obj.get("assigned_to").toString();
+                    String assigned_to = json_obj.get("assigned_to").toString().trim();
                     String point_val = json_obj.get("point_val").toString();
                     String posted_by = json_obj.get("posted_by").toString();
                     String completed_by = json_obj.get("completed_by").toString();

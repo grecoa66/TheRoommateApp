@@ -46,9 +46,9 @@ public class BillsActivity extends AppCompatActivity {
         mContext = this;
 
         allBills = new ArrayList<>();
-        User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942");
-        User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942");
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
+        User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942", 1);
+        User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942", 1);
+        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942", 1);
         users = new ArrayList<>();
         users.add(albie);
         users.add(greco);

@@ -1,6 +1,7 @@
 package rommateapp.development.albie.therommateapp;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,11 @@ public class DataBaseHandler implements AsyncResponse{
 
 
     }
+
+    public void processFinish(UserList ul){
+
+    }
+
     public void getUser(){
         //hardcoded for albie user
         HTTP_Connector.getUser getUser = httpcon.new getUser(this);

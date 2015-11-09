@@ -115,7 +115,13 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
     }
     public void processFinish(User resp){
 
+        Toast.makeText(this, "got user", Toast.LENGTH_SHORT).show();
     }
+
+    public void processFinish(UserList ul){
+
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -141,24 +147,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         setListener(list);
     }
 
-    public void changeAdapter(View view){
 
-        currentChores = new ArrayList<>();
-        User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
-        User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942" );
-
-        currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
-        currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
-
-
-
-
-
-        adapter = new ChoreRowAdapter(mContext, currentChores);
-
-        list.setAdapter(adapter);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

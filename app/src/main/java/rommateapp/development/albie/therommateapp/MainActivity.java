@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private ArrayList<Chore> chores;
     private ArrayList<User> userList;
+    private User currUser;
     private ArrayList<Chore> choreList;
     private GroceryList groceryList;
     private  BillList billList;
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
    //     HTTP_Connector.getMaintenanceList getMaint = httpcon.new getMaintenanceList(this);
      //  getMaint.execute("1");
 
-
+        HTTP_Connector.getUser getUser = httpcon.new getUser(this);
+        getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
+                Settings.Secure.ANDROID_ID));
 
 
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
@@ -81,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         maintLv.setAdapter(adapter);
         groceryLv.setAdapter(adapter);
 
-        Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
-        Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -105,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         groceryLv.setAdapter(adapter);
     }
     public void processFinish(User resp){
+        currUser = resp;
+        Toast.makeText(this, "got user", Toast.LENGTH_SHORT).show();
+    }
+
+    public void processFinish(UserList ul){
 
     }
 

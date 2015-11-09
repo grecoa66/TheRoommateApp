@@ -239,7 +239,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
                 .findViewById(R.id.NickName);
 
         address.setText(groupAddr.getText().toString().substring(groupAddr.getText().toString().lastIndexOf(":")+1));
-        nickname.setText(groupName.getText().toString().substring(groupName.getText().toString().lastIndexOf(":")+1));
+        nickname.setText(groupName.getText().toString().substring(groupName.getText().toString().lastIndexOf(":") + 1));
         //choreToDelete = c;
         // set dialog message
         alertDialogBuilder
@@ -278,7 +278,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         userPhone = (TextView) findViewById(R.id.userPhone);
         userEmail = (TextView) findViewById(R.id.userEmail);
 
-        firstName.setText("First Name: "+ user.getfName());
+        firstName.setText("First Name: " + user.getfName());
         lastName.setText("Last Name: "+ user.getlName());
         userPhone.setText("Phone: "+ user.getPhoneNumber());
         userEmail.setText("email: " + user.getEmailAddress());
@@ -293,6 +293,10 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     public void processFinish(GroceryList result){
 
     }
+    public void processFinish(UserList ul){
+
+    }
+
     public void userListFinish(ArrayList<User> output){
 
     }

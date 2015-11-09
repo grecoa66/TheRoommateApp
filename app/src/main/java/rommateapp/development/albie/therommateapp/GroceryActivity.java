@@ -47,9 +47,9 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
         setContentView(R.layout.grocery_main);
 
 
-        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733");
-        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044");
-        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401");
+        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733", 1);
+        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044", 1);
+        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401", 1);
         Bill bill1 = new Bill("sharp pants", 12.01, matt, greco, 0);
         ArrayList<User> userArrList = new ArrayList<User>();
         userArrList.add(albie);

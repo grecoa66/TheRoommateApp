@@ -12,11 +12,9 @@ import java.util.ArrayList;
 public class BillList {
     public int BillListId;
     public ArrayList<Bill> billList;
-    public boolean isEmpty;
 
-    public BillList(int billListId, boolean isEmpty, ArrayList<Bill> billList) {
+    public BillList(int billListId, ArrayList<Bill> billList) {
         BillListId = billListId;
-        this.isEmpty = isEmpty;
         this.billList = billList;
     }
 
@@ -38,6 +36,10 @@ public class BillList {
 
     public void addBill(Bill bill){
         billList.add(bill);
+    }
+
+    public Boolean removeBill(Bill bill){
+        return billList.remove(bill);
     }
 
     public boolean isEmpty() {

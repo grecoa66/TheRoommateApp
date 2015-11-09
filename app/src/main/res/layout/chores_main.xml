@@ -3,18 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/tabs"
-        app:pstsShouldExpand="true"
-        app:pstsTextAllCaps="true"
-        android:layout_width="match_parent"
-        android:layout_height="48dp" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:text="My Chore"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:onClick="setMyList"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Group Chores"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:onClick="setAllList"/>
+
+</LinearLayout>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Chore"
+        android:clickable="true"
+        android:onClick="addChore"/>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_chores"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

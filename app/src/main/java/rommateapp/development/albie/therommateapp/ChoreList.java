@@ -39,6 +39,10 @@ public class ChoreList {
         choresList.add(chore);
     }
 
+    public Boolean removeChore(Chore chore){
+        return choresList.remove(chore);
+    }
+
     public boolean isEmpty() {
         return choresList.isEmpty();
     }

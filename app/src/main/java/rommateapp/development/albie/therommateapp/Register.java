@@ -30,7 +30,7 @@ public class Register extends Activity {
         user_pass =ET_USER_PASS.getText().toString();
         String method = "register";
         HTTP_Connector http_c = new HTTP_Connector(this);
-        http_c.execute(method, name, user_name, user_pass);
+       // http_c.execute(method, name, user_name, user_pass);
         finish();
 
     }

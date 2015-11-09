@@ -49,6 +49,6 @@ public class LoginActivity extends AppCompatActivity {
             login_pass = ET_PASS.getText().toString();
             String method = "login";
             HTTP_Connector httpcon = new HTTP_Connector(this);
-            httpcon.execute(method,login_name,login_pass);
+            //httpcon.execute(method,login_name,login_pass);
         }
     }

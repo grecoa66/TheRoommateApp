@@ -13,57 +13,47 @@ public class Bill {
     public int billId;
     public String desc;
     public double totalAmount;
-    public ArrayList<User> userToPay;
-    public ArrayList<Payment> payments;
+    public User userToPay;
+    public User userToBill;
     public double totalPaid;
+    public boolean isComplete = false;
 
-    public Bill(String desc, int billId, double totalAmount,
-                ArrayList<User> userToPay, ArrayList<Payment> payments,
-                double totalPaid, boolean isComplete)
+    public Bill(String desc, double totalAmount, User userToBill,
+               User userToPay,
+                double totalPaid)
     {
         this.desc = desc;
-        this.billId = billId;
         this.totalAmount = totalAmount;
         this.userToPay = userToPay;
-        this.payments = payments;
+        this.userToBill = userToBill;
         this.totalPaid = totalPaid;
-        this.isComplete = isComplete;
     }
 
-    //arraylist of the user that are going to split this bill
-    public ArrayList<User> getUserToPay() {
+    public User getUserToPay() {
         return userToPay;
     }
 
-    public void setUserToPay(ArrayList<User> userToPay) {
+    public void setUserToPay(User userToPay) {
         this.userToPay = userToPay;
     }
-
-    public void addUser(User user){
-        userToPay.add(user);
+    public User getUserToBill() {
+        return userToBill;
     }
 
-    //array list of the payments that this bill is split into
-    public ArrayList<Payment> getPayments() {
-        return payments;
+    public void setUserToBill(User billableUser) {
+        this.userToBill = billableUser;
     }
 
-    public void setPayments(ArrayList<Payment> payments) {
-        this.payments = payments;
-    }
-
-    //add a new payment to the list
-    public void addPayment(Payment payment){
-        payments.add(payment);
-    }
 
     public boolean isComplete() {
+        if((totalAmount - totalPaid) == 0){
+            isComplete = true;
+        }else{
+            isComplete = false;
+        }
         return isComplete;
     }
 
-    public void setIsComplete(boolean isComplete) {
-        this.isComplete = isComplete;
-    }
 
     public double getTotalAmount() {
         return totalAmount;
@@ -84,11 +74,12 @@ public class Bill {
     public int getBillId() {
         return billId;
     }
+
     public void setBillId(int billId) {
         this.billId = billId;
     }
 
-    public boolean isComplete;
+
 
 
 }

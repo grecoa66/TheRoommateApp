@@ -14,7 +14,7 @@ public class MaintenanceList {
     public int maintenanceListId;
     public ArrayList<MaintenanceItem> maintenanceList;
 
-    public MaintenanceList(int maintenanceListId, ArrayList<MaintenanceItem> maintenanceList) {
+    public MaintenanceList(ArrayList<MaintenanceItem> maintenanceList) {
         this.maintenanceListId = maintenanceListId;
         this.maintenanceList = maintenanceList;
     }
@@ -33,6 +33,9 @@ public class MaintenanceList {
         maintenanceList.add(maintenanceItem);
     }
 
+    public Boolean removeMaintenacceItem(MaintenanceItem item){
+        return maintenanceList.remove(item);
+    }
     public int getMaintenanceListId() {
         return maintenanceListId;
     }

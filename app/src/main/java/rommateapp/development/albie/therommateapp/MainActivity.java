@@ -1,61 +1,127 @@
 package rommateapp.development.albie.therommateapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
+
+    private ArrayList<Chore> chores;
+    private ArrayList<User> userList;
+    private ArrayList<Chore> choreList;
+    private GroceryList groceryList;
+    private  BillList billList;
+    private MaintenanceList maintList;
+    private Group group;
+    private  ListView groceryLv;
+    private  ListView choreLv;
+    private  ListView billsLv;
+    private  ListView maintLv;
+
+    private  HTTP_Connector httpcon;
+    private Context mContext;
+    private AsyncResponse async;
+    private AlertDialog alert;
+
+
+    //Chores Things
+    private Chore choreToDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        HTTP_Connector httpcon = new HTTP_Connector(this);
+        mContext = this;
+        async = this;
 
-/**
- * example of getUser function
- */
-       /* HTTP_Connector.getUser gu = httpcon.new getUser();
-        gu.execute("cieslakm0@students.rowan.edu", "pass");
-        if(gu.getStatus() == AsyncTask.Status.FINISHED){
-            gu.createUserObject();
-        }
-        */
-/**
- * example of getChoreList function
- */
-        /*
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
+        //executing each get call, ideally this should all be done in one call so we can fill a group object
+
+        httpcon = new HTTP_Connector(this);
+        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
         getchores.execute("1");
-        if(getchores.getStatus() == AsyncTask.Status.FINISHED) {
-            getchores.createChoreListObject();
-        }
-        */
-        /**
-         * example of addChore function
-         */
-        /*
-        HTTP_Connector.addChore adder = httpcon.new addChore();
-        Chore test_chore = new Chore("cleanbathroom", "Clean the bathroom", "Matt", "testuser", false, 1);
-        adder.execute(test_chore);
-        */
-/**
- * example of getChoreList function
- */
-        /*
-        HTTP_Connector.editChore edit = httpcon.new editChore();
-        Chore test_chore = new Chore("clean kitchen edit", "Clean the bathroom edit", "Matt", "testuser", false, 1);
-        test_chore.setChoreId(1);
-        edit.execute(test_chore);
-        */
+
+        HTTP_Connector.getGroceryList getGrocer = httpcon.new getGroceryList(this);
+        getGrocer.execute("1");
+
+   //     HTTP_Connector.getMaintenanceList getMaint = httpcon.new getMaintenanceList(this);
+     //  getMaint.execute("1");
+
+
+
+
+        groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
+        choreLv= (ListView) findViewById(R.id.choresSnapShot);
+        billsLv= (ListView) findViewById(R.id.billsSnapShot);
+        maintLv= (ListView) findViewById(R.id.maintenanceSnapShot);
+
+
+        ArrayList<String> noVals = new ArrayList<>();
+        noVals.add("");
+        noDataAdapter adapter = new noDataAdapter(mContext, noVals);
+
+        billsLv.setAdapter(adapter);
+        maintLv.setAdapter(adapter);
+        groceryLv.setAdapter(adapter);
+
+        Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
+        Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
+
     }
 
+
+
+    public void processFinish(ArrayList<Chore> result){
+        choreList = result;
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+        choreLv.setAdapter(adapter);
+        setListenerChores(choreLv);
+    }
+    public void processFinish(MaintenanceList result){
+        maintList = result;
+        MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, maintList.getMaintenanceList());
+        maintLv.setAdapter(adapter);
+    }
+    public void processFinish(GroceryList result){
+        groceryList = result;
+        GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, groceryList.getGroceryList());
+        groceryLv.setAdapter(adapter);
+    }
+    public void processFinish(User resp){
+
+    }
+
+
+    public void setListenerChores(ListView lv){
+
+        //This is where we can create the modal for edit  delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                showModalChores(position);
+                view.setSelected(true);
+            }
+        });
+
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -66,23 +132,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, choreList);
         return super.onOptionsItemSelected(item);
     }
 
 
-    public void testVenmo(View view) {
-        if (VenmoLibrary.isVenmoInstalled(this)) {
-            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", "Roommate App Test", "7327889740", ".01", "test", "charge");
-            startActivityForResult(venmoIntent, 2952);
-
-        }
-    }
-
-    public void testSqlite(View view){
-        Intent dbIntent = new Intent(this, DbTestActivity.class);
-        startActivity(dbIntent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,4 +166,82 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void showModalChores(final int position){
+
+        Chore c = choreList.get(position);
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.chore_edit, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText name = (EditText) promptsView
+                .findViewById(R.id.choreName);
+        final EditText desc = (EditText) promptsView
+                .findViewById(R.id.choreDesc);
+        final Spinner spinner = (Spinner) promptsView
+                .findViewById(R.id.PeopleSpinner);
+
+        name.setText(c.getTitle());
+
+        choreToDelete = choreList.get(position);
+        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
+        spinner.setSelection(spinnerPosition);
+        desc.setText(c.getDesc());
+        //choreToDelete = c;
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                //result.setText(userInput.getText());
+                                Chore c = choreList.get(position);
+                                c.setDesc(desc.getText().toString());
+                                c.setTitle(name.getText().toString());
+                                c.setAssignedUser(spinner.getSelectedItem().toString());
+                                ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+
+
+                                HTTP_Connector.editChore editChore = httpcon.new editChore();
+                                editChore.execute(c);
+
+                                choreLv.setAdapter(adapter);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        alert = alertDialogBuilder.create();
+
+        // show it
+        alert.show();
+    }
+        public void deleteChore(View view) {
+
+        choreList.remove(choreToDelete);
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+        choreLv.setAdapter(adapter);
+        Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
+        alert.cancel();
+
+        HTTP_Connector.deleteChore dbDeleteChore = httpcon.new deleteChore();
+        dbDeleteChore.execute(choreToDelete.getChoreId());
+    }
+
+
+
 }
+

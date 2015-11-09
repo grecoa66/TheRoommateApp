@@ -253,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         final TextView newMessage = (TextView) promptsView.findViewById(R.id.newAnnouncement);
         final TextView tv = (TextView) findViewById(R.id.AnnouncementsMessage);
+        final TextView tvUser = (TextView) findViewById(R.id.AnnouncementsUser);
 
 
         // set prompts.xml to alertdialog builder
@@ -269,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
                                 tv.setText(newMessage.getText().toString());
+                                tvUser.setText("-Albie");
+
 
                             }
                         })

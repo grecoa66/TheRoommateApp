@@ -24,10 +24,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
-    private ArrayList<Chore> chores;
-    private ArrayList<User> userList;
+    private UserList userList;
     private User currUser;
-    private ArrayList<Chore> choreList;
+    private ChoreList choreList;
     private GroceryList groceryList;
     private  BillList billList;
     private MaintenanceList maintList;
@@ -56,14 +55,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         //executing each get call, ideally this should all be done in one call so we can fill a group object
 
         httpcon = new HTTP_Connector(this);
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
-        getchores.execute("1");
-
-        HTTP_Connector.getGroceryList getGrocer = httpcon.new getGroceryList(this);
-        getGrocer.execute("1");
-
-   //     HTTP_Connector.getMaintenanceList getMaint = httpcon.new getMaintenanceList(this);
-     //  getMaint.execute("1");
 
         HTTP_Connector.getUser getUser = httpcon.new getUser(this);
         getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
@@ -91,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
     public void processFinish(ArrayList<Chore> result){
-        choreList = result;
-        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+        choreList = new ChoreList(4, result);
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList.getChores());
         choreLv.setAdapter(adapter);
         setListenerChores(choreLv);
     }
@@ -108,11 +99,31 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
     public void processFinish(User resp){
         currUser = resp;
-        Toast.makeText(this, "got user", Toast.LENGTH_SHORT).show();
+        if(currUser != null){
+            Toast.makeText(mContext, "Hello, "+ currUser.getfName()+". Retrieving roomie data...",Toast.LENGTH_SHORT).show();
+            HTTP_Connector.getChoreList getChores = httpcon.new getChoreList(this);
+            getChores.execute(String.valueOf(currUser.groupId));
+
+            HTTP_Connector.getGroceryList getGrocer = httpcon.new getGroceryList(this);
+            getGrocer.execute(String.valueOf(currUser.groupId));
+
+            HTTP_Connector.getMaintenanceList getMaint = httpcon.new getMaintenanceList(this);
+            getMaint.execute(String.valueOf(currUser.groupId));
+
+            HTTP_Connector.getUserList getUserList = httpcon.new getUserList(this);
+            getUserList.execute(String.valueOf(currUser.groupId));
+
+            //still need Bills...
+
+            //
+
+
+        }
+
     }
 
     public void processFinish(UserList ul){
-
+        userList = ul;
     }
 
 
@@ -140,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this, choreList);
+        group = new Group(currUser.groupId, userList, new BillList(4, new ArrayList<Bill>()), choreList, groceryList, maintList);
+        Utility.openNewActivity(id, this, choreList.getChores());
         return super.onOptionsItemSelected(item);
     }
 
@@ -177,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     public void showModalChores(final int position){
 
-        Chore c = choreList.get(position);
+        Chore c = choreList.getChores().get(position);
         LayoutInflater li = LayoutInflater.from(mContext);
         View promptsView = li.inflate(R.layout.chore_edit, null);
 
@@ -196,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         name.setText(c.getTitle());
 
-        choreToDelete = choreList.get(position);
+        choreToDelete = choreList.getChores().get(position);
         ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
         int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
         spinner.setSelection(spinnerPosition);
@@ -211,11 +223,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                                 // get user input and set it to result
                                 // edit text
                                 //result.setText(userInput.getText());
-                                Chore c = choreList.get(position);
+                                Chore c = choreList.getChores().get(position);
                                 c.setDesc(desc.getText().toString());
                                 c.setTitle(name.getText().toString());
                                 c.setAssignedUser(spinner.getSelectedItem().toString());
-                                ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+                                ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList.getChores());
 
 
                                 HTTP_Connector.editChore editChore = httpcon.new editChore();
@@ -239,8 +251,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
         public void deleteChore(View view) {
 
-        choreList.remove(choreToDelete);
-        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList);
+        choreList.getChores().remove(choreToDelete);
+        ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList.getChores());
         choreLv.setAdapter(adapter);
         Toast.makeText(mContext, "Chore deleted", Toast.LENGTH_SHORT).show();
         alert.cancel();

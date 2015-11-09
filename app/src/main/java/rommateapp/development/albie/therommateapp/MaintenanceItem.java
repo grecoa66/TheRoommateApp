@@ -1,11 +1,13 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
+
 /** A damage will be made up of several maintenance items.
  * maintenance items will represent one item a user would have
  * to purchase to fix a damage.
  * Created by alexgreco on 10/19/15.
  */
-public class MaintenanceItem {
+public class MaintenanceItem implements Serializable{
     public int MaintenanceItemId;
     public String desc;
     public String causingUser;

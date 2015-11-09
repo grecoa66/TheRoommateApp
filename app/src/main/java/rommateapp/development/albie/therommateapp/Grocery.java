@@ -1,11 +1,12 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * This wil hold the information for one grocery item.
  * Created by alexgreco on 10/16/15.
  */
-public class Grocery {
+public class Grocery implements Serializable{
     public int groceryId;
     public int groupid;
     public String itemName;

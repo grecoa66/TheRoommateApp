@@ -1,9 +1,11 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
+
 /**
  * Created by alexgreco on 11/1/15.
  */
-public class Group {
+public class Group implements Serializable{
     public int groupId;
     public UserList userList;
     public BillList billList;

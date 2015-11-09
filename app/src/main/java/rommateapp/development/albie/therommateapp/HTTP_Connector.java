@@ -120,21 +120,23 @@ public class HTTP_Connector extends Activity {
     }
 
 
-    class getGroup extends AsyncTask<String, String, String> {
+    class getUserList extends AsyncTask<String, String, String> {
         /**
          * @param params
          * @return
          */
-
+        private AsyncResponse delegate;
+        UserList userlist = new UserList();
+        public getUserList(AsyncResponse resp){
+            delegate = resp;
+        }
         protected String doInBackground(String... params) {
             String response = "";
-          /*  try {
+            try {
                 //Create connection
-                String email = params[0];
-                String password = params[1];
-
-                String urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-                URL url = new URL("http://104.236.10.133/get_user.php");
+                String groupid = params[0];
+                String urlParameters = "groupid=" + URLEncoder.encode(groupid, "UTF-8");
+                URL url = new URL("http://104.236.10.133/get_user_list.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type",
@@ -157,29 +159,34 @@ public class HTTP_Connector extends Activity {
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
             }
-            */
+
             return response;
         }
 
         protected void onPostExecute(String result) {
-            /**
-             * TODO
-             */
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String fname = json_obj.get("first_name").toString();
+                    String lname = json_obj.get("last_name").toString();
+                    String email = json_obj.get("email").toString();
+                    String phone_num = json_obj.get("phone_number").toString();
+                    int u_id = Integer.valueOf(id);
+                    User user = new User(u_id, fname, lname, email, phone_num);
+                    userlist.addUser(user);
+                }
+                delegate.processFinish(userlist);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        protected void onPreExecute(String result) {
-            // something...
-        }
-
-       /* public User createGroupObject() {
-
-        }
-        */
     }
 
 

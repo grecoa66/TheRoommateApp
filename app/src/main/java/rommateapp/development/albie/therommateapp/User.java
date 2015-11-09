@@ -14,12 +14,13 @@ public class User {
     public String phoneNumber= "";
 
 
-    public User(int userId, String fName, String lName, String emailAddress, String phoneNumber){
+    public User(int userId, String fName, String lName, String emailAddress, String phoneNumber, int groupId){
         this.userId = userId;
         this.fName = fName;
         this.lName = lName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+        this.groupId = groupId;
     }
     public User(String fName, String lName, String emailAddress, String phoneNumber, int groupId){
         this.fName = fName;

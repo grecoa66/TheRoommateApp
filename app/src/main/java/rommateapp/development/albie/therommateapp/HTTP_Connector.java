@@ -41,23 +41,16 @@ public class HTTP_Connector extends Activity {
     }
 
     class getUser extends AsyncTask<String, String, String> {
-        String useid = "";
-        String firstname = "";
-        String lastname = "";
-        String emailaddr = "";
-        String phonenum = "";
         AsyncResponse delegate;
+        User user;
         public getUser(AsyncResponse resp){
             delegate = resp;
         }
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                //Create connection
-                String email = params[0];
-                String password = params[1];
-
-                String urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
+                String deviceid = params[0];
+                String urlParameters = "deviceid=" + URLEncoder.encode(deviceid, "UTF-8");
                 URL url = new URL("http://104.236.10.133/get_user.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
@@ -90,33 +83,27 @@ public class HTTP_Connector extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
-            String[] parts = result.split("-");
-            String uid = parts[0]; //
-            String fname = parts[1];
-            String lname = parts[2];
-            String email = parts[3];
-            String phone = parts[4];
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String fname = json_obj.get("first_name").toString();
+                    String lname = json_obj.get("last_name").toString();
+                    String email = json_obj.get("email").toString();
+                    String phone_num = json_obj.get("phone_number").toString();
+                    String groupid = json_obj.get("group_id").toString();
+                    int u_id = Integer.valueOf(id);
+                    int g_id = Integer.valueOf(groupid);
+                    user = new User(u_id, fname, lname, email, phone_num, g_id);
+                }
 
-            useid = uid;
-            firstname = fname;
-            lastname = lname;
-            emailaddr = email;
-            phonenum = phone;
-
-            int id = Integer.valueOf(useid.trim());
-            delegate.processFinish(new User(id, firstname, lastname, emailaddr, phonenum));
+                delegate.processFinish(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        protected void onPreExecute(String result) {
-            // something...
-        }
-
-        public User createUserObject() {
-            int userId = Integer.valueOf(useid);
-            User user = new User(userId, firstname, lastname, emailaddr, phonenum);
-            return user;
-        }
     }
 
 
@@ -177,8 +164,10 @@ public class HTTP_Connector extends Activity {
                     String lname = json_obj.get("last_name").toString();
                     String email = json_obj.get("email").toString();
                     String phone_num = json_obj.get("phone_number").toString();
+                    String groupid = json_obj.get("group_id").toString();
                     int u_id = Integer.valueOf(id);
-                    User user = new User(u_id, fname, lname, email, phone_num);
+                    int g_id = Integer.valueOf(groupid);
+                   User user = new User(u_id, fname, lname, email, phone_num, g_id);
                     userlist.addUser(user);
                 }
                 delegate.processFinish(userlist);

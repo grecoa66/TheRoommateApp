@@ -61,11 +61,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
        //         Settings.Secure.ANDROID_ID));
 
 
-        //new device Id
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
-        Toast.makeText(mContext, telephonyManager.getDeviceId(), Toast.LENGTH_SHORT).show();
         getUser.execute("3f4e05043d09a8c3");
+
 
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
         choreLv= (ListView) findViewById(R.id.choresSnapShot);

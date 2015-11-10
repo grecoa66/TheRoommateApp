@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 
 public class BillRowAdapter extends BaseAdapter {
@@ -57,8 +58,22 @@ public class BillRowAdapter extends BaseAdapter {
         Bill b = bills.get(position);
 
         choreAssignedToTv.setText("Pay: "+b.getUserToPay());
-        choreNameTv.setText(b.getDesc());
-        choreDescTv.setText("$"+b.getTotalAmount());
+        if(b.getDesc().length() > 20){
+            choreNameTv.setText(b.getDesc().substring(0, 17)+"...");
+        }else{
+
+            choreNameTv.setText(b.getDesc());
+        }
+        Currency c = Currency.getInstance("USD");
+
+        double cents =  b.getTotalAmount() * 100;
+        int dollarAmount =(int) cents /100;
+        int centsAmount =(int) cents %100;
+        String space="";
+        if(centsAmount<10){
+            space="0";
+        }
+        choreDescTv.setText("$"+dollarAmount+ "."+space+centsAmount);
         billTo.setText("User Billed: "+b.getUserToBill());
 
         final int pos = position;

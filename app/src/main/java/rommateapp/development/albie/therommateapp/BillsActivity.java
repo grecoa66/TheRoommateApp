@@ -5,19 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,9 +32,9 @@ public class BillsActivity extends AppCompatActivity {
     private ListView list;
     private Bill billToDelete;
     private AlertDialog alertDialog;
-    private ArrayList<User> users;
     private Group currGroup;
     private User currUser;
+    private HTTP_Connector httpcon;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +43,7 @@ public class BillsActivity extends AppCompatActivity {
 
         currGroup= (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
+        httpcon = new HTTP_Connector(this);
 
         list = (ListView) findViewById(R.id.list_bills);
 
@@ -250,6 +246,8 @@ public class BillsActivity extends AppCompatActivity {
         adapter = new BillRowAdapter(mContext, currentBills);
         list.setAdapter(adapter);
         Toast.makeText(mContext, "Bill Dismissed", Toast.LENGTH_SHORT).show();
+        HTTP_Connector.deleteBill deleteBill = httpcon.new deleteBill();
+        deleteBill.execute(String.valueOf(billToDelete.getBillId()));
         alertDialog.cancel();
     }
 
@@ -262,11 +260,11 @@ public class BillsActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
 
-        String[] roomies = new String[users.size()];
+        String[] roomies = new String[currGroup.getUserList().getUserList().size()];
         final ArrayList<Integer> seletedItems=new ArrayList();
 
-        for(int i  =0; i<users.size();i++){
-            roomies[i]=users.get(i).getfName();
+        for(int i  =0; i<currGroup.getUserList().getUserList().size();i++){
+            roomies[i]=currGroup.getUserList().getUserList().get(i).getfName();
         }
 
 
@@ -285,9 +283,6 @@ public class BillsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int indexSelected,
                                         boolean isChecked) {
-      //  desc.setText(b.getDesc());
-       // billToDelete = b;
-        // set dialog message
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
                             seletedItems.add(indexSelected);
@@ -306,8 +301,10 @@ public class BillsActivity extends AppCompatActivity {
                         // for each roomie in selectedItems, we need to create a bill
                         for(int i=0;i<seletedItems.size();i++){
                             Bill b = new Bill(name.getText().toString(), Double.valueOf(amount.getText().toString())/seletedItems.size(),
-                                    users.get(seletedItems.get(i)).getfName(), currUser.getfName(), currUser.getGroupId());
+                                    currGroup.getUserList().getUserList().get(seletedItems.get(i)).getfName(), currUser.getfName(), currUser.getGroupId());
                             currentBills.add(b);
+                            HTTP_Connector.addBill addBill = httpcon.new addBill();
+                            addBill.execute(b);
                         }
                         adapter = new BillRowAdapter(mContext, currentBills);
                         list.setAdapter(adapter);

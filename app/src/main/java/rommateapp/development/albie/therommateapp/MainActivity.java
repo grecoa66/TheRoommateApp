@@ -120,13 +120,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             HTTP_Connector.getUserList getUserList = httpcon.new getUserList(this);
             getUserList.execute(String.valueOf(currUser.groupId));
 
-            //still need Bills...
             HTTP_Connector.getBillList getBillList = httpcon.new getBillList(this);
             getBillList.execute(String.valueOf(currUser.groupId));
-
-            //
-
-
+        }
+        else{
+            Toast.makeText(mContext, "Please create an account to continue",Toast.LENGTH_SHORT);
         }
 
     }

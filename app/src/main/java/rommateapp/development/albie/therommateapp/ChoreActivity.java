@@ -20,16 +20,18 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
+
 public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     private Context mContext;
-    private ArrayList<Chore> allChores;
     private ArrayList<Chore> currentChores;
     private ChoreRowAdapter adapter;
     private ListView list;
     private Chore choreToDelete;
     private AlertDialog alertDialog;
     private  HTTP_Connector httpcon;
+    private Group myGroup;
+    private User currUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,61 +39,19 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         mContext = this;
 
         list = (ListView) findViewById(R.id.list_chores);
-/*
-        allChores = new ArrayList<>();
-        User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942");
-        User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942");
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942");
-
-        allChores.add(new Chore("Sweep", "kitchen", "Greco", "Albie",true, 1));
-        allChores.add(new Chore("Mop", "bathroom", "matt", "Albie",true, 1));
-        allChores.add(new Chore("walk dog", "sparky needs to go", "Greco", "Matt",true, 1));
-        allChores.add(new Chore("garbage", "Its garbage day", "Matt", "Greco",true, 1));
 
 
-
-
-
-        currentChores = new ArrayList<>();
-        for(int i=0;i<allChores.size();i++){
-            Chore c = allChores.get(i);
-            if(c.getAssignedUser().equals("albie")){
-                currentChores.add(c);
-            }
-
-        }
-
-        currentChores = allChores;
-        String[] values = new String[allChores.size()];
-        for(int i=0;i<allChores.size();i++){values[i]="";}
-        adapter = new ChoreRowAdapter(mContext, allChores);
-
-        list.setAdapter(adapter);
-        setListener(list);
-
-*/
-
-
-        ///////////////////////////////////////////////////
-      /*  HTTP_Connector httpcon= new HTTP_Connector(this);
-        HTTP_Connector.getChoreList getchores = httpcon.new getChoreList();
-        getchores.execute("1");
-
-        if(getchores.getStatus() == AsyncTask.Status.FINISHED){
-            //chores = getchore..
-            //setAdapters(chores);
-            Toast.makeText(this,"callback",Toast.LENGTH_SHORT).show();
-        }
-*/
-
-        currentChores= (ArrayList<Chore>) getIntent().getSerializableExtra("chores");
+        myGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
         httpcon = new HTTP_Connector(this);
-        if(currentChores ==null) {
+
+        if(myGroup ==null) {
             currentChores = new ArrayList<>();
-            HTTP_Connector.getChoreList getchores = httpcon.new getChoreList(this);
-            getchores.execute("1");
+            //pull from db here
         }
       else{
+
+            currentChores = myGroup.getChoreList().getChores();
             adapter = new ChoreRowAdapter(mContext, currentChores);
             list.setAdapter(adapter);
             setListener(list);
@@ -116,6 +76,11 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(User resp){
 
     }
+
+    public void processFinish(UserList ul){
+
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -127,7 +92,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         ArrayList<Chore> myList = new ArrayList<>();
 
         for(int i=0; i< currentChores.size();i++){
-            if( currentChores.get(i).getAssignedUser().equals("Albie")){
+            if( currentChores.get(i).getAssignedUser().equals(currUser.getfName())){
                 myList.add(currentChores.get(i));
             }
         }
@@ -141,24 +106,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         setListener(list);
     }
 
-    public void changeAdapter(View view){
 
-        currentChores = new ArrayList<>();
-        User albie = new User(0, "albie","rynkie", "rynk@a.com","842523942");
-        User greco = new User(0, "greco","alex", "rynk@a.com","842523942");
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942" );
-
-        currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
-        currentChores.add(new Chore("0", "Sweep", "kitchen", "albie",true, 1));
-
-
-
-
-
-        adapter = new ChoreRowAdapter(mContext, currentChores);
-
-        list.setAdapter(adapter);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,7 +119,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, myGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 
@@ -203,11 +151,9 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
                                 // get user input and set it to result
                                 // edit text
                                 //result.setText(userInput.getText());
-                                Chore c = new Chore(name.getText().toString(), desc.getText().toString(), "albie", spinner.getSelectedItem().toString(),true, 1);
-                                currentChores.add(c);//current user, not albie
-                                ListView lv = (ListView) findViewById(R.id.list_chores);
-                                String[] values = new String[currentChores.size()];
-                                for(int i=0;i<currentChores.size();i++){values[i]="";}
+                                Chore c = new Chore(name.getText().toString(), desc.getText().toString(), currUser.getfName(), spinner.getSelectedItem().toString(),true, currUser.getGroupId());
+                                currentChores.add(c);
+
                                 adapter = new ChoreRowAdapter(mContext, currentChores);
                                 list.setAdapter(adapter);
                                 setListener(list);
@@ -249,9 +195,19 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
         final Spinner spinner = (Spinner) promptsView
                 .findViewById(R.id.PeopleSpinner);
 
+
+        //set adapter --
+        ArrayList<User> ul = myGroup.getUserList().getUserList();
+        String[] names = new String[ul.size()];
+        for(int i=0; i<ul.size();i++){
+            names[i] = ul.get(i).getfName();
+        }
+        ArrayAdapter<String> namesAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, names);
+        namesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner.setAdapter(namesAdapter);
         name.setText(c.getTitle());
-        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
-        int spinnerPosition = myAdap.getPosition(c.getAssignedUser());
+
+        int spinnerPosition = namesAdapter.getPosition(c.getAssignedUser());
         spinner.setSelection(spinnerPosition);
         desc.setText(c.getDesc());
         choreToDelete = c;

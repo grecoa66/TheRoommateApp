@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class GroceryActivity extends AppCompatActivity implements groceryListResponse{
+public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
 
     private Context mContext;
     private ArrayList<Grocery> allGroc = new ArrayList<>();
@@ -38,6 +38,10 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     private Grocery grocToDelete;
     private AlertDialog alertDialog;
     private Date date;
+    private User currUser;
+    private Group myGroup;
+    private HTTP_Connector httpcon;
+
 
     private Group group;
 
@@ -46,46 +50,50 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grocery_main);
 
-
-        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733");
-        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044");
-        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401");
-        Bill bill1 = new Bill("sharp pants", 12.01, matt, greco, 0);
-        ArrayList<User> userArrList = new ArrayList<User>();
-        userArrList.add(albie);
-        userArrList.add(greco);
-        userArrList.add(matt);
-        UserList userList = new UserList(1, userArrList );
-        GroceryList g = new GroceryList(null);
-        ChoreList c = new ChoreList(0,null);
-        MaintenanceList m = new MaintenanceList(null);
-        ArrayList<Bill> bills = new ArrayList<>();
-        BillList b = new BillList(0,bills);
-        b.addBill(bill1);
-
-        group = new Group(123, userList, b, c, g, m  );
-
-
         mContext = this;
-         date = new Date(System.currentTimeMillis());
+        date = new Date(System.currentTimeMillis());
 
-        allGroc.add(new Grocery( "Milk", 1, date.toString(), "Greco", false));
-        allGroc.add(new Grocery( "Carton of Eggs", 1, date.toString(), "Albie", true));
-        allGroc.add(new Grocery("Oranges", 6, date.toString(), "Greco", false));
-        allGroc.add(new Grocery("Taco Kit", 1, date.toString(), "Matt", false));
+        myGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
+        httpcon = new HTTP_Connector(this);
 
         lv = (ListView) findViewById(R.id.list_grocery);
+
+        if(myGroup ==null) {
+            currentGroc = new ArrayList<>();
+            //pull from db here
+        }
+        else{
+
+            currentGroc = myGroup.getGroceryList().getGroceryList();
+            adapter = new GroceryRowAdapter(mContext, currentGroc);
+            lv.setAdapter(adapter);
+            setListener(lv);
+        }
 
         currentAdapter(lv);
     }
 
-    //piece for the data base response
-    @Override
-    public void groceryListFinish(ArrayList<Grocery> response) {
-        currentGroc = response;
+    //this gets the groc list from the http connector
+    public void processFinish(GroceryList result){
+
+        currentGroc = result.getGroceryList();
         adapter = new GroceryRowAdapter(mContext, currentGroc);
         lv.setAdapter(adapter);
         setListener(lv);
+    }
+    public void processFinish(MaintenanceList result){
+
+    }
+    public void processFinish(ArrayList<Chore> result){
+
+    }
+    public void processFinish(User resp){
+
+    }
+
+    public void processFinish(UserList ul){
+
     }
 
     //This is the adapter that gets shown
@@ -94,11 +102,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     public void currentAdapter(View view) {
 
         currentGroc = buildCurrentList(allGroc);
-
         adapter = new GroceryRowAdapter(mContext, currentGroc);
-
         lv.setAdapter(adapter);
-
         //This is where we can create the modal for edit  delete
        setListener(lv);
     }
@@ -123,16 +128,19 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                allGroc.add(new Grocery(
-                                        grocName.getText().toString(),
+                                Grocery g = new Grocery(grocName.getText().toString(),
                                         Integer.parseInt(grocQuant.getText().toString()),
                                         currentDate.toString(),
-                                        "Albie", false));
+                                        "Albie", false);
+                                currentGroc.add(g);
                                 ListView lv = (ListView) findViewById(R.id.list_grocery);
-                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, currentGroc);
                                 lv.setAdapter(adapter);
                                 //setListener(list);
                                 currentAdapter(lv);
+
+                                HTTP_Connector.addGrocery dbAddGrocery = httpcon.new addGrocery();
+                                dbAddGrocery.execute(g);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -181,7 +189,7 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
                                 grocery.setItemName(editGrocName.getText().toString());
                                 grocery.setQuantity(Integer.parseInt(editGrocQuant.getText().toString()));
                                 ListView lv = (ListView) findViewById(R.id.list_grocery);
-                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, currentGroc);
                                 lv.setAdapter(adapter);
                                 currentAdapter(lv);
                             }
@@ -200,8 +208,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     }
 
     public void removeGrocery(View view){
-        allGroc.remove(grocToDelete);
-        currentGroc = buildCurrentList(allGroc);
+        currentGroc.remove(grocToDelete);
+        currentGroc = buildCurrentList(currentGroc);
         adapter = new GroceryRowAdapter(mContext, currentGroc);
         lv.setAdapter(adapter);
 
@@ -210,6 +218,10 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
                 mContext);
         //close dialog box
         alertDialog.cancel();
+
+        //delete in db
+        HTTP_Connector.deleteGrocery dbDeleteGroc = httpcon.new deleteGrocery();
+        dbDeleteGroc.execute(grocToDelete.getGroceryId());
     }
 
     public void setListener(ListView lv){
@@ -238,7 +250,7 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, myGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 
@@ -309,7 +321,7 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
                                     }
 
                                     ListView lv = (ListView) findViewById(R.id.list_grocery);
-                                    GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, allGroc);
+                                    GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, currentGroc);
                                     lv.setAdapter(adapter);
 
                                     String billTest = bArr.toString();

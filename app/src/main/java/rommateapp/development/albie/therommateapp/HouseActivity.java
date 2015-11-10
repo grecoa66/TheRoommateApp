@@ -53,14 +53,28 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         setContentView(R.layout.house_main);
         mContext = this;
 
-        DataBaseHandler db = new DataBaseHandler(this);
-        db.getUser();
-        currGroup = new Group("201 Mullica Hill Road", "The Roomie\'s House");
+
+        currGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
+
+        currGroup.setAddr("201 Mullica Hill Road");
+        currGroup.setName("The Roomie\'s House");
 
         groupAddr = (TextView) findViewById(R.id.groupAddress);
         groupName = (TextView) findViewById(R.id.groupName);
-        groupAddr.setText("Group NickName: "+currGroup.getName());
-        groupName.setText("Address: "+currGroup.getAddr());
+        groupAddr.setText("Group NickName: " + currGroup.getName());
+        groupName.setText("Address: " + currGroup.getAddr());
+
+
+        firstName = (TextView) findViewById(R.id.userFirstName);
+        lastName = (TextView) findViewById(R.id.userLastName);
+        userPhone = (TextView) findViewById(R.id.userPhone);
+        userEmail = (TextView) findViewById(R.id.userEmail);
+
+        firstName.setText("First Name: " + currUser.getfName());
+        lastName.setText("Last Name: "+ currUser.getlName());
+        userPhone.setText("Phone: "+ currUser.getPhoneNumber());
+        userEmail.setText("email: " + currUser.getEmailAddress());
 
 
     }
@@ -74,7 +88,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 
@@ -239,7 +253,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
                 .findViewById(R.id.NickName);
 
         address.setText(groupAddr.getText().toString().substring(groupAddr.getText().toString().lastIndexOf(":")+1));
-        nickname.setText(groupName.getText().toString().substring(groupName.getText().toString().lastIndexOf(":")+1));
+        nickname.setText(groupName.getText().toString().substring(groupName.getText().toString().lastIndexOf(":") + 1));
         //choreToDelete = c;
         // set dialog message
         alertDialogBuilder
@@ -271,17 +285,6 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
 
 
     public void processFinish(User user){
-        currUser = user;
-        currUser.groupId = 1;
-        firstName = (TextView) findViewById(R.id.userFirstName);
-        lastName = (TextView) findViewById(R.id.userLastName);
-        userPhone = (TextView) findViewById(R.id.userPhone);
-        userEmail = (TextView) findViewById(R.id.userEmail);
-
-        firstName.setText("First Name: "+ user.getfName());
-        lastName.setText("Last Name: "+ user.getlName());
-        userPhone.setText("Phone: "+ user.getPhoneNumber());
-        userEmail.setText("email: " + user.getEmailAddress());
     }
 
     public void processFinish(ArrayList<Chore> result){
@@ -293,6 +296,10 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     public void processFinish(GroceryList result){
 
     }
+    public void processFinish(UserList ul){
+
+    }
+
     public void userListFinish(ArrayList<User> output){
 
     }

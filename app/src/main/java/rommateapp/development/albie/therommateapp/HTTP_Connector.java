@@ -287,7 +287,7 @@ class getGroup extends AsyncTask<String, String, String>{
                     String id = json_obj.get("id").toString();
                     String name = json_obj.get("name").toString();
                     String desc = json_obj.get("desc").toString();
-                    String assigned_to = json_obj.get("assigned_to").toString();
+                    String assigned_to = json_obj.get("assigned_to").toString().trim();
                     String point_val = json_obj.get("point_val").toString();
                     String posted_by = json_obj.get("posted_by").toString();
                     String completed_by = json_obj.get("completed_by").toString();
@@ -694,11 +694,12 @@ class getGroup extends AsyncTask<String, String, String>{
 
 
 
-    class deleteGrocery extends AsyncTask<String, String, String> {
-        protected String doInBackground(String... params) {
+    class deleteGrocery extends AsyncTask<Integer, String, String> {
+        protected String doInBackground(Integer... params) {
             String response = "";
             try {
-                String grc_id = params[0];
+                int g_id = params[0];
+                String grc_id = Integer.toString(g_id);
 
                 String urlParameters = "grcid=" + URLEncoder.encode(grc_id, "UTF-8");
                 URL url = new URL("http://104.236.10.133/edit_grocery.php");

@@ -1,5 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**This class will be a bill.
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * be assigned with a payment
  * Created by alexgreco on 10/19/15.
  */
-public class Bill {
+public class Bill implements Serializable {
     public int billId;
     public String desc;
     public double totalAmount;

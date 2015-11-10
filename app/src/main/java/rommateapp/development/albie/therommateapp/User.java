@@ -1,10 +1,12 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
+
 /**
  * The User class will hold all information about a single user
  * Created by alexgreco on 10/16/15.
  */
-public class User {
+public class User implements Serializable{
 
     public int userId;
     public int groupId;
@@ -30,6 +32,13 @@ public class User {
         this.groupId = groupId;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
     public int getUserId() {
         return userId;
     }

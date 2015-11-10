@@ -15,7 +15,7 @@ public class UserList implements Serializable {
         this.userListId = userListId;
         this.userList = userList;
     }
-    public UserList() {}
+    public UserList() {userList = new ArrayList<>();}
 
     public int getUserListId() {
         return userListId;

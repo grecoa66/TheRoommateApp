@@ -98,6 +98,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, groceryList.getGroceryList());
         groceryLv.setAdapter(adapter);
     }
+
+    public void processFinish(BillList bl){
+        billList = bl;
+        BillRowAdapter adapter = new BillRowAdapter(mContext, billList.getBillList());
+        billsLv.setAdapter(adapter);
+    }
     public void processFinish(User resp){
         currUser = resp;
         if(currUser != null){
@@ -115,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             getUserList.execute(String.valueOf(currUser.groupId));
 
             //still need Bills...
+            HTTP_Connector.getBillList getBillList = httpcon.new getBillList(this);
+            getBillList.execute(String.valueOf(currUser.groupId));
 
             //
 
@@ -152,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        group = new Group(currUser.groupId, userList, new BillList(4, new ArrayList<Bill>()), choreList, groceryList, maintList);//BILLLIST SHOULD BE PULLED FROM DB
+        group = new Group(currUser.groupId, userList, billList, choreList, groceryList, maintList);//BILLLIST SHOULD BE PULLED FROM DB
         Utility.openNewActivity(id, this, group, currUser);
         return super.onOptionsItemSelected(item);
     }

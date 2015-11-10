@@ -1041,7 +1041,7 @@ class getGroup extends AsyncTask<String, String, String>{
                     String assigned_to = json_obj.get("assigned_to").toString();
                     String desc = json_obj.get("desc").toString();
                     String amount = json_obj.get("amount").toString();
-                    String groupid = json_obj.get("groupid").toString();
+                    String groupid = json_obj.get("group_id").toString();
                     int g_id = Integer.valueOf(groupid);
                     int b_id = Integer.valueOf(id);
                     Double total_amount = Double.valueOf(amount);

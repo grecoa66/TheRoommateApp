@@ -45,8 +45,8 @@ public class DataBaseHandler implements AsyncResponse{
     public void processFinish(User output){
         AsyncResponse resp = (AsyncResponse) mContext;
         resp.processFinish(output);
-
-
+    }
+    public void processFinish(BillList bl){
     }
 
     public void processFinish(UserList ul){

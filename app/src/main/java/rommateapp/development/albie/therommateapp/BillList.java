@@ -18,7 +18,7 @@ public class BillList implements Serializable{
         BillListId = billListId;
         this.billList = billList;
     }
-    public BillList() {}
+    public BillList() {billList = new ArrayList<>();}
 
     public int getBillListId() {
         return BillListId;

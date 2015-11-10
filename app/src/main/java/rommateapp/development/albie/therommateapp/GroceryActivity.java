@@ -91,7 +91,8 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     public void processFinish(User resp){
 
     }
-
+    public void processFinish(BillList bl){
+    }
     public void processFinish(UserList ul){
 
     }
@@ -310,7 +311,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                                     for (int i = 0; i < userCount; i++) {
                                         User u = (User) arrL.get(i);
                                         //TODO add the current user as the userToBill
-                                        Bill newBill = new Bill("grocery check out", amountPerPerson, u, u, 0);
+                                        Bill newBill = new Bill("grocery check out", amountPerPerson, u.getfName(), u.getfName(), 0);
                                         bl.addBill(newBill);
                                     }
 

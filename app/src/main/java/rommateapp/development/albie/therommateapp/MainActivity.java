@@ -57,9 +57,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         httpcon = new HTTP_Connector(this);
 
         HTTP_Connector.getUser getUser = httpcon.new getUser(this);
-        getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
-                Settings.Secure.ANDROID_ID));
+       // getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
+       //         Settings.Secure.ANDROID_ID));
 
+        getUser.execute("3f4e05043d09a8c3");
 
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
         choreLv= (ListView) findViewById(R.id.choresSnapShot);

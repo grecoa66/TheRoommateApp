@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         HTTP_Connector.getUser getUser = httpcon.new getUser(this);
        // getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
        //         Settings.Secure.ANDROID_ID));
+
 
 
         getUser.execute("3f4e05043d09a8c3");

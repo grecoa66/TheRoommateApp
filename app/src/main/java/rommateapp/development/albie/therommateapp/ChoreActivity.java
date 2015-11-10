@@ -79,6 +79,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     public void processFinish(UserList ul){
 
+    }public void processFinish(BillList bl){
     }
 
     @Override

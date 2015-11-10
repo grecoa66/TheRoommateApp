@@ -56,10 +56,10 @@ public class BillRowAdapter extends BaseAdapter {
         // Change the icon for Windows and iPhone
         Bill b = bills.get(position);
 
-        choreAssignedToTv.setText("Pay: "+b.getUserToPay().getfName());
+        choreAssignedToTv.setText("Pay: "+b.getUserToPay());
         choreNameTv.setText(b.getDesc());
         choreDescTv.setText("$"+b.getTotalAmount());
-        billTo.setText("User Billed: "+b.getUserToBill().getfName());
+        billTo.setText("User Billed: "+b.getUserToBill());
 
         final int pos = position;
 

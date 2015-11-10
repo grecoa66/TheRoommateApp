@@ -32,7 +32,6 @@ import java.util.ArrayList;
 public class BillsActivity extends AppCompatActivity {
 
     private Context mContext;
-    private ArrayList<Bill> allBills;
     private ArrayList<Bill> currentBills;
     private BillRowAdapter adapter;
     private ListView list;
@@ -46,19 +45,6 @@ public class BillsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bills_main);
         mContext = this;
-
-        allBills = new ArrayList<>();
-        User albie = new User(0, "Albie","rynkie", "rynk@a.com","842523942", 1);
-        User greco = new User(0, "Greco","Alex", "rynk@a.com","842523942", 1);
-        User matt = new User(0, "Matt","cieslak", "rynk@a.com","842523942", 1);
-        users = new ArrayList<>();
-        users.add(albie);
-        users.add(greco);
-        users.add(matt);
-        allBills.add(new Bill("water", 40, albie, greco,0 ));
-        allBills.add(new Bill("gas",  35, matt, greco,0 ));
-        allBills.add(new Bill("rent", 500, matt, albie,0 ));
-        allBills.add(new Bill("dinner", 20, greco, matt,0 ));
 
         currGroup= (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
@@ -75,8 +61,8 @@ public class BillsActivity extends AppCompatActivity {
 
         }
 */
-        currentBills = allBills;
-        adapter = new BillRowAdapter(mContext, allBills);
+        currentBills = currGroup.getBillList().getBillList();
+        adapter = new BillRowAdapter(mContext, currentBills);
 
         list.setAdapter(adapter);
         setListener(list);
@@ -93,7 +79,7 @@ public class BillsActivity extends AppCompatActivity {
         }
         ArrayList<Bill> myList = new ArrayList<>();
         for(int i=0; i< currentBills.size();i++){
-            if( currentBills.get(i).getUserToBill().getfName().equals("Albie")){
+            if( currentBills.get(i).getUserToBill().equals(currUser.getfName())){
                 myList.add(currentBills.get(i));
             }
         }
@@ -218,7 +204,13 @@ public class BillsActivity extends AppCompatActivity {
 
     public void doVenmo(Bill b){
         if (VenmoLibrary.isVenmoInstalled(mContext)) {
-            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", b.getDesc(), b.getUserToPay().getPhoneNumber(), ".01", b.getDesc()+" --Thanks Roomie!", "charge");
+            String pnum ="";
+            for(int i=0; i< currGroup.getUserList().getUserList().size();i++){
+                if(b.getUserToPay().equals(currGroup.getUserList().getUserList().get(i).getfName())){
+                    pnum = currGroup.getUserList().getUserList().get(i).getPhoneNumber();
+                }
+            }
+            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", b.getDesc(), pnum, ".01", b.getDesc()+" --Thanks Roomie!", "charge");
             startActivityForResult(venmoIntent, 2952);
 
         }
@@ -314,10 +306,10 @@ public class BillsActivity extends AppCompatActivity {
                         // for each roomie in selectedItems, we need to create a bill
                         for(int i=0;i<seletedItems.size();i++){
                             Bill b = new Bill(name.getText().toString(), Double.valueOf(amount.getText().toString())/seletedItems.size(),
-                                    users.get(seletedItems.get(i)), users.get(0), 0);
-                            allBills.add(b);
+                                    users.get(seletedItems.get(i)).getfName(), currUser.getfName(), currUser.getGroupId());
+                            currentBills.add(b);
                         }
-                        adapter = new BillRowAdapter(mContext, allBills);
+                        adapter = new BillRowAdapter(mContext, currentBills);
                         list.setAdapter(adapter);
                         setListener(list);
 

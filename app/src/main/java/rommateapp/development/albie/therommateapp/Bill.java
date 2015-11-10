@@ -14,34 +14,45 @@ public class Bill implements Serializable {
     public int billId;
     public String desc;
     public double totalAmount;
-    public User userToPay;
-    public User userToBill;
+    public String userToPay;
+    public String userToBill;
     public double totalPaid;
+    public int groupid;
     public boolean isComplete = false;
 
-    public Bill(String desc, double totalAmount, User userToBill,
-               User userToPay,
-                double totalPaid)
+
+    //constructor for creating bills when data is flowing from backend to front
+    public Bill(int billId, String desc, double totalAmount, String userToBill, String userToPay, int groupid)
+    {
+        this.billId = billId;
+        this.desc = desc;
+        this.totalAmount = totalAmount;
+        this.userToPay = userToPay;
+        this.userToBill = userToBill;
+        this.groupid = groupid;
+    }
+    //constructor for adding bills, billId omitted because you don't know the bill id before its added to db
+    public Bill(String desc, double totalAmount, String userToBill, String userToPay, int groupid)
     {
         this.desc = desc;
         this.totalAmount = totalAmount;
         this.userToPay = userToPay;
         this.userToBill = userToBill;
-        this.totalPaid = totalPaid;
+        this.groupid = groupid;
     }
 
-    public User getUserToPay() {
+    public String getUserToPay() {
         return userToPay;
     }
 
-    public void setUserToPay(User userToPay) {
+    public void setUserToPay(String userToPay) {
         this.userToPay = userToPay;
     }
-    public User getUserToBill() {
+    public String getUserToBill() {
         return userToBill;
     }
 
-    public void setUserToBill(User billableUser) {
+    public void setUserToBill(String billableUser) {
         this.userToBill = billableUser;
     }
 

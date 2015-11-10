@@ -178,7 +178,61 @@ public class HTTP_Connector extends Activity {
 
     }
 
+class getGroup extends AsyncTask<String, String, String>{
 
+    /**
+     * @param params
+     * @return
+     */
+    private AsyncResponse delegate;
+    UserList userlist = new UserList();
+    BillList bill_list = new BillList();
+    public getGroup(AsyncResponse resp){
+        delegate = resp;
+    }
+    protected String doInBackground(String... params) {
+        String response = "";
+        try {
+            //Create connection
+            String groupid = params[0];
+            String urlParameters = "groupid=" + URLEncoder.encode(groupid, "UTF-8");
+            URL url = new URL("http://104.236.10.133/get_group.php");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.writeBytes(urlParameters);
+            dStream.flush();
+            dStream.close();
+
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                response += line;
+            }
+            br.close();
+        } catch (MalformedURLException ex) {
+            Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+        }
+        catch (IOException ex) {
+
+            Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        return response;
+    }
+
+    protected void onPostExecute(String result) {
+
+    }
+
+
+}
     class getChoreList extends AsyncTask<String, String, String> {
         int chore_list_id;
         ArrayList<Chore> chores = new ArrayList<>();
@@ -918,4 +972,244 @@ public class HTTP_Connector extends Activity {
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    class getBillList extends AsyncTask<String, String, String> {
+       BillList billlist = new BillList();
+        private AsyncResponse delegate;
+        public getBillList(AsyncResponse resp){
+            delegate = resp;
+        }
+        protected String doInBackground(String... params) {
+            String response = "";
+
+            try {
+                String groupid = params[0];
+
+                String urlParameters = "groupid=" + URLEncoder.encode(groupid, "UTF-8");
+                URL url = new URL("http://104.236.10.133/get_bill_list.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+        protected void onPostExecute(String result) {
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String bill_creator = json_obj.get("bill_creator").toString();
+                    String assigned_to = json_obj.get("assigned_to").toString();
+                    String desc = json_obj.get("desc").toString();
+                    String amount = json_obj.get("amount").toString();
+                    String groupid = json_obj.get("group_id").toString();
+                    int g_id = Integer.valueOf(groupid);
+                    int b_id = Integer.valueOf(id);
+                    Double total_amount = Double.valueOf(amount);
+
+                    Bill bill = new Bill(b_id, desc, total_amount, bill_creator, assigned_to, g_id);
+                    billlist.addBill(bill);
+                }
+
+                delegate.processFinish(billlist);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+    class addBill extends AsyncTask<Bill, String, String> {
+        protected String doInBackground(Bill... params) {
+            String response = "";
+            try {
+                Bill bill_obj = params[0];
+                String desc = bill_obj.desc;
+                String bill_creator = bill_obj.userToBill;
+                String assigned_to = bill_obj.userToPay;
+                Double amount = bill_obj.totalAmount;
+                int groupid = bill_obj.groupid;
+                String g_id = Integer.toString(groupid);
+                String total_amount = Double.toString(amount);
+
+                String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
+                        + "&bill_creator=" + URLEncoder.encode(bill_creator, "UTF-8")
+                        + "&assigned_to=" + URLEncoder.encode(assigned_to, "UTF-8")
+                        + "&total_amount=" + URLEncoder.encode(total_amount, "UTF-8")
+                        + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/add_bill.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class editBill extends AsyncTask<Bill, String, String> {
+        protected String doInBackground(Bill... params) {
+            String response = "";
+            try {
+                Bill bill_obj = params[0];
+                String desc = bill_obj.desc;
+                String bill_creator = bill_obj.userToBill;
+                String assigned_to = bill_obj.userToPay;
+                Double amount = bill_obj.totalAmount;
+                int groupid = bill_obj.groupid;
+                String g_id = Integer.toString(groupid);
+                String total_amount = Double.toString(amount);
+
+                String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
+                        + "&bill_creator=" + URLEncoder.encode(bill_creator, "UTF-8")
+                        + "&assigned_to=" + URLEncoder.encode(assigned_to, "UTF-8")
+                        + "&total_amount=" + URLEncoder.encode(total_amount, "UTF-8")
+                        + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/edit_bill.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class deleteBill extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                String bill_id = params[0];
+
+                String urlParameters = "bill_id=" + URLEncoder.encode(bill_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/delete_bill.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

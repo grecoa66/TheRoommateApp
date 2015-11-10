@@ -1,5 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  *
  * Created by alexgreco on 10/21/15.
  */
-public class GroceryList {
+public class GroceryList implements Serializable{
 
     public int groceryListId;
     public ArrayList<Grocery> groceryList;

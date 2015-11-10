@@ -85,6 +85,56 @@ public class Utility {
         }
 
         }
+
+    public static void openNewActivity(int id, Activity callingActivity, Group group, User myUser){
+        switch (id){
+            case R.id.grocery_icon:
+                Intent groceryIntent = new Intent(callingActivity, GroceryActivity.class);
+                groceryIntent.putExtra("key", 4); //Optional parameters
+                groceryIntent.setFlags(groceryIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                groceryIntent.putExtra("group", group);
+                groceryIntent.putExtra("user", myUser);
+                callingActivity.startActivity(groceryIntent);
+                break;
+            case R.id.chores_icon:
+                Intent choresIntent = new Intent(callingActivity, ChoreActivity.class);
+                choresIntent.putExtra("key", 4); //Optional parameters
+                choresIntent.putExtra("group", group);
+                choresIntent.putExtra("user", myUser);
+                choresIntent.setFlags(choresIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(choresIntent);
+                break;
+            case R.id.maint_icon:
+                Intent maintIntent = new Intent(callingActivity, MaintenanceActivity.class);
+                maintIntent.putExtra("key", 4); //Optional parameters
+                maintIntent.putExtra("group", group);
+                maintIntent.putExtra("user", myUser);
+                maintIntent.setFlags(maintIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(maintIntent);
+                break;
+            case R.id.bills_icon:
+                Intent billsIntent = new Intent(callingActivity, BillsActivity.class);
+                billsIntent.putExtra("key", 4); //Optional parameters
+                billsIntent.putExtra("group", group);
+                billsIntent.putExtra("user", myUser);
+                // billsIntent.setFlags(billsIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(billsIntent);
+                break;
+            case R.id.settings_icon:
+                Intent houseIntent = new Intent(callingActivity, HouseActivity.class);
+                houseIntent.putExtra("key", 4); //Optional parameters
+                houseIntent.putExtra("group", group);
+                houseIntent.putExtra("user", myUser);
+                houseIntent.setFlags(houseIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);//not followed on backstack
+                callingActivity.startActivity(houseIntent);
+                break;
+
+        }
+
+    }
+
+
+
     /*
         *Could implement so the above code is a little cleaner
      */

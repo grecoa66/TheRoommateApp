@@ -1,5 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  *
  * Created by Alex Greco on 10/21/15.
  */
-public class MaintenanceList {
+public class MaintenanceList implements Serializable {
     public int maintenanceListId;
     public ArrayList<MaintenanceItem> maintenanceList;
 

@@ -68,13 +68,20 @@ public class ChoreRowAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Chore c = chores.get(position);
                 chores.remove(c);
+
+                HTTP_Connector httpcon = new HTTP_Connector(context);
+                HTTP_Connector.deleteChore dbDeleteChore = httpcon.new deleteChore();
+                dbDeleteChore.execute(c.getChoreId());
+
                 notifyDataSetChanged();
                 Toast.makeText(v.getContext(),
-                        "chore + "+c.getTitle()+" complete!",
+                        "chore: "+c.getTitle()+" complete!",
                         Toast.LENGTH_LONG).show();
             }
         });
 
         return rowView;
     }
+
+
 } 

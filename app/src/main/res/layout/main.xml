@@ -4,63 +4,116 @@
     android:layout_height="match_parent"
     android:id="@+id/main_frag"
     tools:context=".MainActivityFragment">
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/AnnouncementsTitle"
+            android:text="Announcements"
+            android:textSize="22dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="add Announcement"
+                android:clickable="true"
+                android:onClick="addAnnouncement"/>
+        </LinearLayout>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/AnnouncementsMessage"
+        android:paddingLeft="10dp"
+        android:text="No announcements have been made yet."
+        android:textSize="16dp"
+        android:textColor="@color/red"
+        android:gravity=""/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/AnnouncementsUser"
+            android:paddingLeft="10dp"
+            android:text="-Anonymous"
+            android:textSize="12dp"
+            android:textColor="@color/red"
+            />
+    </LinearLayout>
 <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="75dp"
+    >
     <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+        android:padding="10dp">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/billsTitle"
-            android:text="Bills at a Glance:"
+            android:text="Bills"
             android:textSize="22dp"
+            android:textStyle="bold"
             android:gravity=""/>
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/billsSnapShot"/>
+        android:id="@+id/billsSnapShot"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/choresTitle"
-        android:text="Chores at a Glance:"
+        android:text="Chores"
+        android:textStyle="bold"
         android:textSize="22dp"
         android:gravity=""/>
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/choresSnapShot"/>
+        android:id="@+id/choresSnapShot"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/groceryTitle"
-        android:text="Groceries at a Glance:"
+        android:text="Groceries"
+        android:textStyle="bold"
         android:textSize="22dp"
         android:gravity=""/>
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/groceriesSnapShot"/>
+        android:id="@+id/groceriesSnapShot"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/MaintTitle"
-        android:text="Maintenance at a Glance:"
+        android:text="Maintenance"
+        android:textStyle="bold"
         android:textSize="22dp"
         android:gravity=""/>
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/maintenanceSnapShot"/>
+        android:id="@+id/maintenanceSnapShot"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>
 </ScrollView>

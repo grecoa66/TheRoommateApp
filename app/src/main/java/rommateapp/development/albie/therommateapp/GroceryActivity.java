@@ -38,6 +38,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     private Grocery grocToDelete;
     private AlertDialog alertDialog;
     private Date date;
+    private User currUser;
+    private Group currGroup;
 
     private Group group;
 
@@ -47,9 +49,9 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
         setContentView(R.layout.grocery_main);
 
 
-        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733");
-        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044");
-        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401");
+        User albie = new User(1, "albie", "r", "a.r@gmail.com", "9083457733", 1);
+        User greco = new User(2, "Alex", "g", "A.g@gmail.com", "9082689044", 1);
+        User matt = new User(3, "matt", "c", "m.c@gmail.com", "8629234401", 1);
         Bill bill1 = new Bill("sharp pants", 12.01, matt, greco, 0);
         ArrayList<User> userArrList = new ArrayList<User>();
         userArrList.add(albie);
@@ -65,6 +67,8 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
 
         group = new Group(123, userList, b, c, g, m  );
 
+        currGroup= (Group) getIntent().getSerializableExtra("group");
+        currUser = (User) getIntent().getSerializableExtra("user");
 
         mContext = this;
          date = new Date(System.currentTimeMillis());
@@ -238,7 +242,7 @@ public class GroceryActivity extends AppCompatActivity implements groceryListRes
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this);
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 

@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.grocery_main);
 
         mContext = this;
-        lv = (ListView) findViewById(R.id.setting_main);
+        lv = (ListView) findViewById(R.id.settings_lv);
 
     }
 }

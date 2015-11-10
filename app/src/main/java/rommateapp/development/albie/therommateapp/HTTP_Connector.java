@@ -41,23 +41,16 @@ public class HTTP_Connector extends Activity {
     }
 
     class getUser extends AsyncTask<String, String, String> {
-        String useid = "";
-        String firstname = "";
-        String lastname = "";
-        String emailaddr = "";
-        String phonenum = "";
         AsyncResponse delegate;
+        User user;
         public getUser(AsyncResponse resp){
             delegate = resp;
         }
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                //Create connection
-                String email = params[0];
-                String password = params[1];
-
-                String urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
+                String deviceid = params[0];
+                String urlParameters = "deviceid=" + URLEncoder.encode(deviceid, "UTF-8");
                 URL url = new URL("http://104.236.10.133/get_user.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
@@ -90,51 +83,47 @@ public class HTTP_Connector extends Activity {
         }
 
         protected void onPostExecute(String result) {
-            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
-            String[] parts = result.split("-");
-            String uid = parts[0]; //
-            String fname = parts[1];
-            String lname = parts[2];
-            String email = parts[3];
-            String phone = parts[4];
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String fname = json_obj.get("first_name").toString();
+                    String lname = json_obj.get("last_name").toString();
+                    String email = json_obj.get("email").toString();
+                    String phone_num = json_obj.get("phone_number").toString();
+                    String groupid = json_obj.get("group_id").toString();
+                    int u_id = Integer.valueOf(id);
+                    int g_id = Integer.valueOf(groupid);
+                    user = new User(u_id, fname, lname, email, phone_num, g_id);
+                }
 
-            useid = uid;
-            firstname = fname;
-            lastname = lname;
-            emailaddr = email;
-            phonenum = phone;
-
-            int id = Integer.valueOf(useid.trim());
-            delegate.processFinish(new User(id, firstname, lastname, emailaddr, phonenum));
+                delegate.processFinish(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        protected void onPreExecute(String result) {
-            // something...
-        }
-
-        public User createUserObject() {
-            int userId = Integer.valueOf(useid);
-            User user = new User(userId, firstname, lastname, emailaddr, phonenum);
-            return user;
-        }
     }
 
 
-    class getGroup extends AsyncTask<String, String, String> {
+    class getUserList extends AsyncTask<String, String, String> {
         /**
          * @param params
          * @return
          */
-
+        private AsyncResponse delegate;
+        UserList userlist = new UserList();
+        public getUserList(AsyncResponse resp){
+            delegate = resp;
+        }
         protected String doInBackground(String... params) {
             String response = "";
-          /*  try {
+            try {
                 //Create connection
-                String email = params[0];
-                String password = params[1];
-
-                String urlParameters = "email=" + URLEncoder.encode(email, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-                URL url = new URL("http://104.236.10.133/get_user.php");
+                String groupid = params[0];
+                String urlParameters = "groupid=" + URLEncoder.encode(groupid, "UTF-8");
+                URL url = new URL("http://104.236.10.133/get_user_list.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type",
@@ -157,29 +146,36 @@ public class HTTP_Connector extends Activity {
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
             }
-            */
+
             return response;
         }
 
         protected void onPostExecute(String result) {
-            /**
-             * TODO
-             */
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String fname = json_obj.get("first_name").toString();
+                    String lname = json_obj.get("last_name").toString();
+                    String email = json_obj.get("email").toString();
+                    String phone_num = json_obj.get("phone_number").toString();
+                    String groupid = json_obj.get("group_id").toString();
+                    int u_id = Integer.valueOf(id);
+                    int g_id = Integer.valueOf(groupid);
+                   User user = new User(u_id, fname, lname, email, phone_num, g_id);
+                    userlist.addUser(user);
+                }
+                delegate.processFinish(userlist);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        protected void onPreExecute(String result) {
-            // something...
-        }
-
-       /* public User createGroupObject() {
-
-        }
-        */
     }
 
 
@@ -237,7 +233,7 @@ public class HTTP_Connector extends Activity {
                     String id = json_obj.get("id").toString();
                     String name = json_obj.get("name").toString();
                     String desc = json_obj.get("desc").toString();
-                    String assigned_to = json_obj.get("assigned_to").toString();
+                    String assigned_to = json_obj.get("assigned_to").toString().trim();
                     String point_val = json_obj.get("point_val").toString();
                     String posted_by = json_obj.get("posted_by").toString();
                     String completed_by = json_obj.get("completed_by").toString();
@@ -768,6 +764,7 @@ public class HTTP_Connector extends Activity {
 
 
 
+
     class addMaintenanceItem extends AsyncTask<MaintenanceItem, String, String> {
         protected String doInBackground(MaintenanceItem... params) {
             String response = "";
@@ -823,5 +820,101 @@ public class HTTP_Connector extends Activity {
         }
     }
 
+    class editMaintenanceItem extends AsyncTask<MaintenanceItem, String, String> {
+        protected String doInBackground(MaintenanceItem... params) {
+            String response = "";
+            try {
+                MaintenanceItem mntce_obj = params[0];
+                String desc = mntce_obj.desc;
+                String causingUser = mntce_obj.causingUser;
+                String purchaseUser = mntce_obj.purchaseUser;
+                Boolean isComplete = mntce_obj.isComplete;
+                String isComplet = isComplete.toString();
 
+                int groupid = mntce_obj.groupid;
+                String g_id = Integer.toString(groupid);
+
+                String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
+                        + "&causingUser=" + URLEncoder.encode(causingUser, "UTF-8")
+                        + "&purchaseuser=" + URLEncoder.encode(purchaseUser, "UTF-8")
+                        + "&isComplete=" + URLEncoder.encode(isComplet, "UTF-8")
+                        + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/edit_maintenance_item.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class deleteMaintenanceItem extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                String mntc_id = params[0];
+
+                String urlParameters = "mntc_id=" + URLEncoder.encode(mntc_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/delete_maintenance_item.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
 }

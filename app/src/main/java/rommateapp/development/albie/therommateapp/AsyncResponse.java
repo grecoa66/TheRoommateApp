@@ -11,4 +11,5 @@ public interface AsyncResponse {
     void processFinish(GroceryList gl);
     void processFinish(MaintenanceList ml);
     void processFinish(User resp);
+    void processFinish(UserList ul);
 }

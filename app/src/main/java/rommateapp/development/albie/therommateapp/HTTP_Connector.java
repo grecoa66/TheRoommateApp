@@ -488,7 +488,7 @@ public class HTTP_Connector extends Activity {
                     int quant = Integer.valueOf(quantity);
                     Double cost_per_Item = Double.valueOf(costPerItem);
                     boolean isPurchsed = false;
-                    if (isPurchased.length() > 0) {
+                    if (isPurchased.equals("true")) {
                         isPurchsed = true;
                     }
                     Grocery grocery = new Grocery(grc_id, item_name, quant, dateRequested, datePurchased, isPurchsed, cost_per_Item, requestUser, purchaseUser);
@@ -523,11 +523,11 @@ public class HTTP_Connector extends Activity {
 
                 String urlParameters = "item_name=" + URLEncoder.encode(item_name, "UTF-8") + "&quantity=" + URLEncoder.encode(quant, "UTF-8")
                         + "&dr=" + URLEncoder.encode(dr, "UTF-8")
-                        + "&dp=" + URLEncoder.encode(dp, "UTF-8")
+                        + "&dp=" + URLEncoder.encode("", "UTF-8")
                         + "&ip=" + URLEncoder.encode(ip, "UTF-8")
                         + "&cst=" + URLEncoder.encode(cst, "UTF-8")
                         + "&requestUser=" + URLEncoder.encode(requestUser, "UTF-8")
-                        + "&purchaseUser=" + URLEncoder.encode(purchaseUser, "UTF-8")
+                        + "&purchaseUser=" + URLEncoder.encode("", "UTF-8")
                         + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
                 URL url = new URL("http://104.236.10.133/add_grocery.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();

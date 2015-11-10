@@ -30,7 +30,6 @@ import java.util.ArrayList;
 public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
 
     private Context mContext;
-    private ArrayList<Grocery> allGroc = new ArrayList<>();
     private ArrayList<Grocery> currentGroc = new ArrayList<>();
     private ArrayList<Grocery> grocToPurchase = new ArrayList<>();
     private ListView lv;
@@ -41,10 +40,6 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     private User currUser;
     private Group myGroup;
     private HTTP_Connector httpcon;
-
-
-    private Group group;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,10 +124,10 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Grocery g = new Grocery(grocName.getText().toString(),
+                                Grocery g = new Grocery(myGroup.getGroupId(),grocName.getText().toString(),
                                         Integer.parseInt(grocQuant.getText().toString()),
                                         currentDate.toString(),
-                                        "Albie", false);
+                                        currUser.getfName(), false);
                                 currentGroc.add(g);
                                 ListView lv = (ListView) findViewById(R.id.list_grocery);
                                 GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, currentGroc);
@@ -193,6 +188,9 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                                 GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, currentGroc);
                                 lv.setAdapter(adapter);
                                 currentAdapter(lv);
+
+                                HTTP_Connector.editGrocery dbEditGroc = httpcon.new editGrocery();
+                                dbEditGroc.execute(grocery);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -257,6 +255,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
 
     //fixes bug where  adapter was being sent bad data
     public ArrayList<Grocery> buildCurrentList(ArrayList<Grocery> allGroc){
+
         currentGroc = new ArrayList<Grocery>();
 
         for (int i = 0; i < allGroc.size(); i++) {
@@ -298,27 +297,36 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                                 if (!grocToPurchase.isEmpty()) {
                                     double totalAmount = Double.parseDouble(enterAmount.getText().toString());
 
-                                    UserList uList = group.getUserList();
+                                    UserList uList = myGroup.getUserList();
                                     ArrayList arrL = uList.getUserList();
                                     int userCount = arrL.size();
 
                                     double amountPerPerson = (totalAmount / userCount);
 
-                                    BillList bl = group.getBillList();
+                                    BillList bl = myGroup.getBillList();
                                     ArrayList bArr = bl.getBillList();
 
                                     //bill all users in group evenly
                                     for (int i = 0; i < userCount; i++) {
                                         User u = (User) arrL.get(i);
                                         //TODO add the current user as the userToBill
-                                        Bill newBill = new Bill("grocery check out", amountPerPerson, u.getfName(), u.getfName(), 0);
-                                        bl.addBill(newBill);
+                                        Bill newBill = new Bill("grocery check out", amountPerPerson, u.getfName(), currUser.getfName(), myGroup.getGroupId());
+                                        HTTP_Connector.addBill dbAddBill= httpcon.new addBill();
+                                        dbAddBill.execute(newBill);
                                     }
 
                                     //set is purchased to true for all things just purchased
                                     for (int j = 0; j < grocToPurchase.size(); j++) {
                                         Grocery g = grocToPurchase.get(j);
                                         g.setIsPurchased(true);
+
+                                        HTTP_Connector.editGrocery dbEditGroc = httpcon.new editGrocery();
+                                        dbEditGroc.execute(g);
+
+                                        g.setPurchaseUser(currUser.getfName());
+
+                                        HTTP_Connector.editGrocery dbEditGroc2 = httpcon.new editGrocery();
+                                        dbEditGroc2.execute(g);
                                     }
 
                                     ListView lv = (ListView) findViewById(R.id.list_grocery);
@@ -332,7 +340,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                                     //load a new current view to reflect changes
                                     currentAdapter(lv);
                                 } else {
-                                    Toast.makeText(GroceryActivity.this, "You have purchased anything", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(GroceryActivity.this, "You have not purchased anything", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })

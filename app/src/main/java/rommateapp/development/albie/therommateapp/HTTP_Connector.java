@@ -40,6 +40,8 @@ public class HTTP_Connector extends Activity {
         this.ctx = ctx;
     }
 
+    //user stuff
+
     class getUser extends AsyncTask<String, String, String> {
         AsyncResponse delegate;
         User user;
@@ -178,6 +180,8 @@ public class HTTP_Connector extends Activity {
 
     }
 
+    //group Stuff
+
 class getGroup extends AsyncTask<String, String, String>{
 
     /**
@@ -233,6 +237,9 @@ class getGroup extends AsyncTask<String, String, String>{
 
 
 }
+
+    //Chore stuff
+
     class getChoreList extends AsyncTask<String, String, String> {
         int chore_list_id;
         ArrayList<Chore> chores = new ArrayList<>();
@@ -270,7 +277,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -362,7 +369,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -417,7 +424,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -429,8 +436,6 @@ class getGroup extends AsyncTask<String, String, String>{
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
-
-
 
     class deleteChore extends AsyncTask<Integer, String, String> {
         protected String doInBackground(Integer... params) {
@@ -478,9 +483,7 @@ class getGroup extends AsyncTask<String, String, String>{
         }
     }
 
-
-
-
+    //Grocery Stuff
 
     class getGroceryList extends AsyncTask<String, String, String> {
         ArrayList<Grocery> gcry = new ArrayList<>();
@@ -546,7 +549,9 @@ class getGroup extends AsyncTask<String, String, String>{
                         isPurchsed = true;
                     }
                     Grocery grocery = new Grocery(grc_id, item_name, quant, dateRequested, datePurchased, isPurchsed, cost_per_Item, requestUser, purchaseUser);
-                    gcry.add(grocery);
+                    if (!grocery.isPurchased){
+                        gcry.add(grocery);
+                    }
                 }
                 GroceryList grcy_list = new GroceryList(gcry);
                 delegate.processFinish(grcy_list);
@@ -606,7 +611,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -618,10 +623,6 @@ class getGroup extends AsyncTask<String, String, String>{
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
-
-
-
-
 
 
     class editGrocery extends AsyncTask<Grocery, String, String> {
@@ -649,7 +650,8 @@ class getGroup extends AsyncTask<String, String, String>{
                 String grc_id = Integer.toString(groceryid);
 
 
-                String urlParameters = "item_name=" + URLEncoder.encode(item_name, "UTF-8") + "&quantity=" + URLEncoder.encode(quant, "UTF-8")
+                String urlParameters = "item_name=" + URLEncoder.encode(item_name, "UTF-8")
+                        + "&quantity=" + URLEncoder.encode(quant, "UTF-8")
                         + "&dr=" + URLEncoder.encode(dr, "UTF-8")
                         + "&ip=" + URLEncoder.encode(ip, "UTF-8")
                         + "&cst=" + URLEncoder.encode(cst, "UTF-8")
@@ -679,7 +681,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -725,7 +727,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
 
             }
-// and some more
+            // and some more
             catch (IOException ex) {
 
                 Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
@@ -738,12 +740,7 @@ class getGroup extends AsyncTask<String, String, String>{
         }
     }
 
-
-
-
-
-
-
+    //maintenace stuff
 
     class getMaintenanceList extends AsyncTask<String, String, String> {
         ArrayList<MaintenanceItem> mnt_itm = new ArrayList<>();
@@ -815,10 +812,6 @@ class getGroup extends AsyncTask<String, String, String>{
             }
         }
     }
-
-
-
-
 
     class addMaintenanceItem extends AsyncTask<MaintenanceItem, String, String> {
         protected String doInBackground(MaintenanceItem... params) {
@@ -973,21 +966,7 @@ class getGroup extends AsyncTask<String, String, String>{
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //Bill stuff
 
     class getBillList extends AsyncTask<String, String, String> {
        BillList billlist = new BillList();

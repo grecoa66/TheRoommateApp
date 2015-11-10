@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
     public void processFinish(GroceryList result){
         groceryList = result;
-        GroceryRowAdapter adapter = new GroceryRowAdapter(mContext, groceryList.getGroceryList());
+        GroceryRowAdapterForMain adapter = new GroceryRowAdapterForMain(mContext, groceryList.getGroceryList());
         groceryLv.setAdapter(adapter);
     }
 

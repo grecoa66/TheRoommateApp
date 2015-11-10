@@ -20,7 +20,7 @@ public class Grocery implements Serializable{
     public String purchaseUser;//who purchased the item(s)
 
 
-    public Grocery(String itemName, int quantity,
+    public Grocery(int groupid,String itemName, int quantity,
                    String dateRequested, String requestUser, boolean isPurchased
                    ){
         this.itemName = itemName;
@@ -28,6 +28,7 @@ public class Grocery implements Serializable{
         this.dateRequested = dateRequested;
         this.isPurchased = isPurchased;
         this.requestUser = requestUser;
+        this.groupid = groupid;
     }
 
 

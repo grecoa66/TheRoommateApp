@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
        // getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
        //         Settings.Secure.ANDROID_ID));
 
+
+        //new device Id
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+        Toast.makeText(mContext, telephonyManager.getDeviceId(), Toast.LENGTH_SHORT).show();
         getUser.execute("3f4e05043d09a8c3");
 
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);

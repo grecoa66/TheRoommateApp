@@ -102,7 +102,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     //the whole house shares the entire grocery list
     public void currentAdapter(View view) {
 
-        currentGroc = buildCurrentList(allGroc);
+        currentGroc = buildCurrentList(currentGroc);
         adapter = new GroceryRowAdapter(mContext, currentGroc);
         lv.setAdapter(adapter);
         //This is where we can create the modal for edit  delete

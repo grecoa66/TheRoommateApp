@@ -75,9 +75,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         billsLv.setAdapter(adapter);
         maintLv.setAdapter(adapter);
         groceryLv.setAdapter(adapter);
-
-
-
     }
 
 

@@ -17,6 +17,7 @@ public class BillList {
         BillListId = billListId;
         this.billList = billList;
     }
+    public BillList() {}
 
     public int getBillListId() {
         return BillListId;

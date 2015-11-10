@@ -12,4 +12,5 @@ public interface AsyncResponse {
     void processFinish(MaintenanceList ml);
     void processFinish(User resp);
     void processFinish(UserList ul);
+    void processFinish(BillList bl);
 }

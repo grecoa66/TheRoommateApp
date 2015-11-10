@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         maintLv.setAdapter(adapter);
         groceryLv.setAdapter(adapter);
 
-Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
+        Toast.makeText(mContext, Settings.Secure.getString(mContext.getContentResolver(),
         Settings.Secure.ANDROID_ID), Toast.LENGTH_SHORT).show();
 
     }

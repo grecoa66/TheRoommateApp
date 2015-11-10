@@ -640,11 +640,12 @@ public class HTTP_Connector extends Activity {
 
 
 
-    class deleteGrocery extends AsyncTask<String, String, String> {
-        protected String doInBackground(String... params) {
+    class deleteGrocery extends AsyncTask<Integer, String, String> {
+        protected String doInBackground(Integer... params) {
             String response = "";
             try {
-                String grc_id = params[0];
+                int g_id = params[0];
+                String grc_id = Integer.toString(g_id);
 
                 String urlParameters = "grcid=" + URLEncoder.encode(grc_id, "UTF-8");
                 URL url = new URL("http://104.236.10.133/edit_grocery.php");

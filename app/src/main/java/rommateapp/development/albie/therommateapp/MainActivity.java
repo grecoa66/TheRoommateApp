@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         getUser.execute(Settings.Secure.getString(mContext.getContentResolver(),
                 Settings.Secure.ANDROID_ID));
 
-
         groceryLv = (ListView) findViewById(R.id.groceriesSnapShot);
         choreLv= (ListView) findViewById(R.id.choresSnapShot);
         billsLv= (ListView) findViewById(R.id.billsSnapShot);

@@ -17,7 +17,6 @@ public class GroceryList implements Serializable{
     public ArrayList<Grocery> groceryList;
 
     public GroceryList(ArrayList<Grocery> groceryList) {
-        this.groceryListId = groceryListId;
         this.groceryList = groceryList;
     }
 

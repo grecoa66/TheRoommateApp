@@ -3,14 +3,6 @@
     android:orientation="vertical"
     android:layout_width="fill_parent" android:layout_height="fill_parent"       android:background="#ffffff">
 
-    <EditText android:layout_width="fill_parent"
-        android:layout_gravity="center" android:layout_height="wrap_content"
-        android:hint="Chore Name" android:id="@+id/choreName" android:textColor="#000000"
-        android:lines="3" />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Assign to:"/>
     <Spinner
         android:id="@+id/PeopleSpinner"
         android:layout_width="fill_parent"
@@ -20,6 +12,6 @@
         />
     <EditText android:layout_width="fill_parent"
         android:layout_gravity="center" android:layout_height="wrap_content"
-        android:hint="Description" android:id="@+id/pointsAdd" android:textColor="#000000"
+        android:hint="Point Amount" android:id="@+id/pointsAdd" android:textColor="#000000"
         android:inputType="numberDecimal" />
 </LinearLayout>

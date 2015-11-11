@@ -123,14 +123,20 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse 
         final EditText grocName = (EditText) promptsView.findViewById(R.id.grocNameAdd);
         final EditText grocQuant = (EditText) promptsView.findViewById(R.id.grocQuantAdd);
         final Date currentDate = new Date(System.currentTimeMillis());
-
+        final Spinner commonItems = (Spinner) promptsView.findViewById(R.id.commonSpinner);
 
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Grocery g = new Grocery(myGroup.getGroupId(), grocName.getText().toString(),
+                                String itemName;
+                                if (grocName.getText().toString().matches("")) {
+                                    itemName = commonItems.getSelectedItem().toString();
+                                }else{
+                                    itemName = grocName.getText().toString();
+                                }
+                                Grocery g = new Grocery(myGroup.getGroupId(), itemName,
                                         Integer.parseInt(grocQuant.getText().toString()),
                                         currentDate.toString(),
                                         currUser.getfName(), false);
@@ -173,6 +179,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse 
         final EditText editGrocName = (EditText) promptsView.findViewById(R.id.grocNameEdit);
         final EditText editGrocQuant = (EditText) promptsView.findViewById(R.id.grocQuantEdit);
         final Spinner spinner = (Spinner) promptsView.findViewById(R.id.PeopleSpinnerGrocery);
+
 
         editGrocName.setText(grocery.getItemName());
         editGrocQuant.setText("" + grocery.getQuantity());
@@ -342,7 +349,6 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse 
 
                                     String billTest = bArr.toString();
 
-                                    Toast.makeText(mContext, billTest, Toast.LENGTH_SHORT).show();
 
                                     //load a new current view to reflect changes
                                     currentAdapter(lv);

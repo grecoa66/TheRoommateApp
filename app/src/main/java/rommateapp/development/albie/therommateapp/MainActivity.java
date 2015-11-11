@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
 
-    public void processFinish(ArrayList<Chore> result){
-        choreList = new ChoreList(4, result);
+    public void processFinish(ChoreList result){
+        choreList = result;
         ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList.getChores());
         choreLv.setAdapter(adapter);
         setListenerChores(choreLv);

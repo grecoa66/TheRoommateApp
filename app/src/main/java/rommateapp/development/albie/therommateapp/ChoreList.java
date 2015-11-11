@@ -19,7 +19,7 @@ public class ChoreList implements Serializable{
         this.choreListId = choreListId;
         this.choresList = choresList;
     }
-    public ChoreList() {}
+    public ChoreList() { choresList = new ArrayList<>();}
 
     public int getChoreListId() {
         return choreListId;

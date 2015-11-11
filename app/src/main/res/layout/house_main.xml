@@ -4,14 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+<!--
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add new User to Group"
         android:padding="20dp"
         android:clickable="true"
-        android:onClick="addUser"/>
+        android:onClick="addUser"
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -19,7 +20,8 @@
         android:text="Remove User from Group"
         android:padding="20dp"
         android:clickable="true"
-        android:onClick="removeUser"/>
+        android:onClick="removeUser"
+        android:visibility="invisible"/>
 
 
     <Button
@@ -28,7 +30,8 @@
         android:text="Edit Profile"
         android:padding="20dp"
         android:clickable="true"
-        android:onClick="editUser"/>
+        android:onClick="editUser"
+        android:visibility="invisible"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -36,8 +39,9 @@
         android:text="Edit Group"
         android:padding="20dp"
         android:clickable="true"
-        android:onClick="editGroup"/>
-
+        android:onClick="editGroup"
+        android:visibility="invisible"/>
+-->
 <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -81,5 +85,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/groupAddress"
         android:text="Address:"/>
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Points"
+        android:clickable="true"
+        android:onClick="addPoints"/>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_points"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -47,6 +47,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     private TextView userEmail;
     private TextView groupAddr;
     private TextView groupName;
+    private ArrayList<Points> currentPoints = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +58,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         currGroup= (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
 
+
         currGroup.setAddr("201 Mullica Hill Road");
         currGroup.setName("The Roomie\'s House");
 
@@ -64,7 +66,6 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         groupName = (TextView) findViewById(R.id.groupName);
         groupAddr.setText("Group NickName: " + currGroup.getName());
         groupName.setText("Address: " + currGroup.getAddr());
-
 
         firstName = (TextView) findViewById(R.id.userFirstName);
         lastName = (TextView) findViewById(R.id.userLastName);
@@ -76,6 +77,16 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         userPhone.setText("Phone: "+ currUser.getPhoneNumber());
         userEmail.setText("email: " + currUser.getEmailAddress());
 
+        currentPoints.add(new Points("Albie", 25));
+        currentPoints.add(new Points("Greco", 15));
+        currentPoints.add(new Points("Matt", 10));
+
+
+        ListView list = (ListView) findViewById(R.id.list_points);
+
+
+        PointsRowAdapter adapter = new PointsRowAdapter(mContext, currentPoints);
+        list.setAdapter(adapter);
 
     }
 
@@ -184,9 +195,9 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         alert.show();
     }
 
-    public void editUser(View view){
+    public void addPoints(View view){
         LayoutInflater li = LayoutInflater.from(mContext);
-        View promptsView = li.inflate(R.layout.user_add, null);
+        View promptsView = li.inflate(R.layout.points_add, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 mContext);
@@ -194,30 +205,20 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
 
-        final EditText fName = (EditText) promptsView
-                .findViewById(R.id.firstName);
+        final Spinner fName = (Spinner) promptsView
+                .findViewById(R.id.PeopleSpinner);
         final EditText lName = (EditText) promptsView
-                .findViewById(R.id.lastName);
-        final EditText email = (EditText) promptsView
-                .findViewById(R.id.email);
-        final EditText phoneNum= (EditText) promptsView
-                .findViewById(R.id.phoneNum);
+                .findViewById(R.id.pointsAdd);
 
-        fName.setText(firstName.getText().toString().substring(firstName.getText().toString().lastIndexOf(" ")));
-        lName.setText(lastName.getText().toString().substring(lastName.getText().toString().lastIndexOf(" ")));
-        email.setText(userEmail.getText().toString().substring(userEmail.getText().toString().indexOf(" ")));
-        phoneNum.setText(userPhone.getText().toString().substring(userPhone.getText().toString().indexOf(" ")));
-        //choreToDelete = c;
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
-                .setTitle("Edit Profile")
-                .setPositiveButton("Edit",
+                .setTitle("Add Points")
+                .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // HTTP_Connector.editChore editChore = httpcon.new editChore();
                                 // editChore.execute(c);
-                                final User u = new User(fName.getText().toString(),lName.getText().toString(), email.getText().toString(), phoneNum.getText().toString(), currUser.groupId );
 
                                 Toast.makeText(mContext, u.getfName() + u.getlName()+u.getEmailAddress()+u.getPhoneNumber()+u.groupId, Toast.LENGTH_SHORT).show();
                             }
@@ -309,5 +310,55 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
 
     }
 
+
+
+    public void addUser(View view){
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.user_add, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText fName = (EditText) promptsView
+                .findViewById(R.id.firstName);
+        final EditText lName = (EditText) promptsView
+                .findViewById(R.id.lastName);
+        final EditText email = (EditText) promptsView
+                .findViewById(R.id.email);
+        final EditText phoneNum= (EditText) promptsView
+                .findViewById(R.id.phoneNum);
+
+        //choreToDelete = c;
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setTitle("Add User to Group")
+                .setPositiveButton("Edit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // HTTP_Connector.editChore editChore = httpcon.new editChore();
+                                // editChore.execute(c);
+                                final User u = new User(fName.getText().toString(),lName.getText().toString(), email.getText().toString(), phoneNum.getText().toString(), currUser.groupId );
+
+                                Toast.makeText(mContext, u.getfName() + u.getlName()+u.getEmailAddress()+u.getPhoneNumber()+u.groupId, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+
+        // show it
+        alert.show();
+    }
 }
 

@@ -1301,4 +1301,49 @@ class getGroup extends AsyncTask<String, String, String>{
             }
         }
     }
+
+
+    class addPoints extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+               String first_name = params[0];
+                String point_amount = params[1];
+
+                String urlParameters = "username=" + URLEncoder.encode(first_name, "UTF-8")
+                        + "&points=" + URLEncoder.encode(point_amount, "UTF-8");
+                URL url = new URL("http://104.236.10.133/add_points.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
 }

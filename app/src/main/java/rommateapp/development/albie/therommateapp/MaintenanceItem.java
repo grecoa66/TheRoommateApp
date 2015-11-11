@@ -15,15 +15,15 @@ public class MaintenanceItem implements Serializable{
     public int groupid;
     public boolean isComplete = false;
 
-    public MaintenanceItem( String desc,
+    public MaintenanceItem( int groupId, String desc,
                            String causingUser, String purchaseUser,  boolean isComplete){
         this.desc = desc;
         this.causingUser = causingUser;
         this.purchaseUser = purchaseUser;
         this.isComplete = isComplete;
+        this.groupid = groupId;
 
     }
-
 
     public MaintenanceItem(int MaintenanceItemId, String desc,
                            String causingUser, String purchaseUser, int groupid, boolean isComplete){
@@ -32,6 +32,7 @@ public class MaintenanceItem implements Serializable{
         this.causingUser = causingUser;
         this.purchaseUser = purchaseUser;
         this.isComplete = isComplete;
+        this.groupid = groupid;
 
     }
 
@@ -73,6 +74,14 @@ public class MaintenanceItem implements Serializable{
 
     public void setIsComplete(boolean isComplete) {
         this.isComplete = isComplete;
+    }
+
+    public int getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(int groupid) {
+        this.groupid = groupid;
     }
 
     @Override

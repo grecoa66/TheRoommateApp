@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex G on 10/21/2015.
  */
-public class MaintenanceActivity extends AppCompatActivity {
+public class MaintenanceActivity extends AppCompatActivity implements AsyncResponse {
 
     private Context mContext;
 
@@ -36,8 +36,10 @@ public class MaintenanceActivity extends AppCompatActivity {
     private ListView lv;
     private AlertDialog alertDialog;
     private MaintenanceItem itemToDelete;
-    private Group currGroup;
+    private MaintenaceRowAdapter adapter;
+    private Group myGroup;
     private User currUser;
+    private HTTP_Connector httpcon;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,23 +47,69 @@ public class MaintenanceActivity extends AppCompatActivity {
         mContext = this;
 
 
-        currGroup= (Group) getIntent().getSerializableExtra("group");
+        myGroup= (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
-
-        mainteList.add(new MaintenanceItem("Broken Door", "Albie", "Albie", false));
-        mainteList.add(new MaintenanceItem("scuffed paint in living room", "Greco", "matt", false));
-        mainteList.add(new MaintenanceItem("leak in sink", "matt", "greco", false));
-        mainteList.add(new MaintenanceItem("Burnt out bulb", "greco", "greco", false));
-        mainteList.add(new MaintenanceItem("Broken Window", "matt", "matt", false));
-        mainteList.add(new MaintenanceItem("Broken toilet seat", "ablie", "greco", false));
-        mainteList.add(new MaintenanceItem("New spare Key", "matt", "matt", false));
-
+        httpcon = new HTTP_Connector(this);
 
         lv = (ListView) findViewById(R.id.list_mainte);
+
+        if (myGroup == null) {
+            mainteList = new ArrayList<>();
+            //pull from db here
+        } else {
+
+            mainteList = myGroup.getMaintenanceList().getMaintenanceList();
+            adapter = new MaintenaceRowAdapter(mContext, mainteList);
+            lv.setAdapter(adapter);
+            setListener(lv);
+        }
+
         meAdapter(lv);
 
 
     }//end on create
+
+    //this gets the groc list from the http connector
+    public void processFinish(GroceryList result) {
+
+    }
+
+    public void processFinish(MaintenanceList result) {
+        mainteList = result.getMaintenanceList();
+        adapter = new MaintenaceRowAdapter(mContext, mainteList);
+        lv.setAdapter(adapter);
+        setListener(lv);
+    }
+
+    public void processFinish(ArrayList<Chore> result) {
+
+    }
+
+    public void processFinish(User resp) {
+
+    }
+
+    public void processFinish(BillList bl) {
+    }
+
+    public void processFinish(UserList ul) {
+
+    }
+
+    public void setListener(ListView lv) {
+
+        //This is where we can create the modal for edit  delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                showModal(position, justMe);
+                view.setSelected(true);
+            }
+        });
+
+    }
 
     public void meAdapter(View view) {
         mainteList = cleanMaintList();
@@ -73,7 +121,7 @@ public class MaintenanceActivity extends AppCompatActivity {
 
         for (int i = 0; i < mainteList.size(); i++) {
             MaintenanceItem mItem = mainteList.get(i);
-            if (mItem.getCausingUser().equalsIgnoreCase("Albie") && !justMe.contains(mItem) && !mItem.isComplete()) {
+            if (mItem.getCausingUser().equalsIgnoreCase(currUser.getfName()) && !justMe.contains(mItem) && !mItem.isComplete()) {
                 justMe.add(mItem);
             }
         }
@@ -88,8 +136,7 @@ public class MaintenanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
-                //Toast.makeText(mContext, "" + position, Toast.LENGTH_SHORT).show();
-                showModal(position);
+                showModal(position, justMe);
                 view.setSelected(true);
             }
         });
@@ -120,8 +167,7 @@ public class MaintenanceActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Start the CAB using the ActionMode.Callback defined above
-                Toast.makeText(mContext, "you changed me " + position, Toast.LENGTH_SHORT).show();
-                showModal(position);
+                showModal(position, group);
                 view.setSelected(true);
             }
         });
@@ -151,16 +197,24 @@ public class MaintenanceActivity extends AppCompatActivity {
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mainteList.add(new MaintenanceItem(
+
+                                MaintenanceItem newItem = new MaintenanceItem(
+                                        myGroup.getGroupId(),
                                         editDesc.getText().toString(),
                                         spinner.getSelectedItem().toString(),
                                         spinner2.getSelectedItem().toString(),
-                                        false));
+                                        false);
+                                mainteList.add(newItem);
                                 ListView lv = (ListView) findViewById(R.id.list_mainte);
+                                //create new adapter to with updated local mainteList
                                 MaintenaceRowAdapter adapter = new MaintenaceRowAdapter(mContext, mainteList);
                                 lv.setAdapter(adapter);
-                                //setListener(list);
+                                //go back to the personal view
                                 meAdapter(lv);
+
+                                //add item to db
+                                HTTP_Connector.addMaintenanceItem dbAddMaintenance = httpcon.new addMaintenanceItem();
+                                dbAddMaintenance.execute(newItem);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -178,12 +232,12 @@ public class MaintenanceActivity extends AppCompatActivity {
 
     }
 
-    public void showModal(final int pos) {
+    public void showModal(final int pos, ArrayList<MaintenanceItem> mList) {
 
-        mainteList = cleanMaintList();
+        //mainteList = cleanMaintList();
 
         //get current Mainte item you want to edit
-        MaintenanceItem mItem = mainteList.get(pos);
+        MaintenanceItem mItem = mList.get(pos);
         LayoutInflater li = LayoutInflater.from(mContext);
         //inflate the mainte edit layout
         View promptsView = li.inflate(R.layout.maintenace_edit, null);
@@ -223,6 +277,12 @@ public class MaintenanceActivity extends AppCompatActivity {
                                 //set an adapter to the new listview
                                 lv.setAdapter(adapter);
                                 meAdapter(lv);
+
+                                //add item to db
+                                HTTP_Connector.editMaintenanceItem dbEditMaintenance = httpcon.new editMaintenanceItem();
+                                dbEditMaintenance.execute(thisItem);
+
+                                meAdapter(lv);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -251,6 +311,11 @@ public class MaintenanceActivity extends AppCompatActivity {
                 mContext);
         //close dialog box
         alertDialog.cancel();
+
+        HTTP_Connector.deleteMaintenanceItem dbDeleteMaintItem = httpcon.new deleteMaintenanceItem();
+        dbDeleteMaintItem.execute(itemToDelete.getMaintenanceItemId());
+
+        meAdapter(lv);
     }
 
     @Override
@@ -264,7 +329,7 @@ public class MaintenanceActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Utility.openNewActivity(id, this, currGroup, currUser);
+        Utility.openNewActivity(id, this, myGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 
@@ -281,5 +346,12 @@ public class MaintenanceActivity extends AppCompatActivity {
             }
         }
         return mainteList;
+    }
+
+    public void finishItem(MaintenanceItem mItem){
+        mItem.setIsComplete(true);
+        HTTP_Connector.editMaintenanceItem dbEditMaintenance = httpcon.new editMaintenanceItem();
+        dbEditMaintenance.execute(mItem);
+
     }
 }

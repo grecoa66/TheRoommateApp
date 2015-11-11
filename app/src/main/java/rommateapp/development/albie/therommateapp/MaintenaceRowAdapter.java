@@ -69,6 +69,8 @@ public class MaintenaceRowAdapter extends BaseAdapter {
                 mainteList.remove(mItem);
                 mItem.setIsComplete(true);
                 notifyDataSetChanged();
+
+                ((MaintenanceActivity) context).finishItem(mItem);
                 Toast.makeText(v.getContext(),
                         "item "+mItem.getDesc() + " was completed.",
                         Toast.LENGTH_LONG).show();

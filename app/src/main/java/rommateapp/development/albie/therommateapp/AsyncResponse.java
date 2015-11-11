@@ -14,4 +14,5 @@ public interface AsyncResponse {
     void processFinish(UserList ul);
     void processFinish(BillList bl);
     void processFinish(Announcement an);
+    void processFinish(ArrayList<Points> points);
 }

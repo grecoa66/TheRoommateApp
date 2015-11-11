@@ -144,6 +144,7 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
                 .findViewById(R.id.choreDesc);
         final Spinner spinner = (Spinner) promptsView
                 .findViewById(R.id.PeopleSpinner);
+        final Spinner commonChore = (Spinner) promptsView.findViewById(R.id.choreSpinner);
 
         // set dialog message
         alertDialogBuilder
@@ -151,10 +152,19 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
+
+                                String newChore;
+                                if(name.getText().toString().matches("")){
+                                    newChore = commonChore.getSelectedItem().toString();
+                                }
+                                else{
+                                    newChore = name.getText().toString();
+                                }
+
                                 // get user input and set it to result
                                 // edit text
                                 //result.setText(userInput.getText());
-                                Chore c = new Chore(name.getText().toString(), desc.getText().toString(), currUser.getfName(), spinner.getSelectedItem().toString(),true, currUser.getGroupId());
+                                Chore c = new Chore(newChore, desc.getText().toString(), currUser.getfName(), spinner.getSelectedItem().toString(),true, currUser.getGroupId());
                                 currentChores.add(c);
 
                                 adapter = new ChoreRowAdapter(mContext, currentChores);

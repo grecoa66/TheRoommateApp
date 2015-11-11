@@ -875,7 +875,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 String causingUser = mntce_obj.causingUser;
                 String purchaseUser = mntce_obj.purchaseUser;
                 Boolean isComplete = mntce_obj.isComplete;
-                String isComplet = isComplete.toString();
+                String isComplet = Boolean.toString(isComplete);
 
                 String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
                         + "&causingUser=" + URLEncoder.encode(causingUser, "UTF-8")

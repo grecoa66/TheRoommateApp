@@ -3,15 +3,6 @@
     android:orientation="vertical"
     android:layout_width="fill_parent" android:layout_height="fill_parent"       android:background="#ffffff">
 
-    <Spinner
-        android:id="@+id/choreSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:entries="@array/spinnerChores">
-
-    </Spinner>
-
     <EditText android:layout_width="fill_parent"
         android:layout_gravity="center" android:layout_height="wrap_content"
         android:hint="Chore Name" android:id="@+id/choreName" android:textColor="#000000"
@@ -29,6 +20,6 @@
         />
     <EditText android:layout_width="fill_parent"
         android:layout_gravity="center" android:layout_height="wrap_content"
-        android:hint="Description" android:id="@+id/choreDesc" android:textColor="#000000"
-        android:lines="3" />
+        android:hint="Description" android:id="@+id/pointsAdd" android:textColor="#000000"
+        android:inputType="numberDecimal" />
 </LinearLayout>

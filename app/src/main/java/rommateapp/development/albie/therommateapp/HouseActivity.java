@@ -283,13 +283,11 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         alert.show();
     }
 
-
+    public void processFinish(ChoreList result){
+    }
     public void processFinish(User user){
     }
 
-    public void processFinish(ArrayList<Chore> result){
-
-    }
     public void processFinish(MaintenanceList result){
 
     }
@@ -301,7 +299,9 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     }
     public void processFinish(BillList bl){
     }
+    public void processFinish(Announcement an){
 
+    }
     public void userListFinish(ArrayList<User> output){
 
     }

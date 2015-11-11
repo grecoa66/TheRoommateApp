@@ -7,19 +7,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private GroceryList groceryList;
     private  BillList billList;
     private MaintenanceList maintList;
-    private Group group;
+    private Group currGroup;
     private  ListView groceryLv;
     private  ListView choreLv;
     private  ListView billsLv;
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     //Chores Things
     private Chore choreToDelete;
+    private Bill billToDelete;
+
+    AlertDialog alertBills;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
 
-    public void processFinish(ArrayList<Chore> result){
-        choreList = new ChoreList(4, result);
+    public void processFinish(ChoreList result){
+        choreList = result;
         ChoreRowAdapter adapter = new ChoreRowAdapter(mContext, choreList.getChores());
         choreLv.setAdapter(adapter);
         setListenerChores(choreLv);
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         billList = bl;
         BillRowAdapter adapter = new BillRowAdapter(mContext, billList.getBillList());
         billsLv.setAdapter(adapter);
+        setListenerBills(billsLv);
     }
     public void processFinish(User resp){
         currUser = resp;
@@ -122,9 +130,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
             HTTP_Connector.getBillList getBillList = httpcon.new getBillList(this);
             getBillList.execute(String.valueOf(currUser.groupId));
+
+            HTTP_Connector.getAllAnnoucements getAllAnnoucements= httpcon.new getAllAnnoucements(this);
+            getAllAnnoucements.execute(String.valueOf(currUser.groupId));
         }
         else{
-            Toast.makeText(mContext, "Please create an account to continue",Toast.LENGTH_SHORT);
+            Toast.makeText(mContext, "Please create an account to continue",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -133,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         userList = ul;
     }
 
+    public void processFinish(Announcement an){
+        TextView announcementMessage = (TextView) findViewById(R.id.AnnouncementsMessage);
+        announcementMessage.setText(an.getContent());
+        TextView announcer = (TextView) findViewById(R.id.AnnouncementsUser);
+        announcer.setText(an.getPoster());
+
+    }
 
     public void setListenerChores(ListView lv){
 
@@ -158,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        group = new Group(currUser.groupId, userList, billList, choreList, groceryList, maintList);//BILLLIST SHOULD BE PULLED FROM DB
-        Utility.openNewActivity(id, this, group, currUser);
+        currGroup = new Group(currUser.groupId, userList, billList, choreList, groceryList, maintList);//BILLLIST SHOULD BE PULLED FROM DB
+        Utility.openNewActivity(id, this, currGroup, currUser);
         return super.onOptionsItemSelected(item);
     }
 
@@ -193,6 +211,61 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             }
         }
     }
+
+
+    public void setListenerBills(ListView lv) {
+
+        //This is where we can create the modal for edit  delete
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start the CAB using the ActionMode.Callback defined above
+                showModalBills(position);
+                view.setSelected(true);
+            }
+        });
+    }
+
+    public void showModalBills(final int position){
+
+        Bill b = billList.getBillList().get(position);
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.bill_edit, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText name = (EditText) promptsView
+                .findViewById(R.id.choreName);
+        final EditText desc = (EditText) promptsView
+                .findViewById(R.id.choreDesc);
+        final Spinner spinner = (Spinner) promptsView
+                .findViewById(R.id.PeopleSpinner);
+
+        name.setText(b.getDesc());
+        desc.setText(b.getDesc());
+        billToDelete = b;
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        alertBills= alertDialogBuilder.create();
+
+        // show it
+        alertBills.show();
+    }
+
 
     public void showModalChores(final int position){
 
@@ -287,17 +360,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Edit",
+                .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                            public void onClick(DialogInterface dialog, int id) {
                                 //result.setText(userInput.getText());
-                        //HTTP_Connector.editChore editChore = httpcon.new editChore();
-                              //  editChore.execute(c);
+                                //HTTP_Connector.editChore editChore = httpcon.new editChore();
+                                //  editChore.execute(c);
 
 
                                 tv.setText(newMessage.getText().toString());
-                                tvUser.setText("-Albie");
+                                tvUser.setText("-"+currUser.getfName());
 
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                String currentDateandTime = sdf.format(new Date());
+
+                                Announcement an = new Announcement(newMessage.getText().toString(), currUser.getfName(), currentDateandTime, currUser.getGroupId());
+                                HTTP_Connector.addAnnoucement addAnnoucement = httpcon.new addAnnoucement();
+                                addAnnoucement.execute(an);
 
                             }
                         })
@@ -313,6 +392,66 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         // show it
         alert.show();
+    }
+
+    public void openPaymentDialog(final Bill b){
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+        View promptsView = li.inflate(R.layout.bill_pay, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        Button venmoButton = (Button) promptsView.findViewById(R.id.venmoButton);
+        venmoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doVenmo(b);
+            }
+        });
+
+
+        alertDialogBuilder.setView(promptsView);
+        billToDelete = b;
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        // create alert dialog
+        alertBills= alertDialogBuilder.create();
+
+        // show it
+        alertBills.show();
+    }
+
+    public void doVenmo(Bill b){
+        if (VenmoLibrary.isVenmoInstalled(mContext)) {
+            String pnum ="";
+            for(int i=0; i< userList.getUserList().size();i++){
+                if(b.getUserToPay().equals(userList.getUserList().get(i).getfName())){
+                    pnum = userList.getUserList().get(i).getPhoneNumber();
+                }
+            }
+            Intent venmoIntent = VenmoLibrary.openVenmoPayment("2952", b.getDesc(), pnum, ".01", b.getDesc()+" --Thanks Roomie!", "charge");
+            startActivityForResult(venmoIntent, 2952);
+
+        }
+    }
+
+    public void deleteBill(View view) {
+
+        billList.getBillList().remove(billToDelete);
+        BillRowAdapter adapter = new BillRowAdapter(mContext,  billList.getBillList());
+        billsLv.setAdapter(adapter);
+        Toast.makeText(mContext, "Bill Dismissed", Toast.LENGTH_SHORT).show();
+        HTTP_Connector.deleteBill deleteBill = httpcon.new deleteBill();
+        deleteBill.execute(String.valueOf(billToDelete.getBillId()));
+        alertBills.cancel();
     }
 
 

@@ -84,8 +84,14 @@ public class BillRowAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                Bill b = bills.get(position);
-                BillsActivity act = (BillsActivity) context;
-                act.openPaymentDialog(b);
+
+                if(context instanceof  BillsActivity){
+                    BillsActivity act = (BillsActivity) context;
+                    act.openPaymentDialog(b);
+                }else{
+                    MainActivity act = (MainActivity) context;
+                    act.openPaymentDialog(b);
+                }
 
             }
         });

@@ -60,9 +60,9 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
     }
     //}
 
-    public void processFinish(ArrayList<Chore> result){
+    public void processFinish(ChoreList result){
 
-        currentChores = result;
+        currentChores = result.getChores();
         adapter = new ChoreRowAdapter(mContext, currentChores);
         list.setAdapter(adapter);
         setListener(list);
@@ -71,6 +71,8 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
 
     }
     public void processFinish(GroceryList result){
+
+    } public void processFinish(Announcement an){
 
     }
     public void processFinish(User resp){

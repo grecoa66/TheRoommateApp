@@ -82,4 +82,16 @@
         android:id="@+id/groupAddress"
         android:text="Address:"/>
 
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Points"
+        android:clickable="true"
+        android:onClick="addPoints"/>
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_points"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

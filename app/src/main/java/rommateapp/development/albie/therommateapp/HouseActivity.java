@@ -47,6 +47,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     private TextView userEmail;
     private TextView groupAddr;
     private TextView groupName;
+    private ArrayList<Points> currentPoints = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,16 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         userPhone.setText("Phone: "+ currUser.getPhoneNumber());
         userEmail.setText("email: " + currUser.getEmailAddress());
 
+        currentPoints.add(new Points("Albie", 25));
+        currentPoints.add(new Points("Greco", 15));
+        currentPoints.add(new Points("Matt", 10));
+
+
+        ListView list = (ListView) findViewById(R.id.list_points);
+
+
+        PointsRowAdapter adapter = new PointsRowAdapter(mContext, currentPoints);
+        list.setAdapter(adapter);
 
     }
 

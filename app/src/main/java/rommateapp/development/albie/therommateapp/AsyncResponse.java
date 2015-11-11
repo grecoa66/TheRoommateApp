@@ -13,5 +13,5 @@ public interface AsyncResponse {
     void processFinish(User resp);
     void processFinish(UserList ul);
     void processFinish(BillList bl);
-    //void processFinish(ArrayList<)
+    void processFinish(Announcement an);
 }

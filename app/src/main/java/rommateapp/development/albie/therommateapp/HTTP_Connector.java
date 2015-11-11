@@ -1188,13 +1188,14 @@ class getGroup extends AsyncTask<String, String, String>{
 
 
 
-    class addAnnoucement extends AsyncTask<String, String, String> {
-        protected String doInBackground(String... params) {
+    class addAnnoucement extends AsyncTask<Announcement, String, String> {
+        protected String doInBackground(Announcement... params) {
             String response = "";
             try {
-                String content = params[0];
-                String poster = params[1];
-                int groupid = Integer.parseInt(params[2]);
+                Announcement anncmnt = params[0];
+                String content = anncmnt.content;
+                String poster = anncmnt.poster;
+                int groupid = anncmnt.groupid;
                 String g_id = Integer.toString(groupid);
 
                 String urlParameters = "content=" + URLEncoder.encode(content, "UTF-8")
@@ -1236,7 +1237,7 @@ class getGroup extends AsyncTask<String, String, String>{
         }
     }
 
-  /*  class getAllAnnoucements extends AsyncTask<String, String, String> {
+    class getAllAnnoucements extends AsyncTask<String, String, String> {
         private AsyncResponse delegate;
         public getAllAnnoucements(AsyncResponse resp){
             delegate = resp;
@@ -1282,28 +1283,22 @@ class getGroup extends AsyncTask<String, String, String>{
         protected void onPostExecute(String result) {
             try {
                 JSONArray json = new JSONArray(result);
-                for (int i = 0; i < json.length(); i++) {
-                    JSONObject json_obj = json.getJSONObject(i);
+
+                    JSONObject json_obj = json.getJSONObject(0);
                     String id = json_obj.get("id").toString();
                     String content = json_obj.get("Message").toString();
                     String posted_by = json_obj.get("usersName").toString();
                     String groupid = json_obj.get("groupId").toString();
-                    String date = json_obj.get("DatePosted")
+                    String date = json_obj.get("DatePosted").toString();
                     int g_id = Integer.valueOf(groupid);
-                    int b_id = Integer.valueOf(id);
+                    int a_id = Integer.valueOf(id);
 
-                   Bill bill = new Bill(b_id, desc, total_amount, bill_creator, assigned_to, g_id);
-                      billlist.addBill(bill);
+                   Announcement announce = new Announcement(a_id, content, posted_by, date, g_id);
 
-
-                }
-
-                //  delegate.processFinish(json);
+                  delegate.processFinish(announce);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-                    */
-
 }

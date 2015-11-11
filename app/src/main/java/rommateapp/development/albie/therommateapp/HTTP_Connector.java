@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 
+import android.graphics.Point;
 import android.os.AsyncTask;
 
 import android.util.Log;
@@ -874,7 +875,7 @@ class getGroup extends AsyncTask<String, String, String>{
                 String causingUser = mntce_obj.causingUser;
                 String purchaseUser = mntce_obj.purchaseUser;
                 Boolean isComplete = mntce_obj.isComplete;
-                String isComplet = isComplete.toString();
+                String isComplet = Boolean.toString(isComplete);
 
                 String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
                         + "&causingUser=" + URLEncoder.encode(causingUser, "UTF-8")
@@ -1344,6 +1345,72 @@ class getGroup extends AsyncTask<String, String, String>{
 
         protected void onPostExecute(String result) {
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
+    class getPoints extends AsyncTask<String, String, String> {
+        private AsyncResponse delegate;
+        ArrayList<Points> all_points = new ArrayList<>();
+        public getPoints(AsyncResponse resp){
+            delegate = resp;
+        }
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                int groupid = Integer.parseInt(params[0]);
+                String g_id = Integer.toString(groupid);
+
+                String urlParameters = "groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/get_points.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String fname = json_obj.get("first_name").toString();
+                    String points = json_obj.get("Points").toString();
+                    int pnts = Integer.valueOf(points);
+
+                    Points point = new Points(fname, pnts);
+                    all_points.add(point);
+                }
+                delegate.processFinish(all_points);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

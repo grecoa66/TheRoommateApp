@@ -33,7 +33,7 @@ public class DataBaseHandler implements AsyncResponse{
 
     }
 
-    public void processFinish(ArrayList<Chore> result){
+    public void processFinish(ChoreList result){
 
     }
     public void processFinish(MaintenanceList result){

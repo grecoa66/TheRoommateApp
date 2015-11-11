@@ -283,13 +283,11 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
         alert.show();
     }
 
-
+    public void processFinish(ChoreList result){
+    }
     public void processFinish(User user){
     }
 
-    public void processFinish(ArrayList<Chore> result){
-
-    }
     public void processFinish(MaintenanceList result){
 
     }

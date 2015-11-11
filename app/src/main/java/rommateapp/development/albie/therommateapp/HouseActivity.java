@@ -299,7 +299,9 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     }
     public void processFinish(BillList bl){
     }
+    public void processFinish(Announcement an){
 
+    }
     public void userListFinish(ArrayList<User> output){
 
     }

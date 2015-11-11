@@ -72,6 +72,8 @@ public class ChoreActivity extends AppCompatActivity implements AsyncResponse {
     }
     public void processFinish(GroceryList result){
 
+    } public void processFinish(Announcement an){
+
     }
     public void processFinish(User resp){
 

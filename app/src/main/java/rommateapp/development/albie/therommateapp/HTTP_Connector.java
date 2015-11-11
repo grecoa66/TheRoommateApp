@@ -1245,7 +1245,7 @@ class getGroup extends AsyncTask<String, String, String>{
         protected String doInBackground(String... params) {
             String response = "";
             try {
-                int groupid = Integer.parseInt(params[2]);
+                int groupid = Integer.parseInt(params[0]);
                 String g_id = Integer.toString(groupid);
 
                 String urlParameters = "groupid=" + URLEncoder.encode(g_id, "UTF-8");

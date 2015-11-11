@@ -1,6 +1,7 @@
 package rommateapp.development.albie.therommateapp;
 
 import android.content.Context;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,7 +33,8 @@ public class DataBaseHandler implements AsyncResponse{
         resp.processFinish(output);
 
     }
-
+    public void processFinish(Announcement an){
+    }
     public void processFinish(ChoreList result){
 
     }

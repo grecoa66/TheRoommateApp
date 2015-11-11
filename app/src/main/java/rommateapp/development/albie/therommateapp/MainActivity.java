@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
@@ -127,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
             HTTP_Connector.getBillList getBillList = httpcon.new getBillList(this);
             getBillList.execute(String.valueOf(currUser.groupId));
+
+            HTTP_Connector.getAllAnnoucements getAllAnnoucements= httpcon.new getAllAnnoucements(this);
+            getAllAnnoucements.execute(String.valueOf(currUser.groupId));
         }
         else{
             Toast.makeText(mContext, "Please create an account to continue",Toast.LENGTH_SHORT).show();
@@ -138,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         userList = ul;
     }
 
+    public void processFinish(Announcement an){
+        TextView announcementMessage = (TextView) findViewById(R.id.AnnouncementsMessage);
+        announcementMessage.setText(an.getContent());
+        TextView announcer = (TextView) findViewById(R.id.AnnouncementsUser);
+        announcer.setText(an.getPoster());
+
+    }
 
     public void setListenerChores(ListView lv){
 
@@ -347,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Edit",
+                .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //result.setText(userInput.getText());
@@ -356,8 +369,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
 
                                 tv.setText(newMessage.getText().toString());
-                                tvUser.setText("-Albie");
+                                tvUser.setText("-"+currUser.getfName());
 
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                String currentDateandTime = sdf.format(new Date());
+
+                                Announcement an = new Announcement(newMessage.getText().toString(), currUser.getfName(), currentDateandTime, currUser.getGroupId());
+                                HTTP_Connector.addAnnoucement addAnnoucement = httpcon.new addAnnoucement();
+                                addAnnoucement.execute(an);
 
                             }
                         })

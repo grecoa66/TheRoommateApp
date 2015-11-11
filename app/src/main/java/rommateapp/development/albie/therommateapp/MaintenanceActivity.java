@@ -95,7 +95,9 @@ public class MaintenanceActivity extends AppCompatActivity implements AsyncRespo
     public void processFinish(UserList ul) {
 
     }
+    public void processFinish(Announcement an){
 
+    }
     public void setListener(ListView lv) {
 
         //This is where we can create the modal for edit  delete

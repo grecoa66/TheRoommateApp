@@ -80,7 +80,9 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse 
     public void processFinish(MaintenanceList result) {
 
     }
+    public void processFinish(Announcement an){
 
+    }
     public void processFinish(ChoreList result) {
 
     }

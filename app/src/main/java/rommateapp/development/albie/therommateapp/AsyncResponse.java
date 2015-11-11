@@ -7,10 +7,11 @@ import java.util.ArrayList;
  */
 public interface AsyncResponse {
 
-    void processFinish(ArrayList<Chore> result);
+    void processFinish(ChoreList cl);
     void processFinish(GroceryList gl);
     void processFinish(MaintenanceList ml);
     void processFinish(User resp);
     void processFinish(UserList ul);
     void processFinish(BillList bl);
+    //void processFinish(ArrayList<)
 }

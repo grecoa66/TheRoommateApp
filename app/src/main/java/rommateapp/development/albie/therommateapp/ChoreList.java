@@ -19,6 +19,7 @@ public class ChoreList implements Serializable{
         this.choreListId = choreListId;
         this.choresList = choresList;
     }
+    public ChoreList() {}
 
     public int getChoreListId() {
         return choreListId;

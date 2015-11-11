@@ -242,7 +242,8 @@ class getGroup extends AsyncTask<String, String, String>{
 
     class getChoreList extends AsyncTask<String, String, String> {
         int chore_list_id;
-        ArrayList<Chore> chores = new ArrayList<>();
+        ChoreList cl = new ChoreList();
+       // ArrayList<Chore> chores = new ArrayList<>();
         private AsyncResponse delegate;
         public getChoreList(AsyncResponse resp){
             delegate = resp;
@@ -307,25 +308,16 @@ class getGroup extends AsyncTask<String, String, String>{
                     }
                     Chore chre = new Chore(name, desc, posted_by, assigned_to, iscomp, g_id);
                     chre.setId(c_id);
+                    cl.addChore(chre);
 
-                    chores.add(chre);
                 }
-                delegate.processFinish(chores);
+                delegate.processFinish(cl);
                 // Toast.makeText(ctx, "chores arraylist " + chores.toString(), Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
 
-        }
-
-        protected void onPreExecute(String result) {
-            // something...
-        }
-
-        public ArrayList<Chore> createChoreListObject() {
-            Toast.makeText(ctx, "chores arraylist " + chores.toString(), Toast.LENGTH_LONG).show();
-            return chores;
         }
     }
 
@@ -873,20 +865,19 @@ class getGroup extends AsyncTask<String, String, String>{
             String response = "";
             try {
                 MaintenanceItem mntce_obj = params[0];
+                int id = mntce_obj.MaintenanceItemId;
+                String item_id = Integer.toString(id);
                 String desc = mntce_obj.desc;
                 String causingUser = mntce_obj.causingUser;
                 String purchaseUser = mntce_obj.purchaseUser;
                 Boolean isComplete = mntce_obj.isComplete;
                 String isComplet = isComplete.toString();
 
-                int groupid = mntce_obj.groupid;
-                String g_id = Integer.toString(groupid);
-
                 String urlParameters = "desc=" + URLEncoder.encode(desc, "UTF-8")
                         + "&causingUser=" + URLEncoder.encode(causingUser, "UTF-8")
                         + "&purchaseuser=" + URLEncoder.encode(purchaseUser, "UTF-8")
                         + "&isComplete=" + URLEncoder.encode(isComplet, "UTF-8")
-                        + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                        + "&id=" + URLEncoder.encode(item_id, "UTF-8");
                 URL url = new URL("http://104.236.10.133/edit_maintenance_item.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
@@ -1190,5 +1181,126 @@ class getGroup extends AsyncTask<String, String, String>{
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+
+    class addAnnoucement extends AsyncTask<String, String, String> {
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                String content = params[0];
+                String poster = params[1];
+                int groupid = Integer.parseInt(params[2]);
+                String g_id = Integer.toString(groupid);
+
+                String urlParameters = "content=" + URLEncoder.encode(content, "UTF-8")
+                        + "&poster=" + URLEncoder.encode(poster, "UTF-8")
+                        + "&groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/post_announcement.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+  /*  class getAllAnnoucements extends AsyncTask<String, String, String> {
+        private AsyncResponse delegate;
+        public getAllAnnoucements(AsyncResponse resp){
+            delegate = resp;
+        }
+        protected String doInBackground(String... params) {
+            String response = "";
+            try {
+                int groupid = Integer.parseInt(params[2]);
+                String g_id = Integer.toString(groupid);
+
+                String urlParameters = "groupid=" + URLEncoder.encode(g_id, "UTF-8");
+                URL url = new URL("http://104.236.10.133/get_all_announcements.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+                br.close();
+            } catch (MalformedURLException ex) {
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+
+            }
+// and some more
+            catch (IOException ex) {
+
+                Toast.makeText(ctx, ex.toString(), Toast.LENGTH_LONG).show();
+            }
+            return response;
+        }
+
+        protected void onPostExecute(String result) {
+            try {
+                JSONArray json = new JSONArray(result);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject json_obj = json.getJSONObject(i);
+                    String id = json_obj.get("id").toString();
+                    String content = json_obj.get("Message").toString();
+                    String posted_by = json_obj.get("usersName").toString();
+                    String groupid = json_obj.get("groupId").toString();
+                    String date = json_obj.get("DatePosted")
+                    int g_id = Integer.valueOf(groupid);
+                    int b_id = Integer.valueOf(id);
+
+                   Bill bill = new Bill(b_id, desc, total_amount, bill_creator, assigned_to, g_id);
+                      billlist.addBill(bill);
+
+
+                }
+
+                //  delegate.processFinish(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+                    */
 
 }

@@ -81,7 +81,7 @@ public class MaintenanceActivity extends AppCompatActivity implements AsyncRespo
         setListener(lv);
     }
 
-    public void processFinish(ArrayList<Chore> result) {
+    public void processFinish(ChoreList result) {
 
     }
 

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Albert on 10/21/2015.
  */
-public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
+public class GroceryActivity extends AppCompatActivity implements AsyncResponse {
 
     private Context mContext;
     private ArrayList<Grocery> currentGroc = new ArrayList<>();
@@ -48,17 +48,16 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
         mContext = this;
         date = new Date(System.currentTimeMillis());
 
-        myGroup= (Group) getIntent().getSerializableExtra("group");
+        myGroup = (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
         httpcon = new HTTP_Connector(this);
 
         lv = (ListView) findViewById(R.id.list_grocery);
 
-        if(myGroup ==null) {
+        if (myGroup == null) {
             currentGroc = new ArrayList<>();
             //pull from db here
-        }
-        else{
+        } else {
 
             currentGroc = myGroup.getGroceryList().getGroceryList();
             adapter = new GroceryRowAdapter(mContext, currentGroc);
@@ -70,25 +69,30 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     }
 
     //this gets the groc list from the http connector
-    public void processFinish(GroceryList result){
+    public void processFinish(GroceryList result) {
 
         currentGroc = result.getGroceryList();
         adapter = new GroceryRowAdapter(mContext, currentGroc);
         lv.setAdapter(adapter);
         setListener(lv);
     }
-    public void processFinish(MaintenanceList result){
+
+    public void processFinish(MaintenanceList result) {
 
     }
-    public void processFinish(ArrayList<Chore> result){
+
+    public void processFinish(ArrayList<Chore> result) {
 
     }
-    public void processFinish(User resp){
+
+    public void processFinish(User resp) {
 
     }
-    public void processFinish(BillList bl){
+
+    public void processFinish(BillList bl) {
     }
-    public void processFinish(UserList ul){
+
+    public void processFinish(UserList ul) {
 
     }
 
@@ -101,7 +105,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
         adapter = new GroceryRowAdapter(mContext, currentGroc);
         lv.setAdapter(adapter);
         //This is where we can create the modal for edit  delete
-       setListener(lv);
+        setListener(lv);
     }
 
     public void addGrocery(View view) {
@@ -124,7 +128,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Grocery g = new Grocery(myGroup.getGroupId(),grocName.getText().toString(),
+                                Grocery g = new Grocery(myGroup.getGroupId(), grocName.getText().toString(),
                                         Integer.parseInt(grocQuant.getText().toString()),
                                         currentDate.toString(),
                                         currUser.getfName(), false);
@@ -206,7 +210,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
         alertDialog.show();
     }
 
-    public void removeGrocery(View view){
+    public void removeGrocery(View view) {
         currentGroc.remove(grocToDelete);
         currentGroc = buildCurrentList(currentGroc);
         adapter = new GroceryRowAdapter(mContext, currentGroc);
@@ -223,7 +227,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
         dbDeleteGroc.execute(grocToDelete.getGroceryId());
     }
 
-    public void setListener(ListView lv){
+    public void setListener(ListView lv) {
 
         //This is where we can create the modal for edit  delete
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -254,7 +258,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     }
 
     //fixes bug where  adapter was being sent bad data
-    public ArrayList<Grocery> buildCurrentList(ArrayList<Grocery> allGroc){
+    public ArrayList<Grocery> buildCurrentList(ArrayList<Grocery> allGroc) {
 
         currentGroc = new ArrayList<Grocery>();
 
@@ -267,7 +271,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
         return currentGroc;
     }
 
-    public void addGrocToPurchase(Grocery g){
+    public void addGrocToPurchase(Grocery g) {
         grocToPurchase.add(g);
         //String test = grocToPurchase.get(0).toString();
         //Toast.makeText(mContext, test, Toast.LENGTH_SHORT).show();
@@ -276,7 +280,7 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
     //create a modal to ask for price
     //after that go through the grocToPurchase array
     //and set all of their setPurchased to true
-    public void checkOut(View view){
+    public void checkOut(View view) {
 
         //get the grocery that was pressed
         LayoutInflater li = LayoutInflater.from(mContext);
@@ -311,20 +315,21 @@ public class GroceryActivity extends AppCompatActivity implements AsyncResponse{
                                         User u = (User) arrL.get(i);
                                         //TODO add the current user as the userToBill
                                         Bill newBill = new Bill("grocery check out", amountPerPerson, u.getfName(), currUser.getfName(), myGroup.getGroupId());
-                                        HTTP_Connector.addBill dbAddBill= httpcon.new addBill();
+                                        HTTP_Connector.addBill dbAddBill = httpcon.new addBill();
                                         dbAddBill.execute(newBill);
                                     }
 
                                     //set is purchased to true for all things just purchased
                                     for (int j = 0; j < grocToPurchase.size(); j++) {
                                         Grocery g = grocToPurchase.get(j);
-                                        g.setIsPurchased(true);
 
+                                        //change object locally and in database
+                                        g.setIsPurchased(true);
                                         HTTP_Connector.editGrocery dbEditGroc = httpcon.new editGrocery();
                                         dbEditGroc.execute(g);
 
+                                        //cant edit two things at once, so do it again
                                         g.setPurchaseUser(currUser.getfName());
-
                                         HTTP_Connector.editGrocery dbEditGroc2 = httpcon.new editGrocery();
                                         dbEditGroc2.execute(g);
                                     }

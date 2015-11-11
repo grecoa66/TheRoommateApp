@@ -789,13 +789,16 @@ class getGroup extends AsyncTask<String, String, String>{
                     String groupid = json_obj.get("groupid").toString();
 
                     int mnt_id = Integer.valueOf(id);
-                    int isComp = Integer.valueOf(isComplete);
+
                     boolean isDone = false;
-                    if (isComp == 0) {
+                    if (isComplete.equals("true")) {
                         isDone = true;
                     }
                     MaintenanceItem maint_item = new MaintenanceItem(mnt_id, desc, causingUser, purchaseUser, Integer.valueOf(groupid), isDone);
-                    mnt_itm.add(maint_item);
+
+                    if(!maint_item.isComplete){
+                        mnt_itm.add(maint_item);
+                    }
                 }
                 MaintenanceList mainten_list = new MaintenanceList(mnt_itm);
                 delegate.processFinish(mainten_list);
@@ -914,13 +917,13 @@ class getGroup extends AsyncTask<String, String, String>{
         }
     }
 
-    class deleteMaintenanceItem extends AsyncTask<String, String, String> {
-        protected String doInBackground(String... params) {
+    class deleteMaintenanceItem extends AsyncTask<Integer, String, String> {
+        protected String doInBackground(Integer... params) {
             String response = "";
             try {
-                String mntc_id = params[0];
-
-                String urlParameters = "mntc_id=" + URLEncoder.encode(mntc_id, "UTF-8");
+                int mntc_id = params[0];
+                String mc_id = Integer.toString(mntc_id);
+                String urlParameters = "mntc_id=" + URLEncoder.encode(mc_id, "UTF-8");
                 URL url = new URL("http://104.236.10.133/delete_maintenance_item.php");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");

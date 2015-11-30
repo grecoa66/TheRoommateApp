@@ -48,13 +48,15 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     private TextView groupAddr;
     private TextView groupName;
     private ArrayList<Points> currentPoints = new ArrayList<>();
+
+    private HTTP_Connector httpcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.house_main);
         mContext = this;
 
-
+        httpcon = new HTTP_Connector(this);
         currGroup= (Group) getIntent().getSerializableExtra("group");
         currUser = (User) getIntent().getSerializableExtra("user");
 
@@ -217,10 +219,9 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
                 .setPositiveButton("Add",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // HTTP_Connector.editChore editChore = httpcon.new editChore();
-                                // editChore.execute(c);
+                                 HTTP_Connector.addPoints addPoints= httpcon.new addPoints();
+                                 addPoints.execute(fName.getSelectedItem().toString(), lName.getText().toString());
 
-                                Toast.makeText(mContext, u.getfName() + u.getlName()+u.getEmailAddress()+u.getPhoneNumber()+u.groupId, Toast.LENGTH_SHORT).show();
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -311,7 +312,7 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
     }
 
 
-
+/*
     public void addUser(View view){
 
         LayoutInflater li = LayoutInflater.from(mContext);
@@ -359,6 +360,6 @@ public class HouseActivity extends AppCompatActivity implements AsyncResponse{
 
         // show it
         alert.show();
-    }
+    }*/
 }
 

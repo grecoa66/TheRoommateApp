@@ -14,6 +14,7 @@ public class User implements Serializable{
     public String lName = "";
     public String emailAddress = "";
     public String phoneNumber= "";
+    public int points;
 
 
     public User(int userId, String fName, String lName, String emailAddress, String phoneNumber, int groupId){
@@ -30,6 +31,10 @@ public class User implements Serializable{
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.groupId = groupId;
+    }
+    public User(String fName, int points){
+        this.fName = fName;
+        this.points = points;
     }
 
     public int getGroupId() {
@@ -78,6 +83,8 @@ public class User implements Serializable{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public int getPoints(){ return points;}
 
     public String toString(){
         return "Name: " + fName + " " + lName + ", Phone Number: " + phoneNumber + ", Email Address:" + emailAddress;

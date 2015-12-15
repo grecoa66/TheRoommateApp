@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"       android:background="#ffffff">
+
+    <Button
+        android:id="@+id/venmoButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay with Venmo"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/cashButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Pay with Cash"
+        android:onClick="deleteBill"
+        android:clickable="true"/>
+
+</LinearLayout>

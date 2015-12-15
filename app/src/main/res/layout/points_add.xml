@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"       android:background="#ffffff">
+
+    <Spinner
+        android:id="@+id/PeopleSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/spinnerItems"
+        />
+    <EditText android:layout_width="fill_parent"
+        android:layout_gravity="center" android:layout_height="wrap_content"
+        android:hint="Point Amount" android:id="@+id/pointsAdd" android:textColor="#000000"
+        android:inputType="numberDecimal" />
+</LinearLayout>

@@ -3,6 +3,7 @@
     package="rommateapp.development.albie.therommateapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -45,11 +46,9 @@
             android:label="Bills" >
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".Register">
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".HouseActivity"
+            android:label="House" >
         </activity>
     </application>
 

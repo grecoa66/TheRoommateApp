@@ -1,25 +1,40 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * This wil hold the information for one grocery item.
  * Created by alexgreco on 10/16/15.
  */
-public class Grocery {
+public class Grocery implements Serializable{
     public int groceryId;
+    public int groupid;
     public String itemName;
     public int quantity;
-    public Date dateRequested;
-    public Date datePurchased;
+    public String dateRequested;
+    public String datePurchased;
     public boolean isPurchased = false;
     public double costPerItem;
     public double totalCost;
-    public User requestUser;
-    public User purchaseUser;//who purchased the item(s)
+    public String requestUser;
+    public String purchaseUser;//who purchased the item(s)
+
+
+    public Grocery(int groupid,String itemName, int quantity,
+                   String dateRequested, String requestUser, boolean isPurchased
+                   ){
+        this.itemName = itemName;
+        this.quantity = quantity;
+        this.dateRequested = dateRequested;
+        this.isPurchased = isPurchased;
+        this.requestUser = requestUser;
+        this.groupid = groupid;
+    }
+
 
     public Grocery(int groceryId, String itemName, int quantity,
-                   Date dateRequested, Date datePurchased, boolean isPurchased,
-                   Double costPerItem, User requestUser,User purchaseUser ){
+                   String dateRequested, String datePurchased, boolean isPurchased,
+                   Double costPerItem, String requestUser,String purchaseUser ){
         this.groceryId = groceryId;
         this.itemName = itemName;
         this.quantity = quantity;
@@ -31,6 +46,13 @@ public class Grocery {
         this.purchaseUser = purchaseUser;
     }
 
+    public int getGroupId() {
+        return groupid;
+    }
+
+    public void setGroupId(int groupid) {
+        this.groupid = groupid;
+    }
     public int getGroceryId() {
         return groceryId;
     }
@@ -55,19 +77,19 @@ public class Grocery {
         this.quantity = quantity;
     }
 
-    public Date getDateRequested() {
+    public String getDateRequested() {
         return dateRequested;
     }
 
-    public void setDateRequested(Date dateRequested) {
+    public void setDateRequested(String dateRequested) {
         this.dateRequested = dateRequested;
     }
 
-    public Date getDatePurchased() {
+    public String getDatePurchased() {
         return datePurchased;
     }
 
-    public void setDatePurchased(Date datePurchased) {
+    public void setDatePurchased(String datePurchased) {
         this.datePurchased = datePurchased;
     }
 
@@ -91,19 +113,19 @@ public class Grocery {
         return costPer * quantity;
     }
 
-    public User getRequestUser() {
+    public String getRequestUser() {
         return requestUser;
     }
 
-    public void setRequestUser(User requestUser) {
+    public void setRequestUser(String requestUser) {
         this.requestUser = requestUser;
     }
 
-    public User getPurchaseUser() {
+    public String getPurchaseUser() {
         return purchaseUser;
     }
 
-    public void setPurchaseUser(User purchaseUser) {
+    public void setPurchaseUser(String purchaseUser) {
         this.purchaseUser = purchaseUser;
     }
 

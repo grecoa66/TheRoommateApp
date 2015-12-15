@@ -1,5 +1,6 @@
 package rommateapp.development.albie.therommateapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**The BillList is a collection of bill objects.
@@ -9,16 +10,15 @@ import java.util.ArrayList;
  *
  * Created by alexgreco on 10/21/15.
  */
-public class BillList {
+public class BillList implements Serializable{
     public int BillListId;
     public ArrayList<Bill> billList;
-    public boolean isEmpty;
 
-    public BillList(int billListId, boolean isEmpty, ArrayList<Bill> billList) {
+    public BillList(int billListId, ArrayList<Bill> billList) {
         BillListId = billListId;
-        this.isEmpty = isEmpty;
         this.billList = billList;
     }
+    public BillList() {billList = new ArrayList<>();}
 
     public int getBillListId() {
         return BillListId;

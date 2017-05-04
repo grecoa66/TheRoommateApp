@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="6dip" >
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/choreName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Chore Name"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/assignedTo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom"
+            android:text="AsignedTo"
+            android:textSize="14sp" />
+
+    </LinearLayout> <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/choreDesc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="do something"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/assignedBy"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:text="AssignedBy"
+
+        android:textSize="14sp" />
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_weight="1">
+
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="TODO"
+        android:layout_gravity="center_vertical|right"
+        android:clickable="true"
+        android:src="@drawable/ic_check_box_black_24dp" />
+
+</LinearLayout>
+
+</LinearLayout>

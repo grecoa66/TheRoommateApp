@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"       android:background="#ffffff">
+
+    <Spinner
+        android:id="@+id/choreSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/spinnerChores">
+
+    </Spinner>
+
+    <EditText android:layout_width="fill_parent"
+        android:layout_gravity="center" android:layout_height="wrap_content"
+        android:hint="Chore Name" android:id="@+id/choreName" android:textColor="#000000"
+        android:lines="3" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Assign to:"/>
+    <Spinner
+        android:id="@+id/PeopleSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/spinnerItems"
+        />
+    <EditText android:layout_width="fill_parent"
+        android:layout_gravity="center" android:layout_height="wrap_content"
+        android:hint="Description" android:id="@+id/choreDesc" android:textColor="#000000"
+        android:lines="3" />
+</LinearLayout>
